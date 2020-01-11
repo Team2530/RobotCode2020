@@ -10,12 +10,13 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
-import frc.robot.Robot;
+// import frc.robot.Robot;
+import frc.robot.Constants.DriveMotors;
 import frc.robot.subsystems.DriveTrain;
 
 public class DualLargeJoystickDrive extends CommandBase {
- @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
-  private final DriveTrain m_drivetrain;
+  @SuppressWarnings({"PMD.UnusedPrivateField", "PMD.SingularField"})
+  private DriveTrain m_driveTrain;
 
   Joystick stick1;
   Joystick stick2;
@@ -33,17 +34,17 @@ public class DualLargeJoystickDrive extends CommandBase {
    * @param drivetrain The subsystem used by this command.
    */
 
-  public DualLargeJoystickDrive(DriveTrain driveTrain) {
-    m_drivetrain = driveTrain;
+  public DualLargeJoystickDrive(DriveTrain driveTrain, Joystick stick1, Joystick stick2) {
+    m_driveTrain = driveTrain;
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(m_drivetrain);
+    addRequirements(driveTrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    stick1 = Robot.m_oi.getJoystick();
-    stick2 = Robot.m_oi.getJoystick2();
+    // stick1 = Robot.m_robotContainer.getJoystick();
+    // stick2 = Robot.m_robotContainer.getJoystick2();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -69,16 +70,17 @@ public class DualLargeJoystickDrive extends CommandBase {
     rightPow = powerfactor * (0.5 * Math.pow(rightPow, 3) + 0.5 * rightPow);
     leftPow = powerfactor * (0.5 * Math.pow(leftPow, 3) + 0.5 * leftPow);
 
-    Robot.driveTrain.setMotorPower(0, rightPow);
-    Robot.driveTrain.setMotorPower(2, rightPow);
+    m_driveTrain.setMotorPower(DriveMotors.FR, rightPow);
+    m_driveTrain.setMotorPower(DriveMotors.BR, rightPow);
 
-    Robot.driveTrain.setMotorPower(1, leftPow);
-    Robot.driveTrain.setMotorPower(3, leftPow);
+    m_driveTrain.setMotorPower(DriveMotors.FL, leftPow);
+    m_driveTrain.setMotorPower(DriveMotors.BL, leftPow);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    m_driveTrain.Stop();
   }
 
   // Returns true when the command should end.

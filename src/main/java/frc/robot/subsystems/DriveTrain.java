@@ -8,8 +8,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.SPI.Port;
-import edu.wpi.first.wpilibj.controller.PIDController;
+// import edu.wpi.first.wpilibj.SPI.Port;
+// import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
@@ -21,7 +21,7 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 public class DriveTrain extends SubsystemBase {
-  private static final Port i2c_port_id = null;
+  // private static final Port i2c_port_id = null;
   /**
    * Creates a new DriveTrain.
    */
@@ -39,6 +39,7 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain() {
 
   }
+
   public void resetEncoders()
   {
     encoder_Front_Left.reset();
@@ -46,22 +47,23 @@ public class DriveTrain extends SubsystemBase {
     encoder_Back_Right.reset();
     encoder_Front_Right.reset();
   }
+
   public void setMotorPower(final DriveMotors id, final double speed) {
     switch (id){// TODO THESE ARE ARBITRARY
-    case FL:
-      motor_Front_Left.set(ControlMode.PercentOutput, speed);
-      return;
-    case BR:
-      motor_Back_Right.set(ControlMode.PercentOutput, -speed);
-      return;
-    case BL:
-      motor_Back_Left.set(ControlMode.PercentOutput, speed);
-      return;
-    case FR:
-      motor_Front_Right.set(ControlMode.PercentOutput, -speed);
-      return;
-    default:
-      return;
+      case FL:
+        motor_Front_Left.set(ControlMode.PercentOutput, speed);
+        return;
+      case BR:
+        motor_Back_Right.set(ControlMode.PercentOutput, -speed);
+        return;
+      case BL:
+        motor_Back_Left.set(ControlMode.PercentOutput, speed);
+        return;
+      case FR:
+        motor_Front_Right.set(ControlMode.PercentOutput, -speed);
+        return;
+      default:
+        return;
     }
   }
   
@@ -71,6 +73,7 @@ public class DriveTrain extends SubsystemBase {
       setMotorPower(motor, 0);
     }
   }
+
   //TODO:complete drive for Distance
   public void driveDistance(double distance, double power)//Distance is inches and set power to negative to go backwards
   {
@@ -86,6 +89,7 @@ public class DriveTrain extends SubsystemBase {
       if()
     } */
   }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
