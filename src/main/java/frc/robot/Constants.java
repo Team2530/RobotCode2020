@@ -16,4 +16,34 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    //! NEED TO BE ACTUALLY SET
+    //Motor ports
+    public static final int motor_Front_Left_Port = 1; 
+    public static final int motor_Back_Left_Port = 3;
+    public static final int motor_Back_Right_Port = 4;
+    public static final int motor_Front_Right_Port = 2;
+    public enum DriveMotors
+    { 
+        FL, FR, BL, BR; 
+    } 
+
+    //Sensor ports
+    public static final int[] encoder_Front_Left_Ports = {1,2}; 
+    public static final int[] encoder_Back_Left_Port = {3,4};
+    public static final int[] encoder_Back_Right_Port = {5,6};
+    public static final int[] encoder_Front_Right_Port = {7,8};
+
+    //driving constants
+    public static final double GEAR_RATIO = 1;//?This ratio is the ratio between the encoder and the driven wheels
+    public static final double WHEEL_RADIUS = 6;//!Not diameter radius
+    public static final int ENCODER_TICKS_PER_REVOLUTION = 60;
+
+    public static final int kP = 1;
+    public static final int kI = 0;
+    public static final int kD = 0;
+
+    public static final int gyroDrift = 5;
+
+    //Controll(Joystick constants)
+    public static final double deadzone = 0.1;
 }
