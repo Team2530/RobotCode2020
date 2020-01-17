@@ -31,7 +31,7 @@ public class DriveTrain extends SubsystemBase {
   private static VictorSPX motor_Front_Right = new VictorSPX(Constants.motor_Front_Right_Port);
   
   private static Encoder encoder_Left = new Encoder(Constants.encoder_Left_Ports[0],Constants.encoder_Left_Ports[1]);
-  private static Encoder encoder_Right = new Encoder(Constants.encoder_Right_Port[0],Constants.encoder_Right_Port[1]);
+  private static Encoder encoder_Right = new Encoder(Constants.encoder_Right_Ports[0],Constants.encoder_Right_Ports[1]);
 
   public static AHRS ahrs = new AHRS();//! NEED A PORT ID
   public DriveTrain() {
