@@ -60,12 +60,12 @@ public final class Constants {
     public static final int limit_Switch_Left_Leadscrew_Port = 1;
     public static final int limit_Switch_Right_Leadscrew_Port = 2;
 
+    public static final int limit_Switch_Left_Pulley_Port = 3;
+    public static final int limit_Switch_Right_Pulley_Port = 4;
+
     //Shooter
     public static final int[] encoder_Left_Flywheel_Ports = {9,10}; 
     public static final int[] encoder_Right_Flywheel_Port = {11,12};
-
-    public static final int limit_Switch_Left_Pulley_Port = 3;
-    public static final int limit_Switch_Right_Pulley_Port = 4;
 
     //----------Sensor Constants-----------\\
     public static final int ENCODER_TICKS_PER_REVOLUTION = 60;
