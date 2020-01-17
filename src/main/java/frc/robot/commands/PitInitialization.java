@@ -5,6 +5,9 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
+
+//TODO fill this command with whatever we want to do in pit before we go to a match
+
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
