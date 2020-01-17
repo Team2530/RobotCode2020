@@ -38,5 +38,11 @@ public class Elevator extends SubsystemBase {
   }
 
   //TODO create functions
+
+  //TODO get Angle function
+  public float getAngle(){
+
+    return 0;
+  }
   
 }

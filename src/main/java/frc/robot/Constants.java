@@ -34,6 +34,13 @@ public final class Constants {
     public static final int motor_Left_Pulley_Port = 7;
     public static final int motor_Right_Pulley_Port = 8;
 
+    //Shooter
+    public static final int motor_Right_Flywheel_Port = 9;
+    public static final int motor_Left_FlyWheel_Port = 10;
+
+    public static final int motor_Ball_Leadscrew_Port = 11;
+
+
     //----------Sensor Ports----------\\
     //DriveTrain
     public static final int[] encoder_Left_Ports = {1,2}; 
@@ -45,19 +52,32 @@ public final class Constants {
     public static final int[] encoder_Left_Leadscrew_Ports = {5,6}; 
     public static final int[] encoder_Right_Leadscrew_Port = {7,8};
 
+    //Shooter
+    public static final int[] encoder_Left_Flywheel_Ports = {9,10}; 
+    public static final int[] encoder_Right_Flywheel_Port = {11,12};
+
     //TODO 4 limit switches, 2 on leadscrew, 2 on pulley for elevator
+
+    //----------Sensor Constants-----------\\
+    public static final int ENCODER_TICKS_PER_REVOLUTION = 60;
+    public static final int gyroDrift = 5;
 
     //----------Driving Constants----------\\
     public static final double GEAR_RATIO = 1; //?This ratio is the ratio between the encoder and the driven wheels
     public static final double WHEEL_RADIUS = 6; //!Not diameter radius
-    public static final int ENCODER_TICKS_PER_REVOLUTION = 60;
+    
 
     public static final int kP = 1;
     public static final int kI = 0;
     public static final int kD = 0;
 
-    public static final int gyroDrift = 5;
-
-    //----------Controll (Joystick) Constants----------\\
+    //----------Control (Joystick) Constants----------\\
     public static final double deadzone = 0.1;
+
+    
+
+     //----------Control (Shooting) Constants----------\\
+    public static final float I = 1;//?moment of inertia
+    public static final int SHOOTER_WHEEL_RADIUS = 6;
+    public static final double eff = 0.8;//?effective efficiency percentage
 }
