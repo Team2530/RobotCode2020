@@ -12,6 +12,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 // import frc.robot.commands.DualLargeJoystickDrive;
 
+/* Libraries used for Color Sensor */
+import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.util.Color;
+import com.revrobotics.ColorSensorV3;
+
+
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
  * each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -22,6 +28,18 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Command m_teleopCommand;
   private RobotContainer m_robotContainer;
+
+  /**
+   * TODO: Change the I2C port below to match the connection of your color sensor
+   */
+  private final I2C.Port i2cPort = I2C.Port.kOnboard;
+
+  /**
+   * A Rev Color Sensor V3 object is constructed with an I2C port as a 
+   * parameter. The device will be automatically initialized with default 
+   * parameters.
+   */
+  private final ColorSensorV3 m_colorSensor = new ColorSensorV3(i2cPort);
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -116,4 +134,18 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
+
+  @Override
+  /**
+  * The method GetColor() returns a normalized color value from the sensor and can be
+  * useful if outputting the color to an RGB LED or similar. To
+  * read the raw color, use GetRawColor().
+  * 
+  * The color sensor works best when within a few inches from an object in
+  * well lit conditions (the built in LED is a big help here!). The farther
+  * an object is the more light from the surroundings will bleed into the 
+  * measurements and make it difficult to accurately determine its color.
+  */
+ Color detectedColor = m_colorSensor.getColor();
+
 }
