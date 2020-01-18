@@ -35,7 +35,8 @@ public class DriveTrain extends SubsystemBase {
 
   public static AHRS ahrs = new AHRS();//! NEED A PORT ID
   public DriveTrain() {
-
+    motor_Back_Right.setInverted(true);
+    motor_Front_Right.setInverted(true);
   }
 
   public void resetEncoders()
@@ -50,13 +51,13 @@ public class DriveTrain extends SubsystemBase {
         motor_Front_Left.set(ControlMode.PercentOutput, speed);
         return;
       case BR:
-        motor_Back_Right.set(ControlMode.PercentOutput, -speed);
+        motor_Back_Right.set(ControlMode.PercentOutput, speed);
         return;
       case BL:
         motor_Back_Left.set(ControlMode.PercentOutput, speed);
         return;
       case FR:
-        motor_Front_Right.set(ControlMode.PercentOutput, -speed);
+        motor_Front_Right.set(ControlMode.PercentOutput, speed);
         return;
       default:
         return;
