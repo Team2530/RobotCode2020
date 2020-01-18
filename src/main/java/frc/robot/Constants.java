@@ -62,6 +62,10 @@ public final class Constants {
 
     public static final int limit_Switch_Left_Pulley_Port = 3;
     public static final int limit_Switch_Right_Pulley_Port = 4;
+    public enum ElevatorLimitSwitches 
+    {
+        LL, RL, LP, RP; //? or we could just use elevatorMotors enum.
+    }
 
     //Shooter
     public static final int[] encoder_Left_Flywheel_Ports = {9,10}; 
