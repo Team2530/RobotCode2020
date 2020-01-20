@@ -12,7 +12,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DualLargeJoystickDrive;
 import frc.robot.commands.ExampleCommand;
-import frc.robot.commands.XboxJoystickElevator;
+// import frc.robot.commands.SmallJoystickElevator;
+// import frc.robot.commands.XboxJoystickElevator;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
@@ -39,7 +40,8 @@ public class RobotContainer {
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final DualLargeJoystickDrive m_telopCommand = new DualLargeJoystickDrive(m_driveTrain, stick1, stick2);
-  private final XboxJoystickElevator elevatorCommand = new XboxJoystickElevator(elevatorSub, xbox);
+  //private final XboxJoystickElevator elevatorCommand = new XboxJoystickElevator(elevatorSub, xbox);
+  //private final SmallJoystickElevator elevatorCommand = new SmallJoystickElevator(elevatorSub, stick1);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

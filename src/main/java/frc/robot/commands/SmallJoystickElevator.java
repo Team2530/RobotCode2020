@@ -7,27 +7,29 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ElevatorLimitSwitches;
 import frc.robot.Constants.ElevatorMotors;
 import frc.robot.subsystems.Elevator;
 
-public class XboxJoystickElevator extends CommandBase {
-  private Elevator elevatorSub;
-  private XboxController xbox;
+public class SmallJoystickElevator extends CommandBase {
+  Elevator elevatorSub;
+
+  Joystick stick1; 
 
   double y1;
 
+
   /**
-   * Creates a new XboxJoystickElevator.
+   * Creates a new SmallJoystickElevator.
    */
-  public XboxJoystickElevator(Elevator elevatorSub, XboxController xbox) {
+  public SmallJoystickElevator(Elevator elevatorSub, Joystick stick1) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(elevatorSub); //might have to do xbox = xbox
-    this.xbox = xbox;
+    addRequirements(elevatorSub);
+    this.stick1 = stick1;
+    this.elevatorSub = elevatorSub;
   }
 
   // Called when the command is initially scheduled.
@@ -38,28 +40,27 @@ public class XboxJoystickElevator extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    y1 = xbox.getY(Hand.kLeft);
+    y1 = stick1.getRawAxis(4);
     if (Math.abs(y1) <= Constants.deadzone) {
       y1 = 0;
     }
 
     //y1 = 1 * (0.5 * Math.pow(y1, 3) + 0.5 * y1); prob dont need this but can add it
 
-    //last stage doesnt move if stage 1 limit swtiches are NOT pressed or last stage limit switches ARE pressed
-
-    if(elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.LL) || elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.RL)) { //stage 1 all the way up
+    if(elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.LP) || elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.RP)) { //last stage all the way up
       //only go down
       if(y1 < 0) {
-        elevatorSub.setMotorPower(ElevatorMotors.LL, y1);
-        elevatorSub.setMotorPower(ElevatorMotors.RL, y1);
+        elevatorSub.setMotorPower(ElevatorMotors.LP, y1);
+        elevatorSub.setMotorPower(ElevatorMotors.RP, y1);
       } else {
-        elevatorSub.setMotorPower(ElevatorMotors.LL, 0);
-        elevatorSub.setMotorPower(ElevatorMotors.RL, 0);
+        elevatorSub.setMotorPower(ElevatorMotors.LP, 0);
+        elevatorSub.setMotorPower(ElevatorMotors.RP, 0);
       }
+
     } else {
       //go any direction
-      elevatorSub.setMotorPower(ElevatorMotors.LL, y1);
-      elevatorSub.setMotorPower(ElevatorMotors.RL, y1);
+      elevatorSub.setMotorPower(ElevatorMotors.LP, y1);
+      elevatorSub.setMotorPower(ElevatorMotors.RP, y1);
     }
 
   }
@@ -67,7 +68,6 @@ public class XboxJoystickElevator extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    elevatorSub.Stop();
   }
 
   // Returns true when the command should end.
