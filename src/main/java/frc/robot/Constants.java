@@ -74,16 +74,20 @@ public final class Constants {
     //----------Sensor Constants-----------\\
     public static final int ENCODER_TICKS_PER_REVOLUTION = 60;
     public static final int gyroDrift = 5;
-
-    //--------------------Driving Constants--------------------\\
+    public static final double sensor_Limelight_Height = 10;//? mounting height in inches
+    //----------Driving Constants----------\\
     public static final double GEAR_RATIO = 1; //?This ratio is the ratio between the encoder and the driven wheels
     public static final double WHEEL_RADIUS = 6; //!Not diameter radius
     
-
     public static final int kP = 1;
     public static final int kI = 0;
     public static final int kD = 0;
 
+    //----------Field Constants----------\\
+    public static final int target_Height = 98;
+    public static final double ball_Weight = 0.3125;
+
+    
     //----------Control (Joystick) Constants----------\\
     public static final double deadzone = 0.1;
 
@@ -91,6 +95,7 @@ public final class Constants {
     public static final float I = 1;//?moment of inertia
     public static final int SHOOTER_WHEEL_RADIUS = 6;
     public static final double eff = 0.8;//?effective efficiency percentage
+    public static final int MAX_DISTANCE = 100;
 
     //----------Control (Elevator) Constants----------\\
     //measurements based around shooter being level  
