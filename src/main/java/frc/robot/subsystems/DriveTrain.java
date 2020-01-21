@@ -25,15 +25,13 @@ public class DriveTrain extends SubsystemBase {
   /**
    * Creates a new DriveTrain.
    */
-  public static VictorSPX motor_Front_Left = new VictorSPX(Constants.motor_Front_Left_Port);
-  public static TalonSRX motor_Back_Left = new TalonSRX(Constants.motor_Back_Left_Port);
-  public static TalonSRX motor_Back_Right = new TalonSRX(Constants.motor_Back_Right_Port);
-  public static VictorSPX motor_Front_Right = new VictorSPX(Constants.motor_Front_Right_Port);
+  private static VictorSPX motor_Front_Left = new VictorSPX(Constants.motor_Front_Left_Port);
+  private static TalonSRX motor_Back_Left = new TalonSRX(Constants.motor_Back_Left_Port);
+  private static TalonSRX motor_Back_Right = new TalonSRX(Constants.motor_Back_Right_Port);
+  private static VictorSPX motor_Front_Right = new VictorSPX(Constants.motor_Front_Right_Port);
   
-  public static Encoder encoder_Front_Left = new Encoder(Constants.encoder_Front_Left_Ports[0],Constants.encoder_Front_Left_Ports[1]);
-  public static Encoder encoder_Back_Left = new Encoder(Constants.encoder_Back_Left_Port[0],Constants.encoder_Back_Left_Port[1]);
-  public static Encoder encoder_Back_Right = new Encoder(Constants.encoder_Back_Right_Port[0],Constants.encoder_Back_Right_Port[1]);
-  public static Encoder encoder_Front_Right = new Encoder(Constants.encoder_Front_Right_Port[0],Constants.encoder_Front_Right_Port[1]);
+  private static Encoder encoder_Left = new Encoder(Constants.encoder_Left_Ports[0],Constants.encoder_Left_Ports[1]);
+  private static Encoder encoder_Right = new Encoder(Constants.encoder_Right_Ports[0],Constants.encoder_Right_Ports[1]);
 
   public static AHRS ahrs = new AHRS();//! NEED A PORT ID
   public DriveTrain() {
@@ -42,10 +40,8 @@ public class DriveTrain extends SubsystemBase {
 
   public void resetEncoders()
   {
-    encoder_Front_Left.reset();
-    encoder_Back_Left.reset();
-    encoder_Back_Right.reset();
-    encoder_Front_Right.reset();
+    encoder_Left.reset();
+    encoder_Right.reset();
   }
 
   public void setMotorPower(final DriveMotors id, final double speed) {

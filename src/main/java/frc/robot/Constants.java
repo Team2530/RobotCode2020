@@ -17,33 +17,74 @@ package frc.robot;
  */
 public final class Constants {
     //! NEED TO BE ACTUALLY SET
-    //----------Motor Ports----------\\
+    //--------------------Motor Ports--------------------\\
+    //DriveTrain Motors
     public static final int motor_Front_Left_Port = 1; 
     public static final int motor_Back_Left_Port = 3;
-    public static final int motor_Back_Right_Port = 4;
+    public static final int motor_Back_Right_Port = 4; //? 2 motors driving one wheel on each side, i think
     public static final int motor_Front_Right_Port = 2;
     public enum DriveMotors
     { 
         FL, FR, BL, BR; 
     } 
 
-    //----------Sensor Ports----------\\
-    public static final int[] encoder_Front_Left_Ports = {1,2}; 
-    public static final int[] encoder_Back_Left_Port = {3,4};
-    public static final int[] encoder_Back_Right_Port = {5,6};
-    public static final int[] encoder_Front_Right_Port = {7,8};
+    //Elevator Motors
+    public static final int motor_Left_Leadscrew_Port = 5;
+    public static final int motor_Right_Leadscrew_Port = 6;
+    public static final int motor_Left_Pulley_Port = 7;
+    public static final int motor_Right_Pulley_Port = 8;
+    public enum ElevatorMotors
+    {
+        LL, RL, LP, RP;
+    }
 
-    //----------Driving Constants----------\\
-    public static final double GEAR_RATIO = 1;//?This ratio is the ratio between the encoder and the driven wheels
-    public static final double WHEEL_RADIUS = 6;//!Not diameter radius
+    //Shooter
+    public static final int motor_Right_Flywheel_Port = 9;
+    public static final int motor_Left_FlyWheel_Port = 10;
+
+    public static final int motor_Ball_Leadscrew_Port = 11;
+
+
+    //--------------------Sensor Ports--------------------\\
+    //DriveTrain Encoders
+    public static final int[] encoder_Left_Ports = {1,2}; 
+    public static final int[] encoder_Right_Ports = {3,4};
+
+    //!!!!!!!!!!!!!!!!!!!!!!Encoders plug into SRX, figure out how to read
+
+    //Elevator Encoders
+    public static final int[] encoder_Left_Leadscrew_Ports = {5,6}; 
+    public static final int[] encoder_Right_Leadscrew_Ports = {7,8};
+
+    //Elevator Limit Switches
+    public static final int limit_Switch_Left_Leadscrew_Port = 1;
+    public static final int limit_Switch_Right_Leadscrew_Port = 2;
+
+    public static final int limit_Switch_Left_Pulley_Port = 3;
+    public static final int limit_Switch_Right_Pulley_Port = 4;
+
+    //Shooter
+    public static final int[] encoder_Left_Flywheel_Ports = {9,10}; 
+    public static final int[] encoder_Right_Flywheel_Port = {11,12};
+
+    //----------Sensor Constants-----------\\
     public static final int ENCODER_TICKS_PER_REVOLUTION = 60;
+    public static final int gyroDrift = 5;
+
+    //--------------------Driving Constants--------------------\\
+    public static final double GEAR_RATIO = 1; //?This ratio is the ratio between the encoder and the driven wheels
+    public static final double WHEEL_RADIUS = 6; //!Not diameter radius
+    
 
     public static final int kP = 1;
     public static final int kI = 0;
     public static final int kD = 0;
 
-    public static final int gyroDrift = 5;
-
-    //----------Controll (Joystick) Constants----------\\
+    //----------Control (Joystick) Constants----------\\
     public static final double deadzone = 0.1;
+
+     //----------Control (Shooting) Constants----------\\
+    public static final float I = 1;//?moment of inertia
+    public static final int SHOOTER_WHEEL_RADIUS = 6;
+    public static final double eff = 0.8;//?effective efficiency percentage
 }

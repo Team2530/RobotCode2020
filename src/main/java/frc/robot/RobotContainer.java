@@ -28,9 +28,9 @@ public class RobotContainer {
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveTrain m_driveTrain = new DriveTrain();
 
-  Joystick stick1 = new Joystick(1); // Creates a joystick on port 1
-  Joystick stick2 = new Joystick(2); // Creates a joystick on port 1
-  JoystickButton Button1 = new JoystickButton(stick1, 1); // Creates a new JoystickButton object for button 1 on stick
+  final Joystick stick1 = new Joystick(1); // Creates a joystick on port 1
+  final Joystick stick2 = new Joystick(2); // Creates a joystick on port 1
+  private final JoystickButton Button1 = new JoystickButton(stick1, 1); // Creates a new JoystickButton object for button 1 on stick
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final DualLargeJoystickDrive m_telopCommand = new DualLargeJoystickDrive(m_driveTrain, stick1, stick2);
@@ -66,11 +66,4 @@ public class RobotContainer {
     return m_telopCommand;
   }
 
-  // public Joystick getJoystick1() {
-  //   return stick1;
-  // }
-
-  // public Joystick getJoystick2() {
-  //   return stick2;
-  // }
 }
