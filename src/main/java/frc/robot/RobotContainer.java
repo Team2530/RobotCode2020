@@ -12,7 +12,10 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DualLargeJoystickDrive;
 import frc.robot.commands.ExampleCommand;
+// import frc.robot.commands.SmallJoystickElevator;
+// import frc.robot.commands.XboxJoystickElevator;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -27,13 +30,18 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveTrain m_driveTrain = new DriveTrain();
+  private final Elevator elevatorSub = new Elevator();
 
   final Joystick stick1 = new Joystick(1); // Creates a joystick on port 1
   final Joystick stick2 = new Joystick(2); // Creates a joystick on port 1
   private final JoystickButton Button1 = new JoystickButton(stick1, 1); // Creates a new JoystickButton object for button 1 on stick
 
+  final XboxController xbox = new XboxController(0);
+
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final DualLargeJoystickDrive m_telopCommand = new DualLargeJoystickDrive(m_driveTrain, stick1, stick2);
+  //private final XboxJoystickElevator elevatorCommand = new XboxJoystickElevator(elevatorSub, xbox);
+  //private final SmallJoystickElevator elevatorCommand = new SmallJoystickElevator(elevatorSub, stick1);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.

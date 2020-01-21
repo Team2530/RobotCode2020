@@ -62,6 +62,10 @@ public final class Constants {
 
     public static final int limit_Switch_Left_Pulley_Port = 3;
     public static final int limit_Switch_Right_Pulley_Port = 4;
+    public enum ElevatorLimitSwitches 
+    {
+        LL, RL, LP, RP; //? or we could just use elevatorMotors enum.
+    }
 
     //Shooter
     public static final int[] encoder_Left_Flywheel_Ports = {9,10}; 
@@ -83,8 +87,16 @@ public final class Constants {
     //----------Control (Joystick) Constants----------\\
     public static final double deadzone = 0.1;
 
-     //----------Control (Shooting) Constants----------\\
+    //----------Control (Shooting) Constants----------\\
     public static final float I = 1;//?moment of inertia
     public static final int SHOOTER_WHEEL_RADIUS = 6;
     public static final double eff = 0.8;//?effective efficiency percentage
+
+    //----------Control (Elevator) Constants----------\\
+    //measurements based around shooter being level  
+    public static final double bottomLeg = 29.68168; //inches
+    public static final double maxAngle = 32; //degrees
+    public static final double maxHeight = 18.54717; //inches
+    public static final double minAngle = -45; //degrees
+    public static final double minHeight = -29.68168; //inches (45, 45, 90 triangle)
 }

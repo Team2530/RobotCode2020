@@ -38,6 +38,9 @@ public class DualLargeJoystickDrive extends CommandBase {
     m_driveTrain = driveTrain;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
+
+    this.stick1 = stick1;
+    this.stick2 = stick2;
   }
 
   // Called when the command is initially scheduled.
