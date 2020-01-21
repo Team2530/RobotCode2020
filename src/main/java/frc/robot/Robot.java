@@ -66,6 +66,19 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    /**
+  * The method GetColor() returns a normalized color value from the sensor and can be
+  * useful if outputting the color to an RGB LED or similar. To
+  * read the raw color, use GetRawColor().
+  * 
+  * The color sensor works best when within a few inches from an object in
+  * well lit conditions (the built in LED is a big help here!). The farther
+  * an object is the more light from the surroundings will bleed into the 
+  * measurements and make it difficult to accurately determine its color.
+  */
+  Color detectedColor = m_colorSensor.getColor();
+  
   }
 
   /**
@@ -134,18 +147,5 @@ public class Robot extends TimedRobot {
   @Override
   public void testPeriodic() {
   }
-
-  @Override
-  /**
-  * The method GetColor() returns a normalized color value from the sensor and can be
-  * useful if outputting the color to an RGB LED or similar. To
-  * read the raw color, use GetRawColor().
-  * 
-  * The color sensor works best when within a few inches from an object in
-  * well lit conditions (the built in LED is a big help here!). The farther
-  * an object is the more light from the surroundings will bleed into the 
-  * measurements and make it difficult to accurately determine its color.
-  */
- Color detectedColor = m_colorSensor.getColor();
 
 }
