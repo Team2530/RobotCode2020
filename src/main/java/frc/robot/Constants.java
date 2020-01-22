@@ -75,6 +75,7 @@ public final class Constants {
     public static final int ENCODER_TICKS_PER_REVOLUTION = 60;
     public static final int gyroDrift = 5;
     public static final double sensor_Limelight_Height = 10;//? mounting height in inches
+
     //----------Driving Constants----------\\
     public static final double GEAR_RATIO = 1; //?This ratio is the ratio between the encoder and the driven wheels
     public static final double WHEEL_RADIUS = 6; //!Not diameter radius
@@ -99,6 +100,7 @@ public final class Constants {
 
     //----------Control (Elevator) Constants----------\\
     //measurements based around shooter being level  
+    //!these are all wrong, hardware didnt know anything
     public static final double bottomLeg = 29.68168; //inches
     public static final double maxAngle = 32; //degrees
     public static final double maxHeight = 18.54717; //inches

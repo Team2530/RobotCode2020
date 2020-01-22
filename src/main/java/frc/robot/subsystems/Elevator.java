@@ -49,8 +49,6 @@ public class Elevator extends SubsystemBase {
 
   //TODO create functions
 
-  //TODO get Angle function
-  public double getAngle(){
   public void setMotorPower(final ElevatorMotors id, final double speed) {
     switch (id) {
 
@@ -100,6 +98,7 @@ public class Elevator extends SubsystemBase {
 
     return 0;
   }
+  
   public double getHeight(){
 
     return 0;
