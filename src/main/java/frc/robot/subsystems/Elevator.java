@@ -95,12 +95,22 @@ public class Elevator extends SubsystemBase {
 
   //TODO get Angle function return degrees
   public float getAngle() { 
+    /**
+     * pusdo code
+     * angle = arctan(getHeight()/bottomLeg)
+     */
+
 
     return 0;
   }
   
   //TODO get Height function return inches
   public double getHeight(){
+    /**
+     * pusdo code 
+     * cant really do this until i know more specs of elevator from hardware
+     * return +- from level i think would be easiest for getAngle()
+     */
 
     return 0;
   }
