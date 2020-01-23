@@ -99,6 +99,7 @@ public class Elevator extends SubsystemBase {
     return 0;
   }
   
+  //TODO get Height function return inches
   public double getHeight(){
 
     return 0;

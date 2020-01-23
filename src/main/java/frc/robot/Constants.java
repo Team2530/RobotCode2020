@@ -102,8 +102,8 @@ public final class Constants {
     //measurements based around shooter being level  
     //!these are all wrong, hardware didnt know anything
     public static final double bottomLeg = 29.68168; //inches
-    public static final double maxAngle = 32; //degrees
+    public static final double maxAngle = 45; //degrees (45, 45, 90 triangle)
     public static final double maxHeight = 18.54717; //inches
-    public static final double minAngle = -45; //degrees
-    public static final double minHeight = -29.68168; //inches (45, 45, 90 triangle)
+    public static final double minAngle = -32; //degrees
+    public static final double minHeight = -29.68168; //inches
 }
