@@ -33,6 +33,12 @@ public class DriveTrain extends SubsystemBase {
   private static Encoder encoder_Left = new Encoder(Constants.encoder_Left_Ports[0],Constants.encoder_Left_Ports[1]);
   private static Encoder encoder_Right = new Encoder(Constants.encoder_Right_Ports[0],Constants.encoder_Right_Ports[1]);
 
+  
+
+  private static VictorSPX testMotor1 = new VictorSPX(Constants.test_motor_frontLeft_1_port);
+  private static VictorSPX testMotor2 = new VictorSPX(Constants.test_motor_frontRight_1_port);
+  private static VictorSPX testMotor3 = new VictorSPX(Constants.test_motor_backLeft_1_port);
+
   public static AHRS ahrs = new AHRS();//! NEED A PORT ID
   public DriveTrain() {
     motor_Back_Right.setInverted(true);
@@ -90,5 +96,25 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+
+
+  public void runTestMotors(final TestMotors id, final double speed) {
+    switch (id) {
+      case FL:
+        testMotor1.set(ControlMode.PercentOutput, speed);
+        return;
+      case FR:
+        testMotor2.set(ControlMode.PercentOutput, speed);
+        return;
+      case BL:
+        testMotor3.set(ControlMode.PercentOutput, speed);
+        return;
+      case BR:
+        //motor_Front_Right.set(ControlMode.PercentOutput, speed);
+        return;
+      default:
+        return;
+    }
   }
 }
