@@ -106,14 +106,4 @@ public final class Constants {
     public static final double maxHeight = 18.54717; //inches
     public static final double minAngle = -32; //degrees
     public static final double minHeight = -29.68168; //inches
-
-    //----------TestBench (Motors) Constants----------\\
-    public static final int test_motor_frontLeft_1_port = 1;
-    public static final int test_motor_frontRight_1_port = 2;
-    public static final int test_motor_backLeft_1_port = 3;
-    //public static final int test_motor_backRight_1_port = 4;
-     public enum TestMotors
-    { 
-        FL, FR, BL, BR; 
-    } 
 }
