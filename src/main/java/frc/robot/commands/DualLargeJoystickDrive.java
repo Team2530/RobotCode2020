@@ -27,7 +27,6 @@ public class DualLargeJoystickDrive extends CommandBase {
 
   double leftPow;
   double rightPow;
-  Boolean usingRobot = true;
 
   /**
    * Creates a new Command.
@@ -73,18 +72,12 @@ public class DualLargeJoystickDrive extends CommandBase {
 
     rightPow = powerfactor * (0.5 * Math.pow(rightPow, 3) + 0.5 * rightPow);
     leftPow = powerfactor * (0.5 * Math.pow(leftPow, 3) + 0.5 * leftPow);
-  if (usingRobot) {
-    m_driveTrain.setMotorPower(Constants.DriveMotors.FR, rightPow);
-    m_driveTrain.setMotorPower(Constants.DriveMotors.BR, rightPow);
 
-    m_driveTrain.setMotorPower(Constants.DriveMotors.FL, leftPow);
-    m_driveTrain.setMotorPower(Constants.DriveMotors.BL, leftPow);
-    }
-  else {
-    m_driveTrain.runTestMotors(Constants.TestMotors.FR, rightPow);
-    m_driveTrain.runTestMotors(Constants.TestMotors.FR, rightPow);
-    m_driveTrain.runTestMotors(Constants.TestMotors.FR, rightPow);
-   }
+    m_driveTrain.setMotorPower(DriveMotors.FR, rightPow);
+    m_driveTrain.setMotorPower(DriveMotors.BR, rightPow);
+
+    m_driveTrain.setMotorPower(DriveMotors.FL, leftPow);
+    m_driveTrain.setMotorPower(DriveMotors.BL, leftPow);
   }
 
   // Called once the command ends or is interrupted.
