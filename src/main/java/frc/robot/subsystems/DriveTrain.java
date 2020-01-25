@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.CANTalon;
 // import edu.wpi.first.wpilibj.SPI.Port;
 // import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -27,7 +28,7 @@ public class DriveTrain extends SubsystemBase {
    * Creates a new DriveTrain.
    */
   private static VictorSPX motor_Front_Left = new VictorSPX(Constants.motor_Front_Left_Port);
-  private static TalonSRX motor_Back_Left = new TalonSRX(Constants.motor_Back_Left_Port);
+  private static CANTalon motor_Back_Left = new CANTalon(Constants.motor_Back_Left_Port);
   private static TalonSRX motor_Back_Right = new TalonSRX(Constants.motor_Back_Right_Port);
   private static VictorSPX motor_Front_Right = new VictorSPX(Constants.motor_Front_Right_Port);
   
