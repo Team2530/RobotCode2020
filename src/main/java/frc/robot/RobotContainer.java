@@ -63,6 +63,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     Button1.whileHeld(lineUp);
+    Button1.whenReleased(m_telopCommand);
   }
 
   /**
