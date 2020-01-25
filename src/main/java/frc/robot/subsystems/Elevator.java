@@ -94,7 +94,7 @@ public class Elevator extends SubsystemBase {
   }
 
   //TODO get Angle function return degrees
-  public float getAngle() { 
+  public double getAngle() { 
 
     return 0;
   }
@@ -103,6 +103,12 @@ public class Elevator extends SubsystemBase {
   public double getHeight(){
 
     return 0;
+  }
+
+  //TODO get limelight height return degrees
+  public double getLimeLightHeight(){
+
+    return 24.5; //temp test value
   }
   
   public void Stop() {

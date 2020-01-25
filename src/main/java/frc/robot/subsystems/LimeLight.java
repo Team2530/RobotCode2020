@@ -35,14 +35,14 @@ public class LimeLight extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public double[] getSphericalPosition(double angle) {
-    double[] position = { (Constants.target_Height - Constants.sensor_Limelight_Height) / (Math.tan(angle + ty)), tx,
+  public double[] getSphericalPosition(double angle, double height) {
+    double[] position = { (Constants.target_Height - height) / (Math.tan(angle + ty)), tx,
         ty };
     return position;
   }
 
-  public double[] getCartesianPosition(double angle) {
-    double[] Sposition = getSphericalPosition(angle);
+  public double[] getCartesianPosition(double angle, double height) {
+    double[] Sposition = getSphericalPosition(angle, height);
     double[] position = { Sposition[0] * Math.cos(Sposition[1]) * Math.sin(Sposition[2]),
         Sposition[0] * Math.sin(Sposition[1]) * Math.sin(Sposition[2]), Sposition[0] * Math.cos(Sposition[2]) };
     return position;

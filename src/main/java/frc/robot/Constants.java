@@ -85,7 +85,7 @@ public final class Constants {
     public static final int kD = 0;
 
     //----------Field Constants----------\\
-    public static final int target_Height = 98;
+    public static final int target_Height = 62; //temp test value
     public static final double ball_Weight = 0.3125;
 
     
