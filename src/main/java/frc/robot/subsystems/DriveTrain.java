@@ -16,6 +16,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
@@ -85,6 +86,10 @@ public class DriveTrain extends SubsystemBase {
     /* while(getGreatestEncoder()<encoderdistance){
       if()
     } */
+  }
+  public double getEncoder(){
+    motor_Back_Left.configSelectedFeedbackSensor(FeedbackDevice.PulseWidthEncodedPosition, 0, 0);
+    return motor_Back_Left.getSelectedSensorPosition(0);
   }
 
   @Override
