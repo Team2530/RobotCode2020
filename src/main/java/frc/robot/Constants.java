@@ -19,10 +19,10 @@ public final class Constants {
     //! NEED TO BE ACTUALLY SET
     //--------------------Motor Ports--------------------\\
     //DriveTrain Motors
-    public static final int motor_Front_Left_Port = 1; 
-    public static final int motor_Back_Left_Port = 3;
-    public static final int motor_Back_Right_Port = 4; //? 2 motors driving one wheel on each side, i think
-    public static final int motor_Front_Right_Port = 2;
+    public static final int motor_Front_Left_Port = 3; 
+    public static final int motor_Back_Left_Port = 0;
+    public static final int motor_Back_Right_Port = 1; //? 2 motors driving one wheel on each side, i think
+    public static final int motor_Front_Right_Port = 4;
     public enum DriveMotors
     { 
         FL, FR, BL, BR; 
@@ -57,11 +57,11 @@ public final class Constants {
     public static final int[] encoder_Right_Leadscrew_Ports = {7,8};
 
     //Elevator Limit Switches
-    public static final int limit_Switch_Left_Leadscrew_Port = 1;
-    public static final int limit_Switch_Right_Leadscrew_Port = 2;
+    public static final int limit_Switch_Left_Leadscrew_Port = 5;
+    public static final int limit_Switch_Right_Leadscrew_Port = 6;
 
-    public static final int limit_Switch_Left_Pulley_Port = 3;
-    public static final int limit_Switch_Right_Pulley_Port = 4;
+    public static final int limit_Switch_Left_Pulley_Port = 7;
+    public static final int limit_Switch_Right_Pulley_Port = 8;
     public enum ElevatorLimitSwitches 
     {
         LL, RL, LP, RP; //? or we could just use elevatorMotors enum.
