@@ -19,12 +19,15 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.Encoder;
 
 public class DriveTrain extends SubsystemBase {
   // private static final Port i2c_port_id = null;
   /**
    * Creates a new DriveTrain.
    */
+  //private final Encoder m_encoder;
+
   private static VictorSPX motor_Front_Left = new VictorSPX(Constants.motor_Front_Left_Port);
   private static TalonSRX motor_Back_Left = new TalonSRX(Constants.motor_Back_Left_Port);
   private static TalonSRX motor_Back_Right = new TalonSRX(Constants.motor_Back_Right_Port);
@@ -90,5 +93,20 @@ public class DriveTrain extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+  }
+  public void rotateRight() { 
+    setMotorPower(DriveMotors.FR, -1);
+    setMotorPower(DriveMotors.BR, -1);
+
+    setMotorPower(DriveMotors.FL, 1);
+    setMotorPower(DriveMotors.BL, 1);
+  }
+
+  public void rotateLeft() {
+    setMotorPower(DriveMotors.FR, 1);
+    setMotorPower(DriveMotors.BR, 1);
+
+    setMotorPower(DriveMotors.FL, -1);
+    setMotorPower(DriveMotors.BL, -1);
   }
 }
