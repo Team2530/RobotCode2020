@@ -53,15 +53,15 @@ public final class Constants {
     //!!!!!!!!!!!!!!!!!!!!!!Encoders plug into SRX, figure out how to read
 
     //Elevator Encoders
-    public static final int[] encoder_Left_Leadscrew_Ports = {5,6}; 
-    public static final int[] encoder_Right_Leadscrew_Ports = {7,8};
+    // public static final int[] encoder_Left_Leadscrew_Ports = {5,6}; 
+    // public static final int[] encoder_Right_Leadscrew_Ports = {7,8};
 
     //Elevator Limit Switches
-    public static final int limit_Switch_Left_Leadscrew_Port = 1;
-    public static final int limit_Switch_Right_Leadscrew_Port = 2;
+    public static final int limit_Switch_Left_Leadscrew_Port = 5;
+    public static final int limit_Switch_Right_Leadscrew_Port = 6;
 
-    public static final int limit_Switch_Left_Pulley_Port = 3;
-    public static final int limit_Switch_Right_Pulley_Port = 4;
+    public static final int limit_Switch_Left_Pulley_Port = 7;
+    public static final int limit_Switch_Right_Pulley_Port = 8;
     public enum ElevatorLimitSwitches 
     {
         LL, RL, LP, RP; //? or we could just use elevatorMotors enum.
