@@ -40,10 +40,11 @@ public class RobotContainer {
   final XboxController xbox = new XboxController(0);
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  // private final DualLargeJoystickDrive m_telopCommand = new DualLargeJoystickDrive(m_driveTrain, stick1, stick2);
+  private final DualLargeJoystickDrive m_telopCommand = new DualLargeJoystickDrive(m_driveTrain, stick1, stick2);
   //private final XboxJoystickElevator elevatorCommand = new XboxJoystickElevator(elevatorSub, xbox);
   //private final SmallJoystickElevator elevatorCommand = new SmallJoystickElevator(elevatorSub, stick1);
-  private final EncoderTest m_telopCommand = new EncoderTest(m_driveTrain);
+  // private final EncoderTest m_telopCommand = new EncoderTest(m_driveTrain);
+  
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
