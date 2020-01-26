@@ -20,14 +20,14 @@ import frc.robot.Constants.ElevatorMotors;
 
 public class Elevator extends SubsystemBase {
   
-  private static VictorSPX motor_Left_Leadscrew = new VictorSPX(Constants.motor_Left_Leadscrew_Port);
+  private static TalonSRX motor_Left_Leadscrew = new TalonSRX(Constants.motor_Left_Leadscrew_Port);
   private static TalonSRX motor_Right_Leadscrew = new TalonSRX(Constants.motor_Right_Leadscrew_Port);
 
-  private static TalonSRX motor_Left_Pulley = new TalonSRX(Constants.motor_Left_Pulley_Port);
+  private static VictorSPX motor_Left_Pulley = new VictorSPX(Constants.motor_Left_Pulley_Port);
   private static VictorSPX motor_Right_Pulley = new VictorSPX(Constants.motor_Right_Pulley_Port);
 
-  private static Encoder encoder_Left_Leadscrew = new Encoder(Constants.encoder_Left_Leadscrew_Ports[0],Constants.encoder_Left_Leadscrew_Ports[1]);
-  private static Encoder encoder_Right_Leadscrew = new Encoder(Constants.encoder_Right_Leadscrew_Ports[0],Constants.encoder_Right_Leadscrew_Ports[1]);
+  // private static Encoder encoder_Left_Leadscrew = new Encoder(Constants.encoder_Left_Leadscrew_Ports[0],Constants.encoder_Left_Leadscrew_Ports[1]);
+  // private static Encoder encoder_Right_Leadscrew = new Encoder(Constants.encoder_Right_Leadscrew_Ports[0],Constants.encoder_Right_Leadscrew_Ports[1]);
 
   private static DigitalInput limit_Switch_Left_Leadscrew = new DigitalInput(Constants.limit_Switch_Left_Leadscrew_Port);
   private static DigitalInput limit_Switch_Right_Leadscrew = new DigitalInput(Constants.limit_Switch_Right_Leadscrew_Port);
@@ -94,14 +94,17 @@ public class Elevator extends SubsystemBase {
   }
 
   //TODO get Angle function return degrees
-  public float getAngle() { 
+  public double getAngle() { 
     /**
      * pusdo code
      * angle = arctan(getHeight()/bottomLeg)
      */
 
+     double radians = Math.atan2(Constants.bottomLeg, getHeight()); //(x,y)
 
-    return 0;
+     double degrees = (radians * 180)/Math.PI;
+
+    return degrees;
   }
   
   //TODO get Height function return inches
@@ -110,9 +113,29 @@ public class Elevator extends SubsystemBase {
      * pusdo code 
      * cant really do this until i know more specs of elevator from hardware
      * return +- from level i think would be easiest for getAngle()
+     * 
+     * * any gearing?
+     * 
+     * encoder pos/magic number (1024) = number of turns?
+     * 
+     * number of turns/turns per inch = inches traveled
+     * 
+     * if you just set enocder to 0 where you want inches to be 0 then never have to reset
+     * will just tell you inches from that point
+     * need to figure out how to reset at that 0 point
+     * 
      */
 
-    return 0;
+    double encoderLeftPos = motor_Left_Leadscrew.getSelectedSensorPosition(1); //* if 1 doesnt work try 0, look at pheonix tuner
+    double encoderRightPos = motor_Right_Leadscrew.getSelectedSensorPosition(1);
+
+    double numberOfTurnsLeft = encoderLeftPos/Constants.ENCODER_TICKS_PER_REVOLUTION;
+    double numberOfTurnsRight = encoderRightPos/Constants.ENCODER_TICKS_PER_REVOLUTION;
+
+    double leftHeight = numberOfTurnsLeft/Constants.turnsPerInch;
+    double RightHeight = numberOfTurnsRight/Constants.turnsPerInch;
+
+    return 0; //average them maybe?
   }
   
   public void Stop() {
