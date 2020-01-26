@@ -26,8 +26,8 @@ public class Elevator extends SubsystemBase {
   private static TalonSRX motor_Left_Pulley = new TalonSRX(Constants.motor_Left_Pulley_Port);
   private static VictorSPX motor_Right_Pulley = new VictorSPX(Constants.motor_Right_Pulley_Port);
 
-  private static Encoder encoder_Left_Leadscrew = new Encoder(Constants.encoder_Left_Leadscrew_Ports[0],Constants.encoder_Left_Leadscrew_Ports[1]);
-  private static Encoder encoder_Right_Leadscrew = new Encoder(Constants.encoder_Right_Leadscrew_Ports[0],Constants.encoder_Right_Leadscrew_Ports[1]);
+  // private static Encoder encoder_Left_Leadscrew = new Encoder(Constants.encoder_Left_Leadscrew_Ports[0],Constants.encoder_Left_Leadscrew_Ports[1]);
+  // private static Encoder encoder_Right_Leadscrew = new Encoder(Constants.encoder_Right_Leadscrew_Ports[0],Constants.encoder_Right_Leadscrew_Ports[1]);
 
   private static DigitalInput limit_Switch_Left_Leadscrew = new DigitalInput(Constants.limit_Switch_Left_Leadscrew_Port);
   private static DigitalInput limit_Switch_Right_Leadscrew = new DigitalInput(Constants.limit_Switch_Right_Leadscrew_Port);
@@ -95,12 +95,22 @@ public class Elevator extends SubsystemBase {
 
   //TODO get Angle function return degrees
   public double getAngle() { 
+    /**
+     * pusdo code
+     * angle = arctan(getHeight()/bottomLeg)
+     */
+
 
     return 0;
   }
   
   //TODO get Height function return inches
   public double getHeight(){
+    /**
+     * pusdo code 
+     * cant really do this until i know more specs of elevator from hardware
+     * return +- from level i think would be easiest for getAngle()
+     */
 
     return 0;
   }

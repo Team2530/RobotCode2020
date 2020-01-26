@@ -16,6 +16,7 @@ import frc.robot.Constants;
 import frc.robot.Constants.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
@@ -32,8 +33,15 @@ public class DriveTrain extends SubsystemBase {
   private static TalonSRX motor_Back_Right = new TalonSRX(Constants.motor_Back_Right_Port);
   private static VictorSPX motor_Front_Right = new VictorSPX(Constants.motor_Front_Right_Port);
   
-  private static Encoder encoder_Left = new Encoder(Constants.encoder_Left_Ports[0],Constants.encoder_Left_Ports[1]);
-  private static Encoder encoder_Right = new Encoder(Constants.encoder_Right_Ports[0],Constants.encoder_Right_Ports[1]);
+  // private static Encoder encoder_Left = new Encoder(Constants.encoder_Left_Ports[0],Constants.encoder_Left_Ports[1]);
+  // private static Encoder encoder_Right = new Encoder(Constants.encoder_Right_Ports[0],Constants.encoder_Right_Ports[1]);
+
+  // private static FeedbackDevice encoder_Left = new FeedbackDevice(FeedbackDevice.QuadEncoder);
+  // encoder_Left = (FeedbackDevice.QuadEncoder);
+  // encoder_Right = (FeedbackDevice.QuadEncoder);
+
+  // motor_Back_Left.setFeedbackDevice(encoder_Left);
+  // encoder_Left.configEncoderCodesPerRev(1024); //? idk magic number
 
   public static AHRS ahrs = new AHRS();//! NEED A PORT ID
   public DriveTrain() {
@@ -43,8 +51,8 @@ public class DriveTrain extends SubsystemBase {
 
   public void resetEncoders()
   {
-    encoder_Left.reset();
-    encoder_Right.reset();
+    // motor_Back_Right.setEncPosition(0);
+    // encoder_Right.reset();
   }
 
   public void setMotorPower(final DriveMotors id, final double speed) {
@@ -87,6 +95,13 @@ public class DriveTrain extends SubsystemBase {
     /* while(getGreatestEncoder()<encoderdistance){
       if()
     } */
+  }
+  public double getEncoder() {
+    // motor_Back_Left.configSelectedFeedbackSensor(FeedbackDevice.PulseWidthEncodedPosition, 0, 0);
+    // return motor_Back_Left.getSelectedSensorPosition(0);
+
+    System.out.println("Sensor Vel:" + motor_Back_Left.getSelectedSensorVelocity(1));
+    return motor_Back_Left.getSelectedSensorPosition(1);
   }
 
   @Override

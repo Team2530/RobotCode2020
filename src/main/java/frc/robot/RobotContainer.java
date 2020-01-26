@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DualLargeJoystickDrive;
+import frc.robot.commands.EncoderTest;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.LineUp;
 // import frc.robot.commands.SmallJoystickElevator;
@@ -45,6 +46,7 @@ public class RobotContainer {
   private final DualLargeJoystickDrive m_telopCommand = new DualLargeJoystickDrive(m_driveTrain, stick1, stick2);
   //private final XboxJoystickElevator elevatorCommand = new XboxJoystickElevator(elevatorSub, xbox);
   //private final SmallJoystickElevator elevatorCommand = new SmallJoystickElevator(elevatorSub, stick1);
+  // private final EncoderTest m_telopCommand = new EncoderTest(m_driveTrain);
   private final LineUp lineUp = new LineUp(m_driveTrain, limeLightSub, elevatorSub);
 
   /**
