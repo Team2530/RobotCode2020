@@ -75,7 +75,6 @@ public final class Constants {
     public static final int ENCODER_TICKS_PER_REVOLUTION = 1024; 
     public static final int gyroDrift = 5;
     // public static final double sensor_Limelight_Height = 10;//? mounting height in inches 
-    public static final int turnsPerInch = 4; //?idk check with hardware
 
     //----------Driving Constants----------\\
     public static final double GEAR_RATIO = 1; //?This ratio is the ratio between the encoder and the driven wheels
@@ -107,4 +106,7 @@ public final class Constants {
     public static final double maxHeight = 18.54717; //inches
     public static final double minAngle = -32; //degrees
     public static final double minHeight = -29.68168; //inches
+
+    public static final int turnsPerInch = 10; //?idk check with hardware assuming 1 start
+
 }
