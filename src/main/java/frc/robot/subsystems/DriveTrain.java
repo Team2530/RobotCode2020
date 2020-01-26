@@ -94,19 +94,19 @@ public class DriveTrain extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void rotateRight() { 
-    setMotorPower(DriveMotors.FR, -1);
-    setMotorPower(DriveMotors.BR, -1);
+  public void rotateRight(double speed) { 
+    setMotorPower(DriveMotors.FR, -speed);
+    setMotorPower(DriveMotors.BR, -speed);
 
-    setMotorPower(DriveMotors.FL, 1);
-    setMotorPower(DriveMotors.BL, 1);
+    setMotorPower(DriveMotors.FL, speed);
+    setMotorPower(DriveMotors.BL, speed);
   }
 
-  public void rotateLeft() {
-    setMotorPower(DriveMotors.FR, 1);
-    setMotorPower(DriveMotors.BR, 1);
+  public void rotateLeft(double speed) {
+    setMotorPower(DriveMotors.FR, speed);
+    setMotorPower(DriveMotors.BR, speed);
 
-    setMotorPower(DriveMotors.FL, -1);
-    setMotorPower(DriveMotors.BL, -1);
+    setMotorPower(DriveMotors.FL, -speed);
+    setMotorPower(DriveMotors.BL, -speed);
   }
 }
