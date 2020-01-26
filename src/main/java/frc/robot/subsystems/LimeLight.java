@@ -29,9 +29,13 @@ public class LimeLight extends SubsystemBase {
   @Override
   public void periodic() {
 
-    tx = Double.parseDouble(table.getEntry("tx").getValue().toString());
-    ty = Double.parseDouble(table.getEntry("ty").getValue().toString());
-    ta = Double.parseDouble(table.getEntry("ta").getValue().toString());
+    // tx = Double.parseDouble(table.getEntry("tx").getValue().toString());
+    // ty = Double.parseDouble(table.getEntry("ty").getValue().toString());
+    // ta = Double.parseDouble(table.getEntry("ta").getValue().toString());
+    
+    tx = table.getEntry("tx").getDouble(0.0);
+    ty = table.getEntry("ty").getDouble(0.0);
+    ta = table.getEntry("ta").getDouble(0.0);
     // This method will be called once per scheduler run
   }
 

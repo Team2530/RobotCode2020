@@ -45,16 +45,21 @@ public class LineUp extends CommandBase {
   public void execute() {
     double[] position = limeLight.getSphericalPosition(elevator.getAngle(), elevator.getLimeLightHeight());
     double correction = 0.2;
-    if(position[1] > 0){
+    if(position[1] > 0) {
       driveTrain.setMotorPower(DriveMotors.FL, -correction);
       driveTrain.setMotorPower(DriveMotors.BL, -correction);
       driveTrain.setMotorPower(DriveMotors.FR, correction);
       driveTrain.setMotorPower(DriveMotors.BR, correction);
-    } else {
+    } else if (position[1] < 0) {
       driveTrain.setMotorPower(DriveMotors.FL, correction);
       driveTrain.setMotorPower(DriveMotors.BL, correction);
       driveTrain.setMotorPower(DriveMotors.FR, -correction);
       driveTrain.setMotorPower(DriveMotors.BR, -correction);
+    } else {
+      driveTrain.setMotorPower(DriveMotors.FL, 0);
+      driveTrain.setMotorPower(DriveMotors.BL, 0);
+      driveTrain.setMotorPower(DriveMotors.FR, 0);
+      driveTrain.setMotorPower(DriveMotors.BR, 0);
     }
   }
 

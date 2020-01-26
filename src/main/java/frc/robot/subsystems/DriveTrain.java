@@ -26,12 +26,10 @@ public class DriveTrain extends SubsystemBase {
   /**
    * Creates a new DriveTrain.
    */
-  //private final Encoder m_encoder;
-
-  private static VictorSPX motor_Front_Left = new VictorSPX(Constants.motor_Front_Left_Port);
-  private static TalonSRX motor_Back_Left = new TalonSRX(Constants.motor_Back_Left_Port);
-  private static TalonSRX motor_Back_Right = new TalonSRX(Constants.motor_Back_Right_Port);
-  private static VictorSPX motor_Front_Right = new VictorSPX(Constants.motor_Front_Right_Port);
+  private static TalonSRX motor_Front_Left = new TalonSRX(Constants.motor_Front_Left_Port);
+  private static VictorSPX motor_Back_Left = new VictorSPX(Constants.motor_Back_Left_Port);
+  private static VictorSPX motor_Back_Right = new VictorSPX(Constants.motor_Back_Right_Port);
+  private static TalonSRX motor_Front_Right = new TalonSRX(Constants.motor_Front_Right_Port);
   
   // private static Encoder encoder_Left = new Encoder(Constants.encoder_Left_Ports[0],Constants.encoder_Left_Ports[1]);
   // private static Encoder encoder_Right = new Encoder(Constants.encoder_Right_Ports[0],Constants.encoder_Right_Ports[1]);
@@ -45,8 +43,10 @@ public class DriveTrain extends SubsystemBase {
 
   public static AHRS ahrs = new AHRS();//! NEED A PORT ID
   public DriveTrain() {
-    motor_Back_Right.setInverted(true);
-    motor_Front_Right.setInverted(true);
+    motor_Back_Right.setInverted(false);
+    motor_Front_Right.setInverted(false);
+    motor_Back_Left.setInverted(true);
+    motor_Front_Left.setInverted(true);
   }
 
   public void resetEncoders()
