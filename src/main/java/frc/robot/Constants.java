@@ -98,6 +98,8 @@ public final class Constants {
     public static final int SHOOTER_WHEEL_RADIUS = 6;
     public static final double eff = 0.8;//?effective efficiency percentage
     public static final int MAX_DISTANCE = 100;
+    public static final double distanceTolerance = 3; //inches
+    public static final double angleTolerance = 1; //degrees
 
     //----------Control (Elevator) Constants----------\\
     //measurements based around shooter being level  

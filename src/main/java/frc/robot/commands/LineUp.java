@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LimeLight;
+import frc.robot.Constants;
 import frc.robot.Constants.DriveMotors;
 
 public class LineUp extends CommandBase {
@@ -44,22 +45,46 @@ public class LineUp extends CommandBase {
   @Override
   public void execute() {
     double[] position = limeLight.getSphericalPosition(elevator.getAngle(), elevator.getLimeLightHeight());
-    double correction = 0.2;
-    if(position[1] > 0) {
+    double correction = 0.2; //not fast so nothing breaks
+
+    if(position[1] > 0 + Constants.angleTolerance) { //turn right, but its turning left? but it works
+
       driveTrain.setMotorPower(DriveMotors.FL, -correction);
       driveTrain.setMotorPower(DriveMotors.BL, -correction);
       driveTrain.setMotorPower(DriveMotors.FR, correction);
       driveTrain.setMotorPower(DriveMotors.BR, correction);
-    } else if (position[1] < 0) {
+
+    } else if (position[1] < 0 - Constants.angleTolerance) { //turn left, but its turning right? but it works
+
       driveTrain.setMotorPower(DriveMotors.FL, correction);
       driveTrain.setMotorPower(DriveMotors.BL, correction);
       driveTrain.setMotorPower(DriveMotors.FR, -correction);
       driveTrain.setMotorPower(DriveMotors.BR, -correction);
-    } else {
-      driveTrain.setMotorPower(DriveMotors.FL, 0);
-      driveTrain.setMotorPower(DriveMotors.BL, 0);
-      driveTrain.setMotorPower(DriveMotors.FR, 0);
-      driveTrain.setMotorPower(DriveMotors.BR, 0);
+
+    } else { //correct spot in regards to x angle
+
+      if(position[0] > 72 + Constants.distanceTolerance) { //go forward
+
+        driveTrain.setMotorPower(DriveMotors.FL, correction);
+        driveTrain.setMotorPower(DriveMotors.BL, correction);
+        driveTrain.setMotorPower(DriveMotors.FR, correction);
+        driveTrain.setMotorPower(DriveMotors.BR, correction);
+
+      } else if(position[0] < 72 - Constants.distanceTolerance) { //go backward
+
+        driveTrain.setMotorPower(DriveMotors.FL, -correction);
+        driveTrain.setMotorPower(DriveMotors.BL, -correction);
+        driveTrain.setMotorPower(DriveMotors.FR, -correction);
+        driveTrain.setMotorPower(DriveMotors.BR, -correction);
+
+      } else { //dont move, correct spot
+
+        driveTrain.setMotorPower(DriveMotors.FL, 0);
+        driveTrain.setMotorPower(DriveMotors.BL, 0);
+        driveTrain.setMotorPower(DriveMotors.FR, 0);
+        driveTrain.setMotorPower(DriveMotors.BR, 0);
+
+      }
     }
   }
 
