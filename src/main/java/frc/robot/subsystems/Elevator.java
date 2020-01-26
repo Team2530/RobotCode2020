@@ -108,7 +108,7 @@ public class Elevator extends SubsystemBase {
   }
   
   //TODO get Height function return inches
-  public double getHeight(){
+  public double getHeight() {
     /**
      * pusdo code 
      * cant really do this until i know more specs of elevator from hardware
@@ -133,7 +133,7 @@ public class Elevator extends SubsystemBase {
     double numberOfTurnsRight = encoderRightPos/Constants.ENCODER_TICKS_PER_REVOLUTION;
 
     double leftHeight = numberOfTurnsLeft/Constants.turnsPerInch;
-    double RightHeight = numberOfTurnsRight/Constants.turnsPerInch;
+    double RightHeight = numberOfTurnsRight/Constants.turnsPerInch; //they should be almost the same
 
     return 0; //average them maybe?
   }
