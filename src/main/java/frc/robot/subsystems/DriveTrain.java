@@ -40,8 +40,7 @@ public class DriveTrain extends SubsystemBase {
 
   // motor_Back_Left.setFeedbackDevice(encoder_Left);
   // encoder_Left.configEncoderCodesPerRev(1024); //? idk magic number
-
-  public static AHRS ahrs = new AHRS();//! NEED A PORT ID
+  
   public DriveTrain() {
     motor_Back_Right.setInverted(false);
     motor_Front_Right.setInverted(false);
