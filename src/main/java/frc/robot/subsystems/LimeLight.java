@@ -58,6 +58,7 @@ public class LimeLight extends SubsystemBase {
     if (limelightDriveCamOn == true) {
       table.getEntry("camMode").setNumber(0);
     } else {
+      table.getEntry("pipeline").setNumber(1);
       table.getEntry("camMode").setNumber(1);
     }
   }
