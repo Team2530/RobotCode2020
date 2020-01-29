@@ -21,9 +21,12 @@ public class LimeLight extends SubsystemBase {
   double ty;
   double ta;
   NetworkTable table;
+  boolean limelightDriveCamOn = true;
+  
 
   public LimeLight() {
     table = NetworkTableInstance.getDefault().getTable("limelight");
+    table.getEntry("camMode").setNumber(1);
   }
 
   @Override
@@ -39,16 +42,23 @@ public class LimeLight extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public double[] getSphericalPosition(double angle, double height) {
-    double[] position = { (Constants.target_Height - height) / (Math.tan(angle + ty)), tx,
-        ty };
+  public double[] getSphericalPosition(final double angle, final double height) {
+    final double[] position = { (Constants.target_Height - height) / (Math.tan(angle + ty)), tx, ty };
     return position;
   }
 
-  public double[] getCartesianPosition(double angle, double height) {
-    double[] Sposition = getSphericalPosition(angle, height);
-    double[] position = { Sposition[0] * Math.cos(Sposition[1]) * Math.sin(Sposition[2]),
+  public double[] getCartesianPosition(final double angle, final double height) {
+    final double[] Sposition = getSphericalPosition(angle, height);
+    final double[] position = { Sposition[0] * Math.cos(Sposition[1]) * Math.sin(Sposition[2]),
         Sposition[0] * Math.sin(Sposition[1]) * Math.sin(Sposition[2]), Sposition[0] * Math.cos(Sposition[2]) };
     return position;
+  }
+
+  public void switchCamera() {
+    if (limelightDriveCamOn == true) {
+      table.getEntry("camMode").setNumber(0);
+    } else {
+      table.getEntry("camMode").setNumber(1);
+    }
   }
 }

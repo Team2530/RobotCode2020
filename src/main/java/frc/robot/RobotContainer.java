@@ -14,6 +14,7 @@ import frc.robot.commands.DualLargeJoystickDrive;
 import frc.robot.commands.EncoderTest;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.LineUp;
+import frc.robot.commands.ToggleCamera;
 // import frc.robot.commands.SmallJoystickElevator;
 // import frc.robot.commands.XboxJoystickElevator;
 import frc.robot.subsystems.DriveTrain;
@@ -39,6 +40,7 @@ public class RobotContainer {
   final Joystick stick1 = new Joystick(1); // Creates a joystick on port 1
   final Joystick stick2 = new Joystick(2); // Creates a joystick on port 1
   private final JoystickButton Button1 = new JoystickButton(stick1, 1); // Creates a new JoystickButton object for button 1 on stick
+  private final JoystickButton Button2 = new JoystickButton(stick1, 2);
 
   final XboxController xbox = new XboxController(0);
 
@@ -48,6 +50,7 @@ public class RobotContainer {
   //private final SmallJoystickElevator elevatorCommand = new SmallJoystickElevator(elevatorSub, stick1);
   // private final EncoderTest m_telopCommand = new EncoderTest(m_driveTrain);
   private final LineUp lineUp = new LineUp(m_driveTrain, limeLightSub, elevatorSub);
+  private final ToggleCamera toggleCamera = new ToggleCamera(limeLightSub);
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -66,6 +69,7 @@ public class RobotContainer {
   private void configureButtonBindings() {
     Button1.whileHeld(lineUp);
     Button1.whenReleased(m_telopCommand);
+    Button2.whenPressed(toggleCamera);
   }
 
   /**
