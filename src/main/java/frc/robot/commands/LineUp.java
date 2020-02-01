@@ -46,6 +46,7 @@ public class LineUp extends CommandBase {
     double[] position = limeLight.getSphericalPosition(elevator.getAngle(), elevator.getLimeLightHeight());
     double power = position[1];
     if(position[1] > 0) {
+>>>>>>> ballSensor
       driveTrain.setMotorPower(DriveMotors.FL, -power);
       driveTrain.setMotorPower(DriveMotors.BL, -power);
       driveTrain.setMotorPower(DriveMotors.FR, power);
