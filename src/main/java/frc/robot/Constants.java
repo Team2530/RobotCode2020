@@ -80,6 +80,7 @@ public final class Constants {
     //----------Driving Constants----------\\
     public static final double GEAR_RATIO = 1; //?This ratio is the ratio between the encoder and the driven wheels
     public static final double WHEEL_RADIUS = 6; //!Not diameter radius
+    public static final double ALIGN = 0.025;
     
     public static final int kP = 1;
     public static final int kI = 0;

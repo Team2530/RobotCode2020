@@ -8,6 +8,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 // import edu.wpi.first.wpilibj.SPI.Port;
 // import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -30,18 +32,26 @@ public class DriveTrain extends SubsystemBase {
   private static VictorSPX motor_Back_Left = new VictorSPX(Constants.motor_Back_Left_Port);
   private static VictorSPX motor_Back_Right = new VictorSPX(Constants.motor_Back_Right_Port);
   private static TalonSRX motor_Front_Right = new TalonSRX(Constants.motor_Front_Right_Port);
-  
-  // private static Encoder encoder_Left = new Encoder(Constants.encoder_Left_Ports[0],Constants.encoder_Left_Ports[1]);
-  // private static Encoder encoder_Right = new Encoder(Constants.encoder_Right_Ports[0],Constants.encoder_Right_Ports[1]);
 
-  // private static FeedbackDevice encoder_Left = new FeedbackDevice(FeedbackDevice.QuadEncoder);
+  double P,I,D=1;
+  double integral,derivative, previous_error, setpoint,error = 0;
+  DifferentialDrive robotDrive;
+  //PIDController
+  // private static Encoder encoder_Left = new
+  // Encoder(Constants.encoder_Left_Ports[0],Constants.encoder_Left_Ports[1]);
+  // private static Encoder encoder_Right = new
+  // Encoder(Constants.encoder_Right_Ports[0],Constants.encoder_Right_Ports[1]);
+
+  // private static FeedbackDevice encoder_Left = new
+  // FeedbackDevice(FeedbackDevice.QuadEncoder);
   // encoder_Left = (FeedbackDevice.QuadEncoder);
   // encoder_Right = (FeedbackDevice.QuadEncoder);
 
   // motor_Back_Left.setFeedbackDevice(encoder_Left);
   // encoder_Left.configEncoderCodesPerRev(1024); //? idk magic number
 
-  public static AHRS ahrs = new AHRS();//! NEED A PORT ID
+  public static AHRS ahrs = new AHRS();// ! NEED A PORT ID
+
   public DriveTrain() {
     motor_Back_Right.setInverted(false);
     motor_Front_Right.setInverted(false);
@@ -49,55 +59,66 @@ public class DriveTrain extends SubsystemBase {
     motor_Front_Left.setInverted(true);
   }
 
-  public void resetEncoders()
-  {
+  public void setSetpoint(int setpoint) {
+    this.setpoint = setpoint;
+  }
+  public void tPID(){
+    error = setpoint - ahrs.getAngle();
+    this.integral += (error*.02);
+    derivative = (error - this.previous_error)/.02;
+    this
+  }
+  public void resetEncoders() {
     // motor_Back_Right.setEncPosition(0);
     // encoder_Right.reset();
   }
 
   public void setMotorPower(final DriveMotors id, final double speed) {
-    switch (id){// TODO THESE ARE ARBITRARY
-      case FL:
-        motor_Front_Left.set(ControlMode.PercentOutput, speed);
-        return;
-      case BR:
-        motor_Back_Right.set(ControlMode.PercentOutput, speed);
-        return;
-      case BL:
-        motor_Back_Left.set(ControlMode.PercentOutput, speed);
-        return;
-      case FR:
-        motor_Front_Right.set(ControlMode.PercentOutput, speed);
-        return;
-      default:
-        return;
+    switch (id) {// TODO THESE ARE ARBITRARY
+    case FL:
+      motor_Front_Left.set(ControlMode.PercentOutput, speed);
+      return;
+    case BR:
+      motor_Back_Right.set(ControlMode.PercentOutput, speed);
+      return;
+    case BL:
+      motor_Back_Left.set(ControlMode.PercentOutput, speed);
+      return;
+    case FR:
+      motor_Front_Right.set(ControlMode.PercentOutput, speed);
+      return;
+    default:
+      return;
     }
   }
-  
-  public void Stop() 
-  {
+
+  public void Stop() {
     for (final DriveMotors motor : DriveMotors.values()) {
       setMotorPower(motor, 0);
     }
   }
 
-  //TODO:complete drive for Distance
-  public void driveDistance(double distance, double power)//Distance is inches and set power to negative to go backwards
+  // TODO:complete drive for Distance
+  public void driveDistance(double distance, double power)// Distance is inches and set power to negative to go
+                                                          // backwards
   {
-    double encoderdistance = Constants.ENCODER_TICKS_PER_REVOLUTION*Math.PI*Math.pow(Constants.WHEEL_RADIUS, 2)*distance; 
+    double encoderdistance = Constants.ENCODER_TICKS_PER_REVOLUTION * Math.PI * Math.pow(Constants.WHEEL_RADIUS, 2)
+        * distance;
 
     resetEncoders();
-    //starts all motors at starting speed
+    // starts all motors at starting speed
     for (final DriveMotors motor : DriveMotors.values()) {
       setMotorPower(motor, power);
     }
 
-    /* while(getGreatestEncoder()<encoderdistance){
-      if()
-    } */
+    /*
+     * while(getGreatestEncoder()<encoderdistance){ if() }
+     */
   }
+
   public double getEncoder() {
-    // motor_Back_Left.configSelectedFeedbackSensor(FeedbackDevice.PulseWidthEncodedPosition, 0, 0);
+    // motor_Back_Left.configSelectedFeedbackSensor(FeedbackDevice.PulseWidthEncodedPosition,
+    // 0, 0);
     // return motor_Back_Left.getSelectedSensorPosition(0);
 
     System.out.println("Sensor Vel:" + motor_Back_Left.getSelectedSensorVelocity(1));
@@ -109,7 +130,7 @@ public class DriveTrain extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void rotateRight(double speed) { 
+  public void rotateRight(double speed) {
     setMotorPower(DriveMotors.FR, -speed);
     setMotorPower(DriveMotors.BR, -speed);
 
