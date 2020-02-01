@@ -84,7 +84,4 @@ public class Pixy extends SubsystemBase {
      * shooter //stuff using above variables }
      */
   }
-  public int getBallX() {
-    return ballX;
-  }
 }

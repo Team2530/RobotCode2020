@@ -14,7 +14,6 @@ import frc.robot.commands.DualLargeJoystickDrive;
 import frc.robot.commands.EncoderTest;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.LineUp;
-import frc.robot.commands.LocateBall;
 import frc.robot.commands.TestPixy;
 import frc.robot.commands.ToggleLimeLightLED;
 import frc.robot.commands.TurnToAngle;
@@ -25,7 +24,6 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Pixy;
-import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -43,17 +41,10 @@ public class RobotContainer {
   private final Elevator elevatorSub = new Elevator();
   private final LimeLight limeLightSub = new LimeLight();
   private final Pixy m_pixy = new Pixy();
-  private final Shooter m_shooter = new Shooter();
-  
 
   final Joystick stick1 = new Joystick(1); // Creates a joystick on port 1
   final Joystick stick2 = new Joystick(2); // Creates a joystick on port 1
   private final JoystickButton Button1 = new JoystickButton(stick1, 1); // Creates a new JoystickButton object for
-  private final JoystickButton Button3 = new JoystickButton(stick1, 3);
-  private final JoystickButton Button4 = new JoystickButton(stick1, 4);
-<<<<<<< HEAD
-
-
                                                                         // button 1 on stick
   private final JoystickButton Button3 = new JoystickButton(stick1, 3);
   private final JoystickButton Button4 = new JoystickButton(stick1, 4);
@@ -69,7 +60,6 @@ public class RobotContainer {
   private final LineUp lineUp = new LineUp(m_driveTrain, limeLightSub, elevatorSub);
   private final TestPixy pixy = new TestPixy(m_pixy);
   private final ToggleLimeLightLED toggleLED = new ToggleLimeLightLED(limeLightSub);
-  private final LocateBall locateBall = new LocateBall(m_pixy, m_driveTrain, m_shooter);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -89,11 +79,7 @@ public class RobotContainer {
     Button1.whileHeld(lineUp);
     Button1.whenReleased(m_telopCommand);
     Button3.whenPressed(toggleLED);
-<<<<<<< HEAD
-    Button4.whenPressed(locateBall);
-=======
     Button4.whenPressed(new TurnToAngle(45, m_driveTrain));
->>>>>>> ballSensor
   }
 
   /**

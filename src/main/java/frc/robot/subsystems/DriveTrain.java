@@ -81,24 +81,10 @@ public class DriveTrain extends PIDSubsystem {
   public void setSetpoint(int setpoint) {
     this.setpoint = setpoint;
   }
-<<<<<<< HEAD
-  public void tPID(){
-    error = setpoint - ahrs.getAngle();
-    this.integral += (error*.02);
-    derivative = (error - this.previous_error)/.02;
-    //this
-  }
-=======
 
->>>>>>> ballSensor
   public void resetEncoders() {
-<<<<<<< HEAD
     motor_Front_Left.getSensorCollection().setQuadraturePosition(0, 10);;
     motor_Front_Right.getSensorCollection().setQuadraturePosition(0, 10);;
-=======
-    motor_Front_Left.setSelectedSensorPosition(0,0,10);
-    motor_Front_Right.setSelectedSensorPosition(0,0,10);
->>>>>>> ballSensor
     // motor_Back_Right.setEncPosition(0);
     // encoder_Right.reset();
   }
