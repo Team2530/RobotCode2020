@@ -44,7 +44,7 @@ public class LineUp extends CommandBase {
   @Override
   public void execute() {
     double[] position = limeLight.getSphericalPosition(elevator.getAngle(), elevator.getLimeLightHeight());
-    double power = 2-1/Math.po;
+    double power = position[1];
     if(position[1] > 0) {
       driveTrain.setMotorPower(DriveMotors.FL, -power);
       driveTrain.setMotorPower(DriveMotors.BL, -power);

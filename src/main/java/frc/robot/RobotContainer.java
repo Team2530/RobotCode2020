@@ -16,6 +16,7 @@ import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.LineUp;
 import frc.robot.commands.TestPixy;
 import frc.robot.commands.ToggleLimeLightLED;
+import frc.robot.commands.TurnToAngle;
 // import frc.robot.commands.SmallJoystickElevator;
 // import frc.robot.commands.XboxJoystickElevator;
 import frc.robot.subsystems.DriveTrain;
@@ -46,6 +47,7 @@ public class RobotContainer {
   private final JoystickButton Button1 = new JoystickButton(stick1, 1); // Creates a new JoystickButton object for
                                                                         // button 1 on stick
   private final JoystickButton Button3 = new JoystickButton(stick1, 3);
+  private final JoystickButton Button4 = new JoystickButton(stick1, 4);
   final XboxController xbox = new XboxController(0);
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -77,6 +79,7 @@ public class RobotContainer {
     Button1.whileHeld(lineUp);
     Button1.whenReleased(m_telopCommand);
     Button3.whenPressed(toggleLED);
+    Button4.whenPressed(new TurnToAngle(45, m_driveTrain));
   }
 
   /**
