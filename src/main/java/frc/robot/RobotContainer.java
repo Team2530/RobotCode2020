@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.DualLargeJoystickDrive;
 import frc.robot.commands.EncoderTest;
 import frc.robot.commands.ExampleCommand;
+import frc.robot.commands.LargeJoystickDrive;
 import frc.robot.commands.LineUp;
 import frc.robot.commands.TestPixy;
 import frc.robot.commands.ToggleLimeLightLED;
@@ -51,7 +52,7 @@ public class RobotContainer {
   final XboxController xbox = new XboxController(0);
 
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  private final DualLargeJoystickDrive m_telopCommand = new DualLargeJoystickDrive(m_driveTrain, stick1, stick2);
+  
   // private final XboxJoystickElevator elevatorCommand = new
   // XboxJoystickElevator(elevatorSub, xbox);
   // private final SmallJoystickElevator elevatorCommand = new
@@ -77,9 +78,9 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     Button1.whileHeld(lineUp);
-    Button1.whenReleased(m_telopCommand);
+    Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
     Button3.whenPressed(toggleLED);
-    Button4.whenPressed(new TurnToAngle(45, m_driveTrain));
+    Button4.whenPressed(new TurnToAngle(30, m_driveTrain));
   }
 
   /**
@@ -89,11 +90,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return new TurnToAngle(30, m_driveTrain);
   }
 
   public Command getTelopCommand() {
-    return m_telopCommand;
+    return new LargeJoystickDrive(m_driveTrain, stick1);
   }
 
 }

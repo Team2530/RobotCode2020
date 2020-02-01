@@ -82,9 +82,9 @@ public final class Constants {
     public static final double WHEEL_RADIUS = 6; //!Not diameter radius
     public static final double ALIGN = 0.025;
     
-    public static final double kP = 1;
-    public static final double kI = 0;
-    public static final double kD = 0;
+    public static final double kP = .6;
+    public static final double kI = 1.2;
+    public static final double kD = 3;
     public static final double tol = 5;
     public static final int setPoint = 1;
 

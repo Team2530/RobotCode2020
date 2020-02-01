@@ -8,6 +8,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -23,6 +24,8 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
 public class DriveTrain extends PIDSubsystem {
@@ -30,23 +33,25 @@ public class DriveTrain extends PIDSubsystem {
   /**
    * Creates a new DriveTrain.
    */
-  private static TalonSRX motor_Front_Left = new TalonSRX(Constants.motor_Front_Left_Port);
+  private static WPI_TalonSRX motor_Front_Left = new WPI_TalonSRX(Constants.motor_Front_Left_Port);
   
-  private static VictorSPX motor_Back_Left = new VictorSPX(Constants.motor_Back_Left_Port);
+  private static WPI_VictorSPX motor_Back_Left = new WPI_VictorSPX(Constants.motor_Back_Left_Port);
 
 
-  private static VictorSPX motor_Back_Right = new VictorSPX(Constants.motor_Back_Right_Port);
-  private static TalonSRX motor_Front_Right = new TalonSRX(Constants.motor_Front_Right_Port);
+  private static WPI_VictorSPX motor_Back_Right = new WPI_VictorSPX(Constants.motor_Back_Right_Port);
+  private static WPI_TalonSRX motor_Front_Right = new WPI_TalonSRX(Constants.motor_Front_Right_Port);
 
-  public static double encoder_Left;
-  public static double encoder_Right;
+  private static double encoder_Left;
+  private static double encoder_Right;
 
-  //public static SpeedControllerGroup drive_left = new SpeedControllerGroup(motor_Front_Left, motor_Back_Left);
-  //new SpeedControllerGroup()
+  private static SpeedControllerGroup drive_left = new SpeedControllerGroup(motor_Front_Left, motor_Back_Left);
+  private static SpeedControllerGroup drive_right = new SpeedControllerGroup(motor_Front_Right, motor_Back_Right);
+  private static DifferentialDrive robotDrive = new DifferentialDrive(drive_left, drive_right);
+
 
   double P, I, D = 1;
   double integral, derivative, previous_error, setpoint, error = 0;
-  DifferentialDrive robotDrive;
+  
   // PIDController
   // private static Encoder encoder_Left = new
   // Encoder(Constants.encoder_Left_Ports[0],Constants.encoder_Left_Ports[1]);
@@ -70,10 +75,8 @@ public class DriveTrain extends PIDSubsystem {
     //encoder_Left.setDistancePerPulse(Constants.ENCODER_TICKS_PER_REVOLUTION);
     //encoder_Right.setDistancePerPulse(Constants.ENCODER_TICKS_PER_REVOLUTION);
     setSetpoint(Constants.setPoint);
-    motor_Back_Right.setInverted(false);
-    motor_Front_Right.setInverted(false);
-    motor_Back_Left.setInverted(true);
-    motor_Front_Left.setInverted(true);
+    drive_right.setInverted(false);
+    drive_left.setInverted(true);
     resetEncoders();
     ahrs.reset();
   }
@@ -147,24 +150,9 @@ public class DriveTrain extends PIDSubsystem {
     // This method will be called once per scheduler run
   }
 
-  public void rotateRight(double speed) {
-    setMotorPower(DriveMotors.FR, -speed);
-    setMotorPower(DriveMotors.BR, -speed);
-
-    setMotorPower(DriveMotors.FL, speed);
-    setMotorPower(DriveMotors.BL, speed);
-  }
-
-  public void rotateLeft(double speed) {
-    setMotorPower(DriveMotors.FR, speed);
-    setMotorPower(DriveMotors.BR, speed);
-
-    setMotorPower(DriveMotors.FL, speed);
-    setMotorPower(DriveMotors.BL, speed);
-  }
-  public void setPower(double output,double setpoint){
+  public void setPower(double output){
     //robotDrive.
-    useOutput(output, setpoint);
+    robotDrive.tankDrive(output, output);
   }
   @Override
   protected void useOutput(double output, double setpoint) {
@@ -182,5 +170,9 @@ public class DriveTrain extends PIDSubsystem {
   }
   public double getHeading(){
     return ahrs.getAngle();
+  }
+  public void arcadeDrive(double zRotation,double xSpeed){
+    robotDrive.arcadeDrive(-xSpeed, zRotation);
+
   }
 }
