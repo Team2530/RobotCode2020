@@ -66,7 +66,7 @@ public class DriveTrain extends PIDSubsystem {
   // motor_Back_Left.setFeedbackDevice(encoder_Left);
   // encoder_Left.configEncoderCodesPerRev(1024); //? idk magic number
 
-  public static AHRS ahrs = new AHRS();// ! NEED A PORT ID
+  public static AHRS ahrs = new AHRS();
   public static PIDController pid = new PIDController(Constants.kP, Constants.kI, Constants.kD);
 
   public DriveTrain() {
@@ -173,6 +173,7 @@ public class DriveTrain extends PIDSubsystem {
   }
   public void arcadeDrive(double zRotation,double xSpeed){
     robotDrive.arcadeDrive(-xSpeed, zRotation);
+    robotDrive.setSafetyEnabled(false);
 
   }
 }
