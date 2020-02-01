@@ -82,9 +82,11 @@ public final class Constants {
     public static final double WHEEL_RADIUS = 6; //!Not diameter radius
     public static final double ALIGN = 0.025;
     
-    public static final int kP = 1;
-    public static final int kI = 0;
-    public static final int kD = 0;
+    public static final double kP = 1;
+    public static final double kI = 0;
+    public static final double kD = 0;
+    public static final double tol = 5;
+    public static final int setPoint = 1;
 
     //----------Field Constants----------\\
     public static final int target_Height = 62; //temp test value
