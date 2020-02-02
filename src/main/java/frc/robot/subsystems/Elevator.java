@@ -101,7 +101,7 @@ public class Elevator extends SubsystemBase {
      */
 
 
-    return 0;
+    return 40; //temp
   }
   
   //TODO get Height function return inches
@@ -118,7 +118,7 @@ public class Elevator extends SubsystemBase {
   //TODO get limelight height return degrees
   public double getLimeLightHeight(){
 
-    return 24.5; //temp test value
+    return Constants.sensor_Limelight_Height; //temp test value
   }
   
   public void Stop() {
