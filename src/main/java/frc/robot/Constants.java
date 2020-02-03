@@ -79,10 +79,12 @@ public final class Constants {
 
     //----------Driving Constants----------\\
     public static final double GEAR_RATIO = 1; //?This ratio is the ratio between the encoder and the driven wheels
-    public static final double WHEEL_RADIUS = 6; //!Not diameter radius
+    public static final double WHEEL_RADIUS = 6*2.54; //!Not diameter radius
     public static final double DISTANCE_PER_PULSE = Constants.ENCODER_TICKS_PER_REVOLUTION * Math.PI * Math.pow(Constants.WHEEL_RADIUS, 2);
-    public static final double ALIGN = 0.025;
-    public static final double WHEEL_DISTANCE = 22;
+    //public static final double ALIGN = 0.025;
+    public static final double WHEEL_DISTANCE = 22*2.54;//was in inches
+    public static final double MAX_DRIVE_SPEED = 10;//Need this in m/s
+    public static final double MAX_ANGULAR_SPEED = 0.5;//Need this in rad/s
     
     public static final double kP = .6;
     public static final double kI = 1.2;
@@ -91,7 +93,7 @@ public final class Constants {
     public static final int setPoint = 1;
 
     //----------Field Constants----------\\
-    public static final int target_Height = 105; //temp test value
+    public static final double target_Height = 105*2.54; //temp test value
     public static final double ball_Weight = 0.3125;
 
     
@@ -100,18 +102,18 @@ public final class Constants {
 
     //----------Control (Shooting) Constants----------\\
     public static final float I = 1;//?moment of inertia
-    public static final int SHOOTER_WHEEL_RADIUS = 6;
+    public static final double SHOOTER_WHEEL_RADIUS = 6*2.54;
     public static final double eff = 0.8;//?effective efficiency percentage
-    public static final int MAX_DISTANCE = 100;
-    public static final double distanceTolerance = 3; //inches
+    public static final int MAX_DISTANCE = 254;//cm
+    public static final double distanceTolerance = 10; //cm
     public static final double angleTolerance = 10; //degrees
 
     //----------Control (Elevator) Constants----------\\
     //measurements based around shooter being level  
     //!these are all wrong, hardware didnt know anything
-    public static final double bottomLeg = 29.68168; //inches
+    public static final double bottomLeg = 29.68168*2.54; //cm
     public static final double maxAngle = 45; //degrees (45, 45, 90 triangle)
-    public static final double maxHeight = 18.54717; //inches
+    public static final double maxHeight = 18.54717*2.54; //cm
     public static final double minAngle = -32; //degrees
-    public static final double minHeight = -29.68168; //inches
+    public static final double minHeight = -29.68168*2.54; //cm
 }

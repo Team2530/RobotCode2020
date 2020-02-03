@@ -18,14 +18,9 @@ public class LargeJoystickDrive extends CommandBase {
    */
   private DriveTrain m_driveTrain;
 
-  Joystick stick1;
+  Joystick stick;
 
-  double y1;
-  double y2;
-  double z1;
-
-  double leftPow;
-  double rightPow;
+  
 
   /**
    * Creates a new Command.
@@ -33,12 +28,12 @@ public class LargeJoystickDrive extends CommandBase {
    * @param drivetrain The subsystem used by this command.
    */
 
-  public LargeJoystickDrive(DriveTrain driveTrain, Joystick stick1) {
+  public LargeJoystickDrive(DriveTrain driveTrain, Joystick stick) {
     m_driveTrain = driveTrain;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
 
-    this.stick1 = stick1;
+    this.stick = stick;
   }
 
   // Called when the command is initially scheduled.
@@ -50,9 +45,9 @@ public class LargeJoystickDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("joyy:", stick1.getY());
-    SmartDashboard.putNumber("joyz:",  stick1.getZ());
-    m_driveTrain.arcadeDrive(stick1.getY(),stick1.getZ());
+    SmartDashboard.putNumber("joyy:", stick.getY());
+    SmartDashboard.putNumber("joyz:",  stick.getZ());
+    m_driveTrain.arcadeDrive(stick.getY(),stick.getZ());
   }
 
   // Called once the command ends or is interrupted.

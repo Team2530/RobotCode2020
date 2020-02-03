@@ -59,7 +59,8 @@ public class DriveTrain extends SubsystemBase {
 
   private final DifferentialDriveOdometry m_odometry;
 
-  private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(Constants.motor_Front_Left_Port, Constants.motor_Front_Right_Port);
+  private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(Constants.motor_Front_Left_Port,
+      Constants.motor_Front_Right_Port);
 
   double P, I, D = 1;
   double integral, derivative, previous_error, setpoint, error = 0;
@@ -96,10 +97,8 @@ public class DriveTrain extends SubsystemBase {
     final double leftFeedforward = m_feedforward.calculate(speeds.leftMetersPerSecond);
     final double rightFeedforward = m_feedforward.calculate(speeds.rightMetersPerSecond);
 
-    final double leftOutput = m_leftPIDController.calculate(encoder_Left_Rate,
-        speeds.leftMetersPerSecond);
-    final double rightOutput = m_rightPIDController.calculate(encoder_Right_Rate,
-        speeds.rightMetersPerSecond);
+    final double leftOutput = m_leftPIDController.calculate(encoder_Left_Rate, speeds.leftMetersPerSecond);
+    final double rightOutput = m_rightPIDController.calculate(encoder_Right_Rate, speeds.rightMetersPerSecond);
     drive_left.setVoltage(leftOutput + leftFeedforward);
     drive_right.setVoltage(rightOutput + rightFeedforward);
   }
@@ -107,7 +106,7 @@ public class DriveTrain extends SubsystemBase {
   public void resetEncoders() {
     motor_Front_Left.getSensorCollection().setQuadraturePosition(0, 10);
     motor_Front_Right.getSensorCollection().setQuadraturePosition(0, 10);
-    
+
     // motor_Back_Right.setEncPosition(0);
     // encoder_Right.reset();
   }
@@ -135,32 +134,17 @@ public class DriveTrain extends SubsystemBase {
     robotDrive.stopMotor();
   }
 
-  // TODO:complete drive for Distance
-  /* public void driveDistance(double distance, double power)// Distance is inches and set power to negative to go //
-                                                          // backwards
-  {
-    double encoderdistance = Constants.ENCODER_TICKS_PER_REVOLUTION * Math.PI * Math.pow(Constants.WHEEL_RADIUS, 2)
-        * distance;
-
-    resetEncoders();
-    // starts all motors at starting speed
-    for (final DriveMotors motor : DriveMotors.values()) {
-      setMotorPower(motor, power);
-    } 
-
-  }*/
-
   public double getEncoder() {
     SmartDashboard.putNumber("Sensor Vel:", motor_Back_Left.getSelectedSensorVelocity(1));
     return motor_Back_Left.getSelectedSensorPosition(1);
   }
 
   public void periodic() {
-    encoder_Left = motor_Front_Left.getSelectedSensorPosition(1)/(Constants.DISTANCE_PER_PULSE);
-    encoder_Right = motor_Front_Right.getSelectedSensorPosition(1)/(Constants.DISTANCE_PER_PULSE);
-    encoder_Left_Rate = motor_Front_Left.getSelectedSensorVelocity(1)/(Constants.DISTANCE_PER_PULSE);
-    encoder_Right_Rate = motor_Front_Right.getSelectedSensorVelocity(1)/(Constants.DISTANCE_PER_PULSE);
-    
+    encoder_Left = motor_Front_Left.getSelectedSensorPosition(1) / (Constants.DISTANCE_PER_PULSE);
+    encoder_Right = motor_Front_Right.getSelectedSensorPosition(1) / (Constants.DISTANCE_PER_PULSE);
+    encoder_Left_Rate = motor_Front_Left.getSelectedSensorVelocity(1) / (Constants.DISTANCE_PER_PULSE);
+    encoder_Right_Rate = motor_Front_Right.getSelectedSensorVelocity(1) / (Constants.DISTANCE_PER_PULSE);
+
     SmartDashboard.putNumber("Encoder left:", encoder_Left);
     SmartDashboard.putNumber("Encoder right:", encoder_Right);
     SmartDashboard.putNumber("Angle", ahrs.getAngle());
@@ -175,6 +159,7 @@ public class DriveTrain extends SubsystemBase {
   public Rotation2d getHeading() {
     return Rotation2d.fromDegrees(-ahrs.getAngle());
   }
+
   public double getAngle() {
     return -ahrs.getAngle();
   }
@@ -183,10 +168,12 @@ public class DriveTrain extends SubsystemBase {
     robotDrive.arcadeDrive(-xSpeed, zRotation);
     robotDrive.setSafetyEnabled(false);
   }
+
   public void tankDrive(double leftSpeed, double rightSpeed) {
     robotDrive.tankDrive(leftSpeed, rightSpeed);
     robotDrive.setSafetyEnabled(false);
   }
+
   /**
    * Drives the robot with the given linear velocity and angular velocity.
    *
@@ -198,7 +185,30 @@ public class DriveTrain extends SubsystemBase {
     var wheelSpeeds = m_kinematics.toWheelSpeeds(new ChassisSpeeds(xSpeed, 0.0, rot));
     setSpeeds(wheelSpeeds);
   }
+
   public void updateOdometry() {
     m_odometry.update(getHeading(), encoder_Left, encoder_Right);
+  }
+
+  /**
+   * Drives the robot with the given linear velocity and angular velocity.
+   *
+   * @param power           Starting motor power in m/s.
+   * @param targetAngle     Target Angle in degrees.
+   * @param targetDistance  Target Distance in m
+   * @param currentAngle    Current Angle in degrees.
+   * @param currentDistance Current Distance in m
+   */
+  public void alignToTarget(double power, double targetAngle, double targetDistance, double currentAngle,
+      double currentDistance) {
+    if (currentDistance > targetDistance - Constants.distanceTolerance
+        || currentDistance < targetDistance + Constants.distanceTolerance
+        || currentAngle > targetAngle - Constants.angleTolerance
+        || currentAngle < targetAngle + Constants.angleTolerance) {
+      this.stop();
+    } else {
+      timedDrive(power*(currentDistance-targetDistance), position[0]);
+    }
+
   }
 }

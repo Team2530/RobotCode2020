@@ -54,17 +54,7 @@ public class LineUp extends CommandBase {
     SmartDashboard.putNumber("position[0]", position[0]);
     SmartDashboard.putNumber("position[1]", position[1]);
 
-    if (position[0] > 96 + Constants.distanceTolerance) { // go forward
-
-      driveTrain.timedDrive(power, position[0]);
-
-    } else if (position[0] < 96 - Constants.distanceTolerance) { // go backward
-      power *= -1;
-      driveTrain.timedDrive(power, position[0]);
-
-    } else { // dont move, correct spot
-      driveTrain.stop();
-    }
+    
   }
 
   // Called once the command ends or is interrupted.
