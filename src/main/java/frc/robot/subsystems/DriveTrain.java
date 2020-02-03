@@ -11,8 +11,11 @@ import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.PIDSubsystem;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // import edu.wpi.first.wpilibj.SPI.Port;
 // import edu.wpi.first.wpilibj.controller.PIDController;
 
@@ -30,9 +33,8 @@ public class DriveTrain extends SubsystemBase {
    * Creates a new DriveTrain.
    */
   private static WPI_TalonSRX motor_Front_Left = new WPI_TalonSRX(Constants.motor_Front_Left_Port);
-  
-  private static WPI_VictorSPX motor_Back_Left = new WPI_VictorSPX(Constants.motor_Back_Left_Port);
 
+  private static WPI_VictorSPX motor_Back_Left = new WPI_VictorSPX(Constants.motor_Back_Left_Port);
 
   private static WPI_VictorSPX motor_Back_Right = new WPI_VictorSPX(Constants.motor_Back_Right_Port);
   private static WPI_TalonSRX motor_Front_Right = new WPI_TalonSRX(Constants.motor_Front_Right_Port);
@@ -48,10 +50,13 @@ public class DriveTrain extends SubsystemBase {
 
   private static DifferentialDrive robotDrive = new DifferentialDrive(drive_left, drive_right);
 
+  private final DifferentialDriveKinematics m_kinematics = new DifferentialDriveKinematics(Constants.WHEEL_DISTANCE);
+
+  private final DifferentialDriveOdometry m_odometry;
 
   double P, I, D = 1;
   double integral, derivative, previous_error, setpoint, error = 0;
-  
+
   // PIDController
   // private static Encoder encoder_Left = new
   // Encoder(Constants.encoder_Left_Ports[0],Constants.encoder_Left_Ports[1]);
@@ -69,15 +74,16 @@ public class DriveTrain extends SubsystemBase {
   public static AHRS ahrs = new AHRS();
 
   public DriveTrain() {
+    resetEncoders();
+    ahrs.reset();
     m_leftPIDController.setTolerance(Constants.tol);
     m_rightPIDController.setTolerance(Constants.tol);
-    //encoder_Left.setDistancePerPulse(Constants.ENCODER_TICKS_PER_REVOLUTION);
-    //encoder_Right.setDistancePerPulse(Constants.ENCODER_TICKS_PER_REVOLUTION);
+    m_odometry = new DifferentialDriveOdometry(getHeading());
+    // encoder_Left.setDistancePerPulse(Constants.ENCODER_TICKS_PER_REVOLUTION);
+    // encoder_Right.setDistancePerPulse(Constants.ENCODER_TICKS_PER_REVOLUTION);
     setSetpoint(Constants.setPoint);
     drive_right.setInverted(false);
     drive_left.setInverted(true);
-    resetEncoders();
-    ahrs.reset();
   }
 
   public void setSetpoint(int setpoint) {
@@ -85,8 +91,10 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void resetEncoders() {
-    motor_Front_Left.getSensorCollection().setQuadraturePosition(0, 10);;
-    motor_Front_Right.getSensorCollection().setQuadraturePosition(0, 10);;
+    motor_Front_Left.getSensorCollection().setQuadraturePosition(0, 10);
+    ;
+    motor_Front_Right.getSensorCollection().setQuadraturePosition(0, 10);
+    ;
     // motor_Back_Right.setEncPosition(0);
     // encoder_Right.reset();
   }
@@ -115,8 +123,10 @@ public class DriveTrain extends SubsystemBase {
       setMotorPower(motor, 0);
     }
   }
+
   // TODO:complete drive for Distance
-  public void driveDistance(double distance, double power)// Distance is inches and set power to negative to go                                                       // backwards
+  public void driveDistance(double distance, double power)// Distance is inches and set power to negative to go //
+                                                          // backwards
   {
     double encoderdistance = Constants.ENCODER_TICKS_PER_REVOLUTION * Math.PI * Math.pow(Constants.WHEEL_RADIUS, 2)
         * distance;
@@ -131,6 +141,7 @@ public class DriveTrain extends SubsystemBase {
      * while(getGreatestEncoder()<encoderdistance){ if() }
      */
   }
+
   public double getEncoder() {
     // motor_Back_Left.configSelectedFeedbackSensor(FeedbackDevice.PulseWidthEncodedPosition,
     // 0, 0);
@@ -139,6 +150,7 @@ public class DriveTrain extends SubsystemBase {
     SmartDashboard.putNumber("Sensor Vel:", motor_Back_Left.getSelectedSensorVelocity(1));
     return motor_Back_Left.getSelectedSensorPosition(1);
   }
+
   public void periodic() {
     encoder_Left = motor_Front_Left.getSelectedSensorPosition(1);
     encoder_Right = motor_Front_Right.getSelectedSensorPosition(1);
@@ -148,14 +160,16 @@ public class DriveTrain extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void setPower(double output){
-    //robotDrive.
+  public void setPower(double output) {
+    // robotDrive.
     robotDrive.tankDrive(output, output);
   }
-  public double getHeading(){
-    return ahrs.getAngle();
+
+  public Rotation2d getHeading() {
+    return Rotation2d.fromDegrees(-ahrs.getAngle());
   }
-  public void arcadeDrive(double zRotation,double xSpeed){
+
+  public void arcadeDrive(double zRotation, double xSpeed) {
     robotDrive.arcadeDrive(-xSpeed, zRotation);
     robotDrive.setSafetyEnabled(false);
 
