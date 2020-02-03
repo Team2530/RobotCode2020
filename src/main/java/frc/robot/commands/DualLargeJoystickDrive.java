@@ -53,37 +53,13 @@ public class DualLargeJoystickDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // x1 = stick1.getX();
-    y1 = stick1.getY();
-    // x2 = stick2.getX();
-    y2 = stick2.getY();
-    if (Math.abs(y2) <= Constants.deadzone) {
-      y2 = 0;
-    }
-    if (Math.abs(y1) <= Constants.deadzone) {
-      y1 = 0;
-    }
-
-    rightPow = (y1);
-    leftPow = (y2); 
-
-    double powerfactor = -stick1.getRawAxis(3);
-    powerfactor = 0.5 * (powerfactor + 1);
-
-    rightPow = powerfactor * (0.5 * Math.pow(rightPow, 3) + 0.5 * rightPow);
-    leftPow = powerfactor * (0.5 * Math.pow(leftPow, 3) + 0.5 * leftPow);
-
-    m_driveTrain.setMotorPower(DriveMotors.FR, rightPow);
-    m_driveTrain.setMotorPower(DriveMotors.BR, rightPow);
-
-    m_driveTrain.setMotorPower(DriveMotors.FL, leftPow);
-    m_driveTrain.setMotorPower(DriveMotors.BL, leftPow);
+    m_driveTrain.tankDrive(stick1.getY(), stick2.getY());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    m_driveTrain.Stop();
+    m_driveTrain.stop();
   }
 
   // Returns true when the command should end.

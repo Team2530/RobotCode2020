@@ -23,6 +23,7 @@ public class LineUp extends CommandBase {
   private double[] position;
   private double correction = 0.2;
   private double power;
+
   /**
    * Creates a new LineUp.
    */
@@ -52,51 +53,24 @@ public class LineUp extends CommandBase {
     double[] position = limeLight.getSphericalPosition(elevator.getAngle(), elevator.getLimeLightHeight());
     SmartDashboard.putNumber("position[0]", position[0]);
     SmartDashboard.putNumber("position[1]", position[1]);
-    if(position[1] > 0 + Constants.angleTolerance) { //turn right, but its turning left? but it works
 
-      driveTrain.setMotorPower(DriveMotors.FL, -power);
-      driveTrain.setMotorPower(DriveMotors.BL, -power);
-      driveTrain.setMotorPower(DriveMotors.FR, power);
-      driveTrain.setMotorPower(DriveMotors.BR, power);
+    if (position[0] > 96 + Constants.distanceTolerance) { // go forward
 
-    } else if (position[1] < 0 - Constants.angleTolerance) { //turn left, but its turning right? but it works
+      driveTrain.timedDrive(power, position[0]);
 
-      driveTrain.setMotorPower(DriveMotors.FL, power);
-      driveTrain.setMotorPower(DriveMotors.BL, power);
-      driveTrain.setMotorPower(DriveMotors.FR, -power);
-      driveTrain.setMotorPower(DriveMotors.BR, -power);
+    } else if (position[0] < 96 - Constants.distanceTolerance) { // go backward
+      power *= -1;
+      driveTrain.timedDrive(power, position[0]);
 
-    } else { //correct spot in regards to x angle
-
-      if(position[0] > 96 + Constants.distanceTolerance) { //go forward
-
-        driveTrain.setMotorPower(DriveMotors.FL, power);
-        driveTrain.setMotorPower(DriveMotors.BL, power);
-        driveTrain.setMotorPower(DriveMotors.FR, power);
-        driveTrain.setMotorPower(DriveMotors.BR, power);
-
-      } else if(position[0] < 96 - Constants.distanceTolerance) { //go backward
-
-        driveTrain.setMotorPower(DriveMotors.FL, -power);
-        driveTrain.setMotorPower(DriveMotors.BL, -power);
-        driveTrain.setMotorPower(DriveMotors.FR, -power);
-        driveTrain.setMotorPower(DriveMotors.BR, -power);
-
-      } else { //dont move, correct spot
-
-        driveTrain.setMotorPower(DriveMotors.FL, 0);
-        driveTrain.setMotorPower(DriveMotors.BL, 0);
-        driveTrain.setMotorPower(DriveMotors.FR, 0);
-        driveTrain.setMotorPower(DriveMotors.BR, 0);
-
-      }
+    } else { // dont move, correct spot
+      driveTrain.stop();
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    driveTrain.Stop();
+    driveTrain.stop();
   }
 
   // Returns true when the command should end.

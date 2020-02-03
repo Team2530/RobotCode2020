@@ -10,10 +10,13 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // import edu.wpi.first.wpilibj.SPI.Port;
@@ -41,6 +44,8 @@ public class DriveTrain extends SubsystemBase {
 
   private static double encoder_Left;
   private static double encoder_Right;
+  private static double encoder_Left_Rate;
+  private static double encoder_Right_Rate;
 
   private static SpeedControllerGroup drive_left = new SpeedControllerGroup(motor_Front_Left, motor_Back_Left);
   private static SpeedControllerGroup drive_right = new SpeedControllerGroup(motor_Front_Right, motor_Back_Right);
@@ -53,6 +58,8 @@ public class DriveTrain extends SubsystemBase {
   private final DifferentialDriveKinematics m_kinematics = new DifferentialDriveKinematics(Constants.WHEEL_DISTANCE);
 
   private final DifferentialDriveOdometry m_odometry;
+
+  private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(Constants.motor_Front_Left_Port, Constants.motor_Front_Right_Port);
 
   double P, I, D = 1;
   double integral, derivative, previous_error, setpoint, error = 0;
@@ -81,25 +88,31 @@ public class DriveTrain extends SubsystemBase {
     m_odometry = new DifferentialDriveOdometry(getHeading());
     // encoder_Left.setDistancePerPulse(Constants.ENCODER_TICKS_PER_REVOLUTION);
     // encoder_Right.setDistancePerPulse(Constants.ENCODER_TICKS_PER_REVOLUTION);
-    setSetpoint(Constants.setPoint);
     drive_right.setInverted(false);
     drive_left.setInverted(true);
   }
 
-  public void setSetpoint(int setpoint) {
-    this.setpoint = setpoint;
+  public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
+    final double leftFeedforward = m_feedforward.calculate(speeds.leftMetersPerSecond);
+    final double rightFeedforward = m_feedforward.calculate(speeds.rightMetersPerSecond);
+
+    final double leftOutput = m_leftPIDController.calculate(encoder_Left_Rate,
+        speeds.leftMetersPerSecond);
+    final double rightOutput = m_rightPIDController.calculate(encoder_Right_Rate,
+        speeds.rightMetersPerSecond);
+    drive_left.setVoltage(leftOutput + leftFeedforward);
+    drive_right.setVoltage(rightOutput + rightFeedforward);
   }
 
   public void resetEncoders() {
     motor_Front_Left.getSensorCollection().setQuadraturePosition(0, 10);
-    ;
     motor_Front_Right.getSensorCollection().setQuadraturePosition(0, 10);
-    ;
+    
     // motor_Back_Right.setEncPosition(0);
     // encoder_Right.reset();
   }
 
-  public void setMotorPower(final DriveMotors id, final double speed) {
+  public void setSingleMotorPower(final DriveMotors id, final double speed) {
     switch (id) {// TODO THESE ARE ARBITRARY
     case FL:
       motor_Front_Left.set(ControlMode.PercentOutput, speed);
@@ -118,14 +131,12 @@ public class DriveTrain extends SubsystemBase {
     }
   }
 
-  public void Stop() {
-    for (final DriveMotors motor : DriveMotors.values()) {
-      setMotorPower(motor, 0);
-    }
+  public void stop() {
+    robotDrive.stopMotor();
   }
 
   // TODO:complete drive for Distance
-  public void driveDistance(double distance, double power)// Distance is inches and set power to negative to go //
+  /* public void driveDistance(double distance, double power)// Distance is inches and set power to negative to go //
                                                           // backwards
   {
     double encoderdistance = Constants.ENCODER_TICKS_PER_REVOLUTION * Math.PI * Math.pow(Constants.WHEEL_RADIUS, 2)
@@ -135,25 +146,21 @@ public class DriveTrain extends SubsystemBase {
     // starts all motors at starting speed
     for (final DriveMotors motor : DriveMotors.values()) {
       setMotorPower(motor, power);
-    }
+    } 
 
-    /*
-     * while(getGreatestEncoder()<encoderdistance){ if() }
-     */
-  }
+  }*/
 
   public double getEncoder() {
-    // motor_Back_Left.configSelectedFeedbackSensor(FeedbackDevice.PulseWidthEncodedPosition,
-    // 0, 0);
-    // return motor_Back_Left.getSelectedSensorPosition(0);
-
     SmartDashboard.putNumber("Sensor Vel:", motor_Back_Left.getSelectedSensorVelocity(1));
     return motor_Back_Left.getSelectedSensorPosition(1);
   }
 
   public void periodic() {
-    encoder_Left = motor_Front_Left.getSelectedSensorPosition(1);
-    encoder_Right = motor_Front_Right.getSelectedSensorPosition(1);
+    encoder_Left = motor_Front_Left.getSelectedSensorPosition(1)/(Constants.DISTANCE_PER_PULSE);
+    encoder_Right = motor_Front_Right.getSelectedSensorPosition(1)/(Constants.DISTANCE_PER_PULSE);
+    encoder_Left_Rate = motor_Front_Left.getSelectedSensorVelocity(1)/(Constants.DISTANCE_PER_PULSE);
+    encoder_Right_Rate = motor_Front_Right.getSelectedSensorVelocity(1)/(Constants.DISTANCE_PER_PULSE);
+    
     SmartDashboard.putNumber("Encoder left:", encoder_Left);
     SmartDashboard.putNumber("Encoder right:", encoder_Right);
     SmartDashboard.putNumber("Angle", ahrs.getAngle());
@@ -168,10 +175,30 @@ public class DriveTrain extends SubsystemBase {
   public Rotation2d getHeading() {
     return Rotation2d.fromDegrees(-ahrs.getAngle());
   }
+  public double getAngle() {
+    return -ahrs.getAngle();
+  }
 
   public void arcadeDrive(double zRotation, double xSpeed) {
     robotDrive.arcadeDrive(-xSpeed, zRotation);
     robotDrive.setSafetyEnabled(false);
-
+  }
+  public void tankDrive(double leftSpeed, double rightSpeed) {
+    robotDrive.tankDrive(leftSpeed, rightSpeed);
+    robotDrive.setSafetyEnabled(false);
+  }
+  /**
+   * Drives the robot with the given linear velocity and angular velocity.
+   *
+   * @param xSpeed Linear velocity in m/s.
+   * @param rot    Angular velocity in rad/s.
+   */
+  @SuppressWarnings("ParameterName")
+  public void timedDrive(double xSpeed, double rot) {
+    var wheelSpeeds = m_kinematics.toWheelSpeeds(new ChassisSpeeds(xSpeed, 0.0, rot));
+    setSpeeds(wheelSpeeds);
+  }
+  public void updateOdometry() {
+    m_odometry.update(getHeading(), encoder_Left, encoder_Right);
   }
 }
