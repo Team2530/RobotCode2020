@@ -15,20 +15,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 // import edu.wpi.first.wpilibj.SPI.Port;
 // import edu.wpi.first.wpilibj.controller.PIDController;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import frc.robot.Constants;
 import frc.robot.Constants.*;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
-public class DriveTrain extends PIDSubsystem {
+public class DriveTrain extends SubsystemBase {
   // private static final Port i2c_port_id = null;
   /**
    * Creates a new DriveTrain.
@@ -46,6 +42,10 @@ public class DriveTrain extends PIDSubsystem {
 
   private static SpeedControllerGroup drive_left = new SpeedControllerGroup(motor_Front_Left, motor_Back_Left);
   private static SpeedControllerGroup drive_right = new SpeedControllerGroup(motor_Front_Right, motor_Back_Right);
+
+  private final PIDController m_leftPIDController = new PIDController(1, 0, 0);
+  private final PIDController m_rightPIDController = new PIDController(1, 0, 0);
+
   private static DifferentialDrive robotDrive = new DifferentialDrive(drive_left, drive_right);
 
 
@@ -67,11 +67,10 @@ public class DriveTrain extends PIDSubsystem {
   // encoder_Left.configEncoderCodesPerRev(1024); //? idk magic number
 
   public static AHRS ahrs = new AHRS();
-  public static PIDController pid = new PIDController(Constants.kP, Constants.kI, Constants.kD);
 
   public DriveTrain() {
-    super(pid);
-    getController().setTolerance(Constants.tol);
+    m_leftPIDController.setTolerance(Constants.tol);
+    m_rightPIDController.setTolerance(Constants.tol);
     //encoder_Left.setDistancePerPulse(Constants.ENCODER_TICKS_PER_REVOLUTION);
     //encoder_Right.setDistancePerPulse(Constants.ENCODER_TICKS_PER_REVOLUTION);
     setSetpoint(Constants.setPoint);
@@ -140,7 +139,6 @@ public class DriveTrain extends PIDSubsystem {
     SmartDashboard.putNumber("Sensor Vel:", motor_Back_Left.getSelectedSensorVelocity(1));
     return motor_Back_Left.getSelectedSensorPosition(1);
   }
-  @Override
   public void periodic() {
     encoder_Left = motor_Front_Left.getSelectedSensorPosition(1);
     encoder_Right = motor_Front_Right.getSelectedSensorPosition(1);
@@ -153,20 +151,6 @@ public class DriveTrain extends PIDSubsystem {
   public void setPower(double output){
     //robotDrive.
     robotDrive.tankDrive(output, output);
-  }
-  @Override
-  protected void useOutput(double output, double setpoint) {
-    setMotorPower(DriveMotors.FR, output);
-    setMotorPower(DriveMotors.BR, output);
-
-    setMotorPower(DriveMotors.FL, output);
-    setMotorPower(DriveMotors.BL, output);
-  }
-
-  @Override
-  protected double getMeasurement() {
-    // TODO Auto-generated method stub
-    return 0;
   }
   public double getHeading(){
     return ahrs.getAngle();
