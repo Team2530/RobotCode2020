@@ -42,10 +42,10 @@ public class DriveTrain extends SubsystemBase {
   private static WPI_VictorSPX motor_Back_Right = new WPI_VictorSPX(Constants.motor_Back_Right_Port);
   private static WPI_TalonSRX motor_Front_Right = new WPI_TalonSRX(Constants.motor_Front_Right_Port);
 
-  private static double encoder_Left;
-  private static double encoder_Right;
-  private static double encoder_Left_Rate;
-  private static double encoder_Right_Rate;
+  private static double encoder_Left_Value;
+  private static double encoder_Right_Value;
+  private static double encoder_Left_Rate_Value;
+  private static double encoder_Right_Rate_Value;
 
   private static SpeedControllerGroup drive_left = new SpeedControllerGroup(motor_Front_Left, motor_Back_Left);
   private static SpeedControllerGroup drive_right = new SpeedControllerGroup(motor_Front_Right, motor_Back_Right);
@@ -66,10 +66,9 @@ public class DriveTrain extends SubsystemBase {
   double integral, derivative, previous_error, setpoint, error = 0;
 
   // PIDController
-  // private static Encoder encoder_Left = new
-  // Encoder(Constants.encoder_Left_Ports[0],Constants.encoder_Left_Ports[1]);
-  // private static Encoder encoder_Right = new
-  // Encoder(Constants.encoder_Right_Ports[0],Constants.encoder_Right_Ports[1]);
+  private static Encoder encoder_Left = new Encoder(Constants.encoder_Left_Ports[0], Constants.encoder_Left_Ports[1]);
+  private static Encoder encoder_Right = new Encoder(Constants.encoder_Right_Ports[0],
+      Constants.encoder_Right_Ports[1]);
 
   // private static FeedbackDevice encoder_Left = new
   // FeedbackDevice(FeedbackDevice.QuadEncoder);
@@ -84,11 +83,16 @@ public class DriveTrain extends SubsystemBase {
   public DriveTrain() {
     resetEncoders();
     ahrs.reset();
+
     m_leftPIDController.setTolerance(Constants.tol);
     m_rightPIDController.setTolerance(Constants.tol);
+
     m_odometry = new DifferentialDriveOdometry(getHeading());
-    // encoder_Left.setDistancePerPulse(Constants.ENCODER_TICKS_PER_REVOLUTION);
-    // encoder_Right.setDistancePerPulse(Constants.ENCODER_TICKS_PER_REVOLUTION);
+
+    // ? THis set 1 rotation to one number
+    encoder_Left.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
+    encoder_Right.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
+
     drive_right.setInverted(false);
     drive_left.setInverted(true);
   }
@@ -97,18 +101,18 @@ public class DriveTrain extends SubsystemBase {
     final double leftFeedforward = m_feedforward.calculate(speeds.leftMetersPerSecond);
     final double rightFeedforward = m_feedforward.calculate(speeds.rightMetersPerSecond);
 
-    final double leftOutput = m_leftPIDController.calculate(encoder_Left_Rate, speeds.leftMetersPerSecond);
-    final double rightOutput = m_rightPIDController.calculate(encoder_Right_Rate, speeds.rightMetersPerSecond);
+    final double leftOutput = m_leftPIDController.calculate(encoder_Left_Rate_Value, speeds.leftMetersPerSecond);
+    final double rightOutput = m_rightPIDController.calculate(encoder_Right_Rate_Value, speeds.rightMetersPerSecond);
     drive_left.setVoltage(leftOutput + leftFeedforward);
     drive_right.setVoltage(rightOutput + rightFeedforward);
   }
 
   public void resetEncoders() {
-    motor_Front_Left.getSensorCollection().setQuadraturePosition(0, 10);
-    motor_Front_Right.getSensorCollection().setQuadraturePosition(0, 10);
+    // motor_Front_Left.getSensorCollection().setQuadraturePosition(0, 10);
+    // motor_Front_Right.getSensorCollection().setQuadraturePosition(0, 10);
 
-    // motor_Back_Right.setEncPosition(0);
-    // encoder_Right.reset();
+    encoder_Right.reset();
+    encoder_Left.reset();
   }
 
   public void setSingleMotorPower(final DriveMotors id, final double speed) {
@@ -140,13 +144,22 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void periodic() {
-    encoder_Left = motor_Front_Left.getSelectedSensorPosition(1) / (Constants.DISTANCE_PER_PULSE);
-    encoder_Right = motor_Front_Right.getSelectedSensorPosition(1) / (Constants.DISTANCE_PER_PULSE);
-    encoder_Left_Rate = motor_Front_Left.getSelectedSensorVelocity(1) / (Constants.DISTANCE_PER_PULSE);
-    encoder_Right_Rate = motor_Front_Right.getSelectedSensorVelocity(1) / (Constants.DISTANCE_PER_PULSE);
+    // encoder_Left_Value = motor_Front_Left.getSelectedSensorPosition(1) /
+    // (Constants.DISTANCE_PER_PULSE);
+    // encoder_Right_Value = motor_Front_Right.getSelectedSensorPosition(1) /
+    // (Constants.DISTANCE_PER_PULSE);
+    // encoder_Left_Rate_Value = motor_Front_Left.getSelectedSensorVelocity(1) /
+    // (Constants.DISTANCE_PER_PULSE);
+    // encoder_Right_Rate_Value = motor_Front_Right.getSelectedSensorVelocity(1) /
+    // (Constants.DISTANCE_PER_PULSE);
 
-    SmartDashboard.putNumber("Encoder left:", encoder_Left);
-    SmartDashboard.putNumber("Encoder right:", encoder_Right);
+    encoder_Left_Value = encoder_Left.getDistance();
+    encoder_Right_Value = encoder_Right.getDistance();
+    encoder_Left_Rate_Value = encoder_Left.getRate();
+    encoder_Right_Rate_Value = encoder_Right.getRate();
+
+    SmartDashboard.putNumber("Encoder left:", encoder_Left_Value);
+    SmartDashboard.putNumber("Encoder right:", encoder_Right_Value);
     SmartDashboard.putNumber("Angle", ahrs.getAngle());
     // This method will be called once per scheduler run
   }
@@ -187,7 +200,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void updateOdometry() {
-    m_odometry.update(getHeading(), encoder_Left, encoder_Right);
+    m_odometry.update(getHeading(), encoder_Left_Value, encoder_Right_Value);
   }
 
   /**
@@ -199,15 +212,18 @@ public class DriveTrain extends SubsystemBase {
    * @param currentAngle    Current Angle in degrees.
    * @param currentDistance Current Distance in m
    */
-  public void alignToTarget(double power, double targetAngle, double targetDistance, double currentAngle,
+  public boolean alignToTarget(double power, double targetAngle, double targetDistance, double currentAngle,
       double currentDistance) {
     if (currentDistance > targetDistance - Constants.distanceTolerance
         || currentDistance < targetDistance + Constants.distanceTolerance
         || currentAngle > targetAngle - Constants.angleTolerance
-        || currentAngle < targetAngle + Constants.angleTolerance) {
+        || currentAngle < targetAngle + Constants.angleTolerance) 
+        {
       this.stop();
+      return true;
     } else {
-      timedDrive(power*(currentDistance-targetDistance), position[0]);
+      timedDrive(power * (currentDistance - targetDistance), power * (currentAngle - targetAngle));
+      return false;
     }
 
   }

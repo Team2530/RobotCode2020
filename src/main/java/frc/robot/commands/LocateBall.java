@@ -19,13 +19,13 @@ public class LocateBall extends CommandBase {
   private DriveTrain driveTrain;
   private Pixy pixy;
   private Shooter shooter;
-  public LocateBall() {
+  public LocateBall(DriveTrain driveTrain, Pixy pixy, Shooter shooter) {
     this.pixy = pixy;
     this.driveTrain = driveTrain;
     this.shooter = shooter;
-    addRequirements(pixy);
-    addRequirements(driveTrain);
-    addRequirements(shooter);
+    addRequirements(this.pixy);
+    addRequirements(this.driveTrain);
+    addRequirements(this.shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -38,7 +38,7 @@ public class LocateBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-  
+    
   }
 
   // Called once the command ends or is interrupted.

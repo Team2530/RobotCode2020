@@ -104,7 +104,8 @@ public final class Constants {
     public static final float I = 1;//?moment of inertia
     public static final double SHOOTER_WHEEL_RADIUS = 6*2.54;
     public static final double eff = 0.8;//?effective efficiency percentage
-    public static final int MAX_DISTANCE = 254;//cm
+    public static final int MAX_SHOOTING_DISTANCE = 254;//cm
+    public static final int IDEAL_SHOOTING_DISTANCE = 254;//cm
     public static final double distanceTolerance = 10; //cm
     public static final double angleTolerance = 10; //degrees
 

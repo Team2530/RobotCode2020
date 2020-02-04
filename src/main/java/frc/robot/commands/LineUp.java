@@ -13,7 +13,6 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.Constants;
-import frc.robot.Constants.DriveMotors;
 
 public class LineUp extends CommandBase {
 
@@ -49,12 +48,10 @@ public class LineUp extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double power = position[1];
     double[] position = limeLight.getSphericalPosition(elevator.getAngle(), elevator.getLimeLightHeight());
     SmartDashboard.putNumber("position[0]", position[0]);
     SmartDashboard.putNumber("position[1]", position[1]);
-
-    
+    driveTrain.alignToTarget(0.5, 0, Constants.IDEAL_SHOOTING_DISTANCE, position[1], position[0]);
   }
 
   // Called once the command ends or is interrupted.
@@ -66,6 +63,6 @@ public class LineUp extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return driveTrain.alignToTarget(0.5, 0, Constants.IDEAL_SHOOTING_DISTANCE, position[1], position[0]);;
   }
 }
