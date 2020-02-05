@@ -22,7 +22,7 @@ public class LineUp extends CommandBase {
   private Elevator elevator;
   private double[] position;
   private double correction = 0.2;
-  private double power;
+  private double power = 1;
 
   /**
    * Creates a new LineUp.
@@ -49,12 +49,10 @@ public class LineUp extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double power = position[1];
-    double[] position = limeLight.getSphericalPosition(elevator.getAngle(), elevator.getLimeLightHeight());
+    position = limeLight.getSphericalPosition(elevator.getAngle(), elevator.getLimeLightHeight());
     SmartDashboard.putNumber("position[0]", position[0]);
     SmartDashboard.putNumber("position[1]", position[1]);
-
-    
+    SmartDashboard.putNumber("position[2]", position[2]);
   }
 
   // Called once the command ends or is interrupted.
@@ -66,6 +64,6 @@ public class LineUp extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return driveTrain.alignToTarget(power, 0, Constants.MAX_DISTANCE, position[1], position[0]);
   }
 }

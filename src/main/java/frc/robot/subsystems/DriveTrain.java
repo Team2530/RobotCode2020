@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
+import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -32,18 +33,16 @@ import com.kauailabs.navx.frc.AHRS;
 
 public class DriveTrain extends SubsystemBase {
   // private static final Port i2c_port_id = null;
-  /**
-   * Creates a new DriveTrain.
-   */
-  private static WPI_TalonSRX motor_Front_Left = new WPI_TalonSRX(Constants.motor_Front_Left_Port);
+
+  private static VictorSP motor_Front_Left = new VictorSP(Constants.motor_Front_Left_Port);
 
   private static WPI_VictorSPX motor_Back_Left = new WPI_VictorSPX(Constants.motor_Back_Left_Port);
 
   private static WPI_VictorSPX motor_Back_Right = new WPI_VictorSPX(Constants.motor_Back_Right_Port);
-  private static WPI_TalonSRX motor_Front_Right = new WPI_TalonSRX(Constants.motor_Front_Right_Port);
+  private static VictorSP motor_Front_Right = new VictorSP(Constants.motor_Front_Right_Port);
 
-  private static double encoder_Left;
-  private static double encoder_Right;
+  private static double encoder_Left_Value;
+  private static double encoder_Right_Value;
   private static double encoder_Left_Rate;
   private static double encoder_Right_Rate;
 
@@ -66,10 +65,10 @@ public class DriveTrain extends SubsystemBase {
   double integral, derivative, previous_error, setpoint, error = 0;
 
   // PIDController
-  // private static Encoder encoder_Left = new
-  // Encoder(Constants.encoder_Left_Ports[0],Constants.encoder_Left_Ports[1]);
-  // private static Encoder encoder_Right = new
-  // Encoder(Constants.encoder_Right_Ports[0],Constants.encoder_Right_Ports[1]);
+  private static Encoder encoder_Left = new
+  Encoder(Constants.encoder_Left_Ports[0],Constants.encoder_Left_Ports[1]);
+  private static Encoder encoder_Right = new
+  Encoder(Constants.encoder_Right_Ports[0],Constants.encoder_Right_Ports[1]);
 
   // private static FeedbackDevice encoder_Left = new
   // FeedbackDevice(FeedbackDevice.QuadEncoder);
@@ -81,14 +80,17 @@ public class DriveTrain extends SubsystemBase {
 
   public static AHRS ahrs = new AHRS();
 
+  /**
+   * Creates a new DriveTrain.
+   */
   public DriveTrain() {
     resetEncoders();
     ahrs.reset();
     m_leftPIDController.setTolerance(Constants.tol);
     m_rightPIDController.setTolerance(Constants.tol);
     m_odometry = new DifferentialDriveOdometry(getHeading());
-    // encoder_Left.setDistancePerPulse(Constants.ENCODER_TICKS_PER_REVOLUTION);
-    // encoder_Right.setDistancePerPulse(Constants.ENCODER_TICKS_PER_REVOLUTION);
+    encoder_Left.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
+    encoder_Right.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
     drive_right.setInverted(false);
     drive_left.setInverted(true);
   }
@@ -104,17 +106,24 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void resetEncoders() {
-    motor_Front_Left.getSensorCollection().setQuadraturePosition(0, 10);
-    motor_Front_Right.getSensorCollection().setQuadraturePosition(0, 10);
+    // motor_Front_Left.getSensorCollection().setQuadraturePosition(0, 10);
+    // motor_Front_Right.getSensorCollection().setQuadraturePosition(0, 10);
 
     // motor_Back_Right.setEncPosition(0);
-    // encoder_Right.reset();
+    encoder_Right.reset();
+    encoder_Left.reset();
   }
 
+  /**
+   * Sets the speed of one motor
+   * 
+   * @param id    A DriveMotors enum that represents the motor you want to set the speed of
+   * @param speed The speed that you want the motor to go at (-1 to 1)
+   */
   public void setSingleMotorPower(final DriveMotors id, final double speed) {
     switch (id) {// TODO THESE ARE ARBITRARY
     case FL:
-      motor_Front_Left.set(ControlMode.PercentOutput, speed);
+      motor_Front_Left.set(speed);
       return;
     case BR:
       motor_Back_Right.set(ControlMode.PercentOutput, speed);
@@ -123,7 +132,7 @@ public class DriveTrain extends SubsystemBase {
       motor_Back_Left.set(ControlMode.PercentOutput, speed);
       return;
     case FR:
-      motor_Front_Right.set(ControlMode.PercentOutput, speed);
+      motor_Front_Right.set(speed);
       return;
     default:
       return;
@@ -140,13 +149,18 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void periodic() {
-    encoder_Left = motor_Front_Left.getSelectedSensorPosition(1) / (Constants.DISTANCE_PER_PULSE);
-    encoder_Right = motor_Front_Right.getSelectedSensorPosition(1) / (Constants.DISTANCE_PER_PULSE);
-    encoder_Left_Rate = motor_Front_Left.getSelectedSensorVelocity(1) / (Constants.DISTANCE_PER_PULSE);
-    encoder_Right_Rate = motor_Front_Right.getSelectedSensorVelocity(1) / (Constants.DISTANCE_PER_PULSE);
+    // encoder_Left_Value = motor_Front_Left.getSelectedSensorPosition(1) / (Constants.DISTANCE_PER_PULSE);
+    // encoder_Right_Value = motor_Front_Right.getSelectedSensorPosition(1) / (Constants.DISTANCE_PER_PULSE);
+    // encoder_Left_Rate = motor_Front_Left.getSelectedSensorVelocity(1) / (Constants.DISTANCE_PER_PULSE);
+    // encoder_Right_Rate = motor_Front_Right.getSelectedSensorVelocity(1) / (Constants.DISTANCE_PER_PULSE);
 
-    SmartDashboard.putNumber("Encoder left:", encoder_Left);
-    SmartDashboard.putNumber("Encoder right:", encoder_Right);
+    encoder_Left_Value = encoder_Left.getDistance();
+    encoder_Right_Value = encoder_Right.getDistance();
+    encoder_Left_Rate = encoder_Left.getRate();
+    encoder_Right_Rate = encoder_Right.getRate();
+
+    SmartDashboard.putNumber("Encoder left:", encoder_Left_Value);
+    SmartDashboard.putNumber("Encoder right:", encoder_Right_Value);
     SmartDashboard.putNumber("Angle", ahrs.getAngle());
     // This method will be called once per scheduler run
   }
@@ -163,12 +177,23 @@ public class DriveTrain extends SubsystemBase {
   public double getAngle() {
     return -ahrs.getAngle();
   }
-
+  /**
+   * Drives the robot with 1 Joystick
+   * 
+   * @param zRotation 
+   * @param xSpeed
+   */
   public void arcadeDrive(double zRotation, double xSpeed) {
     robotDrive.arcadeDrive(-xSpeed, zRotation);
     robotDrive.setSafetyEnabled(false);
   }
 
+  /**
+   * Drives the robot with 2 Joysticks
+   * 
+   * @param leftSpeed
+   * @param rightSpeed
+   */
   public void tankDrive(double leftSpeed, double rightSpeed) {
     robotDrive.tankDrive(leftSpeed, rightSpeed);
     robotDrive.setSafetyEnabled(false);
@@ -187,7 +212,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void updateOdometry() {
-    m_odometry.update(getHeading(), encoder_Left, encoder_Right);
+    m_odometry.update(getHeading(), encoder_Left_Value, encoder_Right_Value);
   }
 
   /**
@@ -199,15 +224,17 @@ public class DriveTrain extends SubsystemBase {
    * @param currentAngle    Current Angle in degrees.
    * @param currentDistance Current Distance in m
    */
-  public void alignToTarget(double power, double targetAngle, double targetDistance, double currentAngle,
+  public boolean alignToTarget(double power, double targetAngle, double targetDistance, double currentAngle,
       double currentDistance) {
     if (currentDistance > targetDistance - Constants.distanceTolerance
         || currentDistance < targetDistance + Constants.distanceTolerance
         || currentAngle > targetAngle - Constants.angleTolerance
         || currentAngle < targetAngle + Constants.angleTolerance) {
       this.stop();
+      return true;
     } else {
-      timedDrive(power*(currentDistance-targetDistance), position[0]);
+      timedDrive(power * (currentDistance - targetDistance), targetAngle);
+      return false;
     }
 
   }
