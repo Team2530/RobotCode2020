@@ -7,7 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 // import frc.robot.commands.DualLargeJoystickDrive;
@@ -22,6 +24,9 @@ public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
   private Command m_teleopCommand;
   private RobotContainer m_robotContainer;
+  private SerialPort arduino;
+  private Timer timer;
+  
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -29,6 +34,31 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+    // Establish connection with Arduino
+    try {
+      arduino = new SerialPort (9600, SerialPort.Port.kUSB);
+      System.out.println("Successfully connected to Arduino!");
+    } catch (Exception e) {
+      System.out.println("Encountered a problem connecting via kUSB. Trying kUSB 1...");
+
+      try {
+        arduino = new SerialPort (9600, SerialPort.Port.kUSB1);
+        System.out.println("Successfully connected to Arduino!");
+      } catch (Exception e1) {
+        System.out.println("Encountered a problem connecting via kUSB1. Trying kUSB 2...");
+
+        try {
+          arduino = new SerialPort (9600, SerialPort.Port.kUSB2);
+          System.out.println("Successfully connected to Arduino!");
+        } catch (Exception e2) {
+          System.out.println("Encountered a problem connecting via kUSB2. No connections left to test.");
+        }
+      }
+    }
+
+    timer = new Timer();
+    timer.start();
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
@@ -48,6 +78,17 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
+
+    // Fetches data from Arduino
+    if (timer.get() > 5) {
+      arduino.write(new byte[] {0x12}, 1);
+      System.out.println("Fetching data from Arduino...");
+      timer.reset();
+    }
+
+    if (arduino.getBytesReceived() > 0) {
+      System.out.println(arduino.readString());
+    }
   }
 
   /**
