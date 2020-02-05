@@ -45,12 +45,13 @@ public class DriveTrain extends SubsystemBase {
   private static double encoder_Right_Value;
   private static double encoder_Left_Rate;
   private static double encoder_Right_Rate;
+  private static double P,I,D;
 
   private static SpeedControllerGroup drive_left = new SpeedControllerGroup(motor_Front_Left, motor_Back_Left);
   private static SpeedControllerGroup drive_right = new SpeedControllerGroup(motor_Front_Right, motor_Back_Right);
 
-  private final PIDController m_leftPIDController = new PIDController(Constants.kP, Constants.kI, Constants.kD);
-  private final PIDController m_rightPIDController = new PIDController(Constants.kP, Constants.kI, Constants.kD);
+  private final PIDController m_leftPIDController;
+  private final PIDController m_rightPIDController;
 
   private static DifferentialDrive robotDrive = new DifferentialDrive(drive_left, drive_right);
 
@@ -83,9 +84,13 @@ public class DriveTrain extends SubsystemBase {
    * Creates a new DriveTrain.
    */
   public DriveTrain() {
+    P=Constants.kP;
+    I=Constants.kI;
+    D=Constants.kD;
     resetEncoders();
     ahrs.reset();
-
+    m_leftPIDController = new PIDController(P,I,D);
+    m_rightPIDController = new PIDController(P,I,D);
     m_leftPIDController.setTolerance(Constants.tol);
     m_rightPIDController.setTolerance(Constants.tol);
 
@@ -96,12 +101,33 @@ public class DriveTrain extends SubsystemBase {
     drive_left.setInverted(true);
   }
 
+
+  public double[] getError(){
+    double[] ret = {m_leftPIDController.getPositionError(),m_rightPIDController.getPositionError()};
+    return ret;
+  }
+  public double[] getSetPoint(){
+    double[] ret = {m_leftPIDController.getSetpoint(),m_rightPIDController.getSetpoint())};
+    return ret;
+  }
+  public double[] getPID(){
+    double[] ret = {m_leftPIDController.getP(),m_leftPIDController.getI(),m_leftPIDController.getD()};
+    return ret;
+  }
+  public void setPID(double P,double I,double D){
+    m_leftPIDController.setP(P);
+    m_leftPIDController.setI(I);
+    m_leftPIDController.setD(D);
+    m_rightPIDController.setP(P);
+    m_rightPIDController.setI(I);
+    m_rightPIDController.setD(D);
+  }
   public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
     final double leftFeedforward = m_feedforward.calculate(speeds.leftMetersPerSecond);
     final double rightFeedforward = m_feedforward.calculate(speeds.rightMetersPerSecond);
 
-    final double leftOutput = m_leftPIDController.calculate(encoder_Left_Rate_Value, speeds.leftMetersPerSecond);
-    final double rightOutput = m_rightPIDController.calculate(encoder_Right_Rate_Value, speeds.rightMetersPerSecond);
+    final double leftOutput = m_leftPIDController.calculate(encoder_Left_Rate, speeds.leftMetersPerSecond);
+    final double rightOutput = m_rightPIDController.calculate(encoder_Right_Rate, speeds.rightMetersPerSecond);
     drive_left.setVoltage(leftOutput + leftFeedforward);
     drive_right.setVoltage(rightOutput + rightFeedforward);
   }

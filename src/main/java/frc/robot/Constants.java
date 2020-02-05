@@ -20,10 +20,10 @@ public final class Constants {
     //--------------------Motor Ports--------------------\\
     //DriveTrain Motors
     //ports set up for test drivetrain currently
-    public static final int motor_Front_Left_Port = 1; 
+    public static final int motor_Front_Left_Port = 3; 
     public static final int motor_Back_Left_Port = 0;
-    public static final int motor_Back_Right_Port = 5; //? 2 motors driving one wheel on each side, i think
-    public static final int motor_Front_Right_Port = 2;
+    public static final int motor_Back_Right_Port = 1; //? 2 motors driving one wheel on each side, i think
+    public static final int motor_Front_Right_Port = 4;
     public enum DriveMotors
     { 
         FL, FR, BL, BR; 
@@ -48,8 +48,8 @@ public final class Constants {
 
     //--------------------Sensor Ports--------------------\\
     //DriveTrain Encoders
-    public static final int[] encoder_Left_Ports = {1,0}; 
-    public static final int[] encoder_Right_Ports = {3,2};
+    public static final int[] encoder_Left_Ports = {1,2}; 
+    public static final int[] encoder_Right_Ports = {3,4};
 
     //!!!!!!!!!!!!!!!!!!!!!!Encoders plug into SRX, figure out how to read
 
@@ -105,7 +105,7 @@ public final class Constants {
     public static final double SHOOTER_WHEEL_RADIUS = 6*2.54;
     public static final double eff = 0.8;//?effective efficiency percentage
     public static final int MAX_SHOOTING_DISTANCE = 254;//cm
-    public static final int IDEAL_SHOOTING_DISTANCE = 254;//cm
+    public static final int IDEAL_SHOOTING_DISTANCE = 190;//cm
     public static final double distanceTolerance = 10; //cm
     public static final double angleTolerance = 10; //degrees
 
