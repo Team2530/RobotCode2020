@@ -109,6 +109,11 @@ public class Robot extends TimedRobot {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
     //? pit init here not command that could accendently be pressed durring match
+    m_teleopCommand = m_robotContainer.getTelopCommand();
+
+    if (m_teleopCommand != null) {
+      m_teleopCommand.schedule();
+    }
   }
 
   /**
@@ -116,5 +121,6 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void testPeriodic() {
+
   }
 }

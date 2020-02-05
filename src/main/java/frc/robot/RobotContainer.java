@@ -17,7 +17,6 @@ import frc.robot.commands.LargeJoystickDrive;
 import frc.robot.commands.LineUp;
 import frc.robot.commands.TestPixy;
 import frc.robot.commands.ToggleLimeLightLED;
-import frc.robot.commands.TurnToAngle;
 // import frc.robot.commands.SmallJoystickElevator;
 // import frc.robot.commands.XboxJoystickElevator;
 import frc.robot.subsystems.DriveTrain;
@@ -80,7 +79,7 @@ public class RobotContainer {
     Button1.whileHeld(lineUp);
     Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
     Button3.whenPressed(toggleLED);
-    Button4.whenPressed(new TurnToAngle(30, m_driveTrain));
+
   }
 
   /**
@@ -90,7 +89,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new TurnToAngle(30, m_driveTrain);
+    return m_autoCommand;
   }
 
   public Command getTelopCommand() {
