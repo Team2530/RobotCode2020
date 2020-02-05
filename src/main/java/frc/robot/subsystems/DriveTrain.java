@@ -34,12 +34,12 @@ import com.kauailabs.navx.frc.AHRS;
 public class DriveTrain extends SubsystemBase {
   // private static final Port i2c_port_id = null;
 
-  private static VictorSP motor_Front_Left = new VictorSP(Constants.motor_Front_Left_Port);
+  private static WPI_VictorSPX motor_Front_Left = new WPI_VictorSPX(Constants.motor_Front_Left_Port);
 
   private static WPI_VictorSPX motor_Back_Left = new WPI_VictorSPX(Constants.motor_Back_Left_Port);
 
   private static WPI_VictorSPX motor_Back_Right = new WPI_VictorSPX(Constants.motor_Back_Right_Port);
-  private static VictorSP motor_Front_Right = new VictorSP(Constants.motor_Front_Right_Port);
+  private static WPI_VictorSPX motor_Front_Right = new WPI_VictorSPX(Constants.motor_Front_Right_Port);
 
   private static double encoder_Left_Value;
   private static double encoder_Right_Value;
