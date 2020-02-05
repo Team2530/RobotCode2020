@@ -13,7 +13,7 @@ import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.Constants;
-import frc.robot.Constants.DriveMotors;
+// import frc.robot.Constants.DriveMotors;
 
 public class LineUp extends CommandBase {
 
@@ -21,7 +21,7 @@ public class LineUp extends CommandBase {
   private LimeLight limeLight;
   private Elevator elevator;
   private double[] position;
-  private double correction = 0.2;
+  // private double correction = 0.2;
   private double power = 1;
 
   /**
