@@ -49,8 +49,8 @@ public class DriveTrain extends SubsystemBase {
   private static SpeedControllerGroup drive_left = new SpeedControllerGroup(motor_Front_Left, motor_Back_Left);
   private static SpeedControllerGroup drive_right = new SpeedControllerGroup(motor_Front_Right, motor_Back_Right);
 
-  private final PIDController m_leftPIDController = new PIDController(1, 0, 0);
-  private final PIDController m_rightPIDController = new PIDController(1, 0, 0);
+  private final PIDController m_leftPIDController = new PIDController(Constants.kP, Constants.kI, Constants.kD);
+  private final PIDController m_rightPIDController = new PIDController(Constants.kP, Constants.kI, Constants.kD);
 
   private static DifferentialDrive robotDrive = new DifferentialDrive(drive_left, drive_right);
 
@@ -61,7 +61,6 @@ public class DriveTrain extends SubsystemBase {
   private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(Constants.motor_Front_Left_Port,
       Constants.motor_Front_Right_Port);
 
-  double P, I, D = 1;
   double integral, derivative, previous_error, setpoint, error = 0;
 
   // PIDController
