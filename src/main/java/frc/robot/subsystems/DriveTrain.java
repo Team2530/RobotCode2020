@@ -107,8 +107,12 @@ public class DriveTrain extends SubsystemBase {
     return ret;
   }
   public double[] getSetPoint(){
-    double[] ret = {m_leftPIDController.getSetpoint(),m_rightPIDController.getSetpoint())};
+    double[] ret = {m_leftPIDController.getSetpoint(),m_rightPIDController.getSetpoint()};
     return ret;
+  }
+  public void setSetPoint(double[] set){
+    m_leftPIDController.setSetpoint(set[0]);
+    m_rightPIDController.setSetpoint(set[1]);
   }
   public double[] getPID(){
     double[] ret = {m_leftPIDController.getP(),m_leftPIDController.getI(),m_leftPIDController.getD()};
@@ -185,6 +189,8 @@ public class DriveTrain extends SubsystemBase {
     encoder_Left_Rate = encoder_Left.getRate();
     encoder_Right_Rate = encoder_Right.getRate();
 
+
+    updateOdometry()
     SmartDashboard.putNumber("Encoder left:", encoder_Left_Value);
     SmartDashboard.putNumber("Encoder right:", encoder_Right_Value);
     SmartDashboard.putNumber("Angle", ahrs.getAngle());
