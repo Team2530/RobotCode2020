@@ -190,7 +190,7 @@ public class DriveTrain extends SubsystemBase {
     encoder_Right_Rate = encoder_Right.getRate();
 
 
-    updateOdometry()
+    updateOdometry();
     SmartDashboard.putNumber("Encoder left:", encoder_Left_Value);
     SmartDashboard.putNumber("Encoder right:", encoder_Right_Value);
     SmartDashboard.putNumber("Angle", ahrs.getAngle());
