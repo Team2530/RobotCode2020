@@ -26,7 +26,13 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   private SerialPort arduino;
   private Timer timer;
-  
+  byte[] outboxCompare = {0};
+
+  // This variable will automatically be pushed to the Arduino when its value changes.
+  // VALUE KEY:
+  // 0 = nothing
+  // 1 = Pixy sees a ball
+  public static byte[] arduinoOutbox = {0};
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -79,11 +85,14 @@ public class Robot extends TimedRobot {
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
 
-    // Fetches data from Arduino
-    if (timer.get() > 5) {
-      arduino.write(new byte[] {0x12}, 1);
-      System.out.println("Fetching data from Arduino...");
-      timer.reset();
+    // Checks if data needs to be pushed to Arduino, then does it
+    if (outboxCompare != arduinoOutbox) {
+      if (timer.get() > 0.5  /* (in seconds) cooldown period, to prevent data spam */) {
+        outboxCompare = arduinoOutbox;
+        arduino.write(outboxCompare, 1);
+        System.out.println("Sending " + outboxCompare + " to Arduino...");
+        timer.reset();
+      }
     }
 
     if (arduino.getBytesReceived() > 0) {

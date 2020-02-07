@@ -8,6 +8,7 @@ import io.github.pseudoresonance.pixy2api.Pixy2;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC;
 import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
 import io.github.pseudoresonance.pixy2api.links.SPILink;
+import frc.robot.Robot;
 
 public class Pixy extends SubsystemBase {
   private DriveTrain driveTrain;
@@ -17,6 +18,7 @@ public class Pixy extends SubsystemBase {
 
   // ints for ball data
   Block loadedBlock;
+  int ballFound;
   int ballWidth;
   int ballHeight;
   int ballX;
@@ -69,12 +71,19 @@ public class Pixy extends SubsystemBase {
     // Gets Pixy data and stores in variables
     loadedBlock = this.getBiggestBlock();
     if (loadedBlock != null) {
+      ballFound = 1;
       ballWidth = loadedBlock.getWidth();
       ballHeight = loadedBlock.getHeight();
       ballX = loadedBlock.getX();
       ballY = loadedBlock.getY();
       ballAngle = loadedBlock.getAngle();
       ballAge = loadedBlock.getAge();
+    } else {
+      ballFound = 0;
+    }
+
+    if (ballFound == 1) {
+      Robot.arduinoOutbox = new byte[] {1};
     }
 
     // Uses the Pixy data to do things
