@@ -1,5 +1,4 @@
-// Manages communication with the RoboRIO
-#include <FastLED.h>
+#include <FastLED.h> //VSCode detects errors here, but it works on the Arduino, so no need to worry about it
 
 FASTLED_USING_NAMESPACE
 
@@ -27,8 +26,7 @@ CRGB leds[NUM_LEDS];
 #define FRAMES_PER_SECOND  120
 
 void setup() {
-  // put your setup code here, to run once:
-  Serial.begin(9600);
+  Serial.begin(9600); // Sets up communication with the RoboRIO
   delay(3000); // 3 second delay for recovery
   
   // tell FastLED about the LED strip configuration
@@ -41,16 +39,21 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
+  // Gets value from RoboRIO and stores it in variable "value"
   if(Serial.available()) {
     byte value = Serial.read();
-
-    if(value == 0x12) {
-      Serial.println("Arduino says: 'Received code 0x12.'");
-    }
+    Serial.println("Arduino received code '" + value + "'.");
   }
-// Call the current pattern function once, updating the 'leds' array
+
+  // Call the current pattern function once, updating the 'leds' array
+ if (value == 0) {
+    // put light pattern for no input here
+  }
  
+  if (value == 1) {
+    // put light pattern for Pixy here
+  }
+
    leds[0] = CRGB::Red; 
    leds[1] = CRGB::Blue; 
    leds[2] = CRGB::Red; 
