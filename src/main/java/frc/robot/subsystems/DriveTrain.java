@@ -45,7 +45,7 @@ public class DriveTrain extends SubsystemBase {
   private static double encoder_Right_Value;
   private static double encoder_Left_Rate;
   private static double encoder_Right_Rate;
-  private static double P,I,D;
+  private static double P, I, D;
 
   private static SpeedControllerGroup drive_left = new SpeedControllerGroup(motor_Front_Left, motor_Back_Left);
   private static SpeedControllerGroup drive_right = new SpeedControllerGroup(motor_Front_Right, motor_Back_Right);
@@ -65,10 +65,9 @@ public class DriveTrain extends SubsystemBase {
   double integral, derivative, previous_error, setpoint, error = 0;
 
   // PIDController
-  private static Encoder encoder_Left = new
-  Encoder(Constants.encoder_Left_Ports[0],Constants.encoder_Left_Ports[1]);
-  private static Encoder encoder_Right = new
-  Encoder(Constants.encoder_Right_Ports[0],Constants.encoder_Right_Ports[1]);
+  private static Encoder encoder_Left = new Encoder(Constants.encoder_Left_Ports[0], Constants.encoder_Left_Ports[1]);
+  private static Encoder encoder_Right = new Encoder(Constants.encoder_Right_Ports[0],
+      Constants.encoder_Right_Ports[1]);
 
   // private static FeedbackDevice encoder_Left = new
   // FeedbackDevice(FeedbackDevice.QuadEncoder);
@@ -84,13 +83,13 @@ public class DriveTrain extends SubsystemBase {
    * Creates a new DriveTrain.
    */
   public DriveTrain() {
-    P=Constants.kP;
-    I=Constants.kI;
-    D=Constants.kD;
+    P = Constants.kP;
+    I = Constants.kI;
+    D = Constants.kD;
     resetEncoders();
     ahrs.reset();
-    m_leftPIDController = new PIDController(P,I,D);
-    m_rightPIDController = new PIDController(P,I,D);
+    m_leftPIDController = new PIDController(P, I, D);
+    m_rightPIDController = new PIDController(P, I, D);
     m_leftPIDController.setTolerance(Constants.tol);
     m_rightPIDController.setTolerance(Constants.tol);
 
@@ -101,24 +100,27 @@ public class DriveTrain extends SubsystemBase {
     drive_left.setInverted(true);
   }
 
+  public double[] getError() {
+    double[] ret = { m_leftPIDController.getPositionError(), m_rightPIDController.getPositionError() };
+    return ret;
+  }
 
-  public double[] getError(){
-    double[] ret = {m_leftPIDController.getPositionError(),m_rightPIDController.getPositionError()};
+  public double[] getSetPoint() {
+    double[] ret = { m_leftPIDController.getSetpoint(), m_rightPIDController.getSetpoint() };
     return ret;
   }
-  public double[] getSetPoint(){
-    double[] ret = {m_leftPIDController.getSetpoint(),m_rightPIDController.getSetpoint()};
-    return ret;
-  }
-  public void setSetPoint(double[] set){
+
+  public void setSetPoint(double[] set) {
     m_leftPIDController.setSetpoint(set[0]);
     m_rightPIDController.setSetpoint(set[1]);
   }
-  public double[] getPID(){
-    double[] ret = {m_leftPIDController.getP(),m_leftPIDController.getI(),m_leftPIDController.getD()};
+
+  public double[] getPID() {
+    double[] ret = { m_leftPIDController.getP(), m_leftPIDController.getI(), m_leftPIDController.getD() };
     return ret;
   }
-  public void setPID(double P,double I,double D){
+
+  public void setPID(double P, double I, double D) {
     m_leftPIDController.setP(P);
     m_leftPIDController.setI(I);
     m_leftPIDController.setD(D);
@@ -126,6 +128,7 @@ public class DriveTrain extends SubsystemBase {
     m_rightPIDController.setI(I);
     m_rightPIDController.setD(D);
   }
+
   public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
     final double leftFeedforward = m_feedforward.calculate(speeds.leftMetersPerSecond);
     final double rightFeedforward = m_feedforward.calculate(speeds.rightMetersPerSecond);
@@ -147,11 +150,12 @@ public class DriveTrain extends SubsystemBase {
   /**
    * Sets the speed of one motor
    * 
-   * @param id    A DriveMotors enum that represents the motor you want to set the speed of
+   * @param id    A DriveMotors enum that represents the motor you want to set the
+   *              speed of
    * @param speed The speed that you want the motor to go at (-1 to 1)
    */
   public void setSingleMotorPower(final DriveMotors id, final double speed) {
-    switch (id) {// TODO THESE ARE ARBITRARY
+    switch (id) {
     case FL:
       motor_Front_Left.set(speed);
       return;
@@ -179,16 +183,19 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void periodic() {
-    // encoder_Left_Value = motor_Front_Left.getSelectedSensorPosition(1) / (Constants.DISTANCE_PER_PULSE);
-    // encoder_Right_Value = motor_Front_Right.getSelectedSensorPosition(1) / (Constants.DISTANCE_PER_PULSE);
-    // encoder_Left_Rate = motor_Front_Left.getSelectedSensorVelocity(1) / (Constants.DISTANCE_PER_PULSE);
-    // encoder_Right_Rate = motor_Front_Right.getSelectedSensorVelocity(1) / (Constants.DISTANCE_PER_PULSE);
+    // encoder_Left_Value = motor_Front_Left.getSelectedSensorPosition(1) /
+    // (Constants.DISTANCE_PER_PULSE);
+    // encoder_Right_Value = motor_Front_Right.getSelectedSensorPosition(1) /
+    // (Constants.DISTANCE_PER_PULSE);
+    // encoder_Left_Rate = motor_Front_Left.getSelectedSensorVelocity(1) /
+    // (Constants.DISTANCE_PER_PULSE);
+    // encoder_Right_Rate = motor_Front_Right.getSelectedSensorVelocity(1) /
+    // (Constants.DISTANCE_PER_PULSE);
 
     encoder_Left_Value = encoder_Left.getDistance();
     encoder_Right_Value = encoder_Right.getDistance();
     encoder_Left_Rate = encoder_Left.getRate();
     encoder_Right_Rate = encoder_Right.getRate();
-
 
     updateOdometry();
     SmartDashboard.putNumber("Encoder left:", encoder_Left_Value);
@@ -209,10 +216,11 @@ public class DriveTrain extends SubsystemBase {
   public double getAngle() {
     return -ahrs.getAngle();
   }
+
   /**
    * Drives the robot with 1 Joystick
    * 
-   * @param zRotation 
+   * @param zRotation
    * @param xSpeed
    */
   public void arcadeDrive(double zRotation, double xSpeed) {
@@ -261,8 +269,7 @@ public class DriveTrain extends SubsystemBase {
     if (currentDistance > targetDistance - Constants.distanceTolerance
         || currentDistance < targetDistance + Constants.distanceTolerance
         || currentAngle > targetAngle - Constants.angleTolerance
-        || currentAngle < targetAngle + Constants.angleTolerance) 
-        {
+        || currentAngle < targetAngle + Constants.angleTolerance) {
       this.stop();
       return true;
     } else {
