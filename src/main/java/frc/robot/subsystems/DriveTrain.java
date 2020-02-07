@@ -46,13 +46,10 @@ public class DriveTrain extends PIDSubsystem{
   private static double encoder_Right_Value;
   private static double encoder_Left_Rate;
   private static double encoder_Right_Rate;
-  private static double P, I, D;
+  private static boolean isEnabled;
 
   private static SpeedControllerGroup drive_left = new SpeedControllerGroup(motor_Front_Left, motor_Back_Left);
   private static SpeedControllerGroup drive_right = new SpeedControllerGroup(motor_Front_Right, motor_Back_Right);
-
-  private final PIDController m_leftPIDController;
-  private final PIDController m_rightPIDController;
 
   private static DifferentialDrive robotDrive = new DifferentialDrive(drive_left, drive_right);
 
@@ -90,11 +87,8 @@ public class DriveTrain extends PIDSubsystem{
     D = Constants.kD;
     resetEncoders();
     ahrs.reset();
-    m_leftPIDController = new PIDController(P, I, D);
-    m_rightPIDController = new PIDController(P, I, D);
-    m_leftPIDController.setTolerance(Constants.tol);
-    m_rightPIDController.setTolerance(Constants.tol);
-
+    this.getController().setTolerance(Constants.tol);
+    this.disable();
     m_odometry = new DifferentialDriveOdometry(getHeading());
     encoder_Left.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
     encoder_Right.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
@@ -102,41 +96,38 @@ public class DriveTrain extends PIDSubsystem{
     drive_left.setInverted(true);
   }
 
-  public double[] getError() {
-    double[] ret = { m_leftPIDController.getPositionError(), m_rightPIDController.getPositionError() };
-    return ret;
+  public double getPositionalError() {
+    return this.getController().getPositionError();
+  }
+  public double getVelocityError() {
+    return this.getController().getVelocityError();
   }
 
-  public double[] getSetPoint() {
-    double[] ret = { m_leftPIDController.getSetpoint(), m_rightPIDController.getSetpoint() };
-    return ret;
+  public double getSetPoint() {
+    return this.getController().getSetpoint();
   }
 
   public void setSetPoint(double[] set) {
-    m_leftPIDController.setSetpoint(set[0]);
-    m_rightPIDController.setSetpoint(set[1]);
+    this.getController().setSetpoint(setpoint);
   }
 
   public double[] getPID() {
-    double[] ret = { m_leftPIDController.getP(), m_leftPIDController.getI(), m_leftPIDController.getD() };
+    double[] ret = { this.getController().getP(), this.getController().getI(), this.getController().getD() };
     return ret;
   }
 
   public void setPID(double P, double I, double D) {
-    m_leftPIDController.setP(P);
-    m_leftPIDController.setI(I);
-    m_leftPIDController.setD(D);
-    m_rightPIDController.setP(P);
-    m_rightPIDController.setI(I);
-    m_rightPIDController.setD(D);
+    this.getController().setP(P);
+    this.getController().setI(I);
+    this.getController().setD(D);
   }
 
   public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
     final double leftFeedforward = m_feedforward.calculate(speeds.leftMetersPerSecond);
     final double rightFeedforward = m_feedforward.calculate(speeds.rightMetersPerSecond);
 
-    final double leftOutput = m_leftPIDController.calculate(encoder_Left_Rate, speeds.leftMetersPerSecond);
-    final double rightOutput = m_rightPIDController.calculate(encoder_Right_Rate, speeds.rightMetersPerSecond);
+    final double leftOutput = this.getController().calculate(encoder_Left_Rate, speeds.leftMetersPerSecond);
+    final double rightOutput = this.getController().calculate(encoder_Right_Rate, speeds.rightMetersPerSecond);
     drive_left.setVoltage(leftOutput + leftFeedforward);
     drive_right.setVoltage(rightOutput + rightFeedforward);
   }
@@ -180,8 +171,8 @@ public class DriveTrain extends PIDSubsystem{
   }
 
   public double getEncoder() {
-    SmartDashboard.putNumber("Sensor Vel:", motor_Back_Left.getSelectedSensorVelocity(1));
-    return motor_Back_Left.getSelectedSensorPosition(1);
+    //SmartDashboard.putNumber("Sensor Vel:", motor_Back_Left.getSelectedSensorVelocity(1));
+    return 0;
   }
 
   public void periodic() {
@@ -281,10 +272,13 @@ public class DriveTrain extends PIDSubsystem{
     }
 
   }
-  public double returnPIDInput(){
+  protected double getMeasurement(){
     return this.getController().getSetpoint();
   }
-  public void usePIDOutput(double output){
+  protected void useOutput(double output, double d){
+
+  }
+  public void togglePID(){
 
   }
 }
