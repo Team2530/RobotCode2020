@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // import edu.wpi.first.wpilibj.SPI.Port;
 // import edu.wpi.first.wpilibj.controller.PIDController;
@@ -31,7 +32,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
-public class DriveTrain extends SubsystemBase {
+public class DriveTrain extends PIDSubsystem{
   // private static final Port i2c_port_id = null;
 
   private static WPI_VictorSPX motor_Front_Left = new WPI_VictorSPX(Constants.motor_Front_Left_Port);
@@ -83,6 +84,7 @@ public class DriveTrain extends SubsystemBase {
    * Creates a new DriveTrain.
    */
   public DriveTrain() {
+    super(new PIDController(Constants.kP, Constants.kI, Constants.kD));
     P = Constants.kP;
     I = Constants.kI;
     D = Constants.kD;
@@ -217,6 +219,7 @@ public class DriveTrain extends SubsystemBase {
     return -ahrs.getAngle();
   }
 
+
   /**
    * Drives the robot with 1 Joystick
    * 
@@ -276,6 +279,12 @@ public class DriveTrain extends SubsystemBase {
       timedDrive(power * (currentDistance - targetDistance), power * (currentAngle - targetAngle));
       return false;
     }
+
+  }
+  public double returnPIDInput(){
+    return this.getController().getSetpoint();
+  }
+  public void usePIDOutput(double output){
 
   }
 }
