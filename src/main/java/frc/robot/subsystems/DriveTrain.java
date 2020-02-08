@@ -9,7 +9,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.VictorSP;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
@@ -20,7 +19,6 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 // import edu.wpi.first.wpilibj.SPI.Port;
 // import edu.wpi.first.wpilibj.controller.PIDController;
 
@@ -35,18 +33,30 @@ import com.kauailabs.navx.frc.AHRS;
 public class DriveTrain extends PIDSubsystem {
   // private static final Port i2c_port_id = null;
 
+  // -------------------- Motors -------------------- \\
+  // Left Motors
   private static WPI_VictorSPX motor_Front_Left = new WPI_VictorSPX(Constants.motor_Front_Left_Port);
-
   private static WPI_VictorSPX motor_Back_Left = new WPI_VictorSPX(Constants.motor_Back_Left_Port);
 
+  // Right Motors
   private static WPI_VictorSPX motor_Back_Right = new WPI_VictorSPX(Constants.motor_Back_Right_Port);
   private static WPI_VictorSPX motor_Front_Right = new WPI_VictorSPX(Constants.motor_Front_Right_Port);
 
+  // -------------------- Encoder Stuff -------------------- \\
+  // Values
   private static double encoder_Left_Value;
   private static double encoder_Right_Value;
+
+  // Rates
   private static double encoder_Left_Rate;
   private static double encoder_Right_Rate;
-  private static boolean isEnabled;
+
+  // Encoders
+  private static Encoder encoder_Left = new Encoder(Constants.encoder_Left_Ports[0], Constants.encoder_Left_Ports[1]);
+  private static Encoder encoder_Right = new Encoder(Constants.encoder_Right_Ports[0],
+      Constants.encoder_Right_Ports[1]);
+
+  // private static boolean isEnabled;
 
   private static SpeedControllerGroup drive_left = new SpeedControllerGroup(motor_Front_Left, motor_Back_Left);
   private static SpeedControllerGroup drive_right = new SpeedControllerGroup(motor_Front_Right, motor_Back_Right);
@@ -63,10 +73,6 @@ public class DriveTrain extends PIDSubsystem {
   double integral, derivative, previous_error, setpoint, error = 0;
 
   // PIDController
-  private static Encoder encoder_Left = new Encoder(Constants.encoder_Left_Ports[0], Constants.encoder_Left_Ports[1]);
-  private static Encoder encoder_Right = new Encoder(Constants.encoder_Right_Ports[0],
-      Constants.encoder_Right_Ports[1]);
-
   // private static FeedbackDevice encoder_Left = new
   // FeedbackDevice(FeedbackDevice.QuadEncoder);
   // encoder_Left = (FeedbackDevice.QuadEncoder);
@@ -105,10 +111,6 @@ public class DriveTrain extends PIDSubsystem {
     return this.getController().getSetpoint();
   }
 
-  public void setSetPoint(double[] set) {
-    this.getController().setSetpoint(setpoint);
-  }
-
   public double[] getPID() {
     double[] ret = { this.getController().getP(), this.getController().getI(), this.getController().getD() };
     return ret;
@@ -120,6 +122,12 @@ public class DriveTrain extends PIDSubsystem {
     this.getController().setD(D);
   }
 
+  /**
+   * Sets the speed of the left and right side motors somehow
+   * 
+   * @param speeds use constructor of DifferentialDriveWheelSpeeds to set left m/s
+   *               and right m/s
+   */
   public void setSpeeds(DifferentialDriveWheelSpeeds speeds) {
     final double leftFeedforward = m_feedforward.calculate(speeds.leftMetersPerSecond);
     final double rightFeedforward = m_feedforward.calculate(speeds.rightMetersPerSecond);
@@ -128,6 +136,7 @@ public class DriveTrain extends PIDSubsystem {
     final double rightOutput = this.getController().calculate(encoder_Right_Rate, speeds.rightMetersPerSecond);
     drive_left.setVoltage(leftOutput + leftFeedforward);
     drive_right.setVoltage(rightOutput + rightFeedforward);
+    DifferentialDriveWheelSpeeds speeds1 = new DifferentialDriveWheelSpeeds();
   }
 
   public void resetEncoders() {
@@ -272,14 +281,20 @@ public class DriveTrain extends PIDSubsystem {
   }
 
   protected double getMeasurement() {
-    return this.getController().getSetpoint();
+    return this.getAngle();
   }
 
   protected void useOutput(double output, double setpoint) {
-
+    /**
+     * Use output to turn motors
+     */
   }
 
   public void togglePID() {
-
+    if (this.isEnabled()) {
+      this.disable();
+    } else {
+      this.enable();
+    }
   }
 }
