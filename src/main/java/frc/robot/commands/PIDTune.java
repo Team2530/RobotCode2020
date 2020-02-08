@@ -54,7 +54,7 @@ public class PIDTune extends CommandBase {
   public void execute() {
     Number[] value = setpoint.getNumberArray(new Number[]{0,0});
     m_driveTrain.setPID(P.getNumber(-1).doubleValue(), I.getNumber(-1).doubleValue(), D.getNumber(-1).doubleValue());
-    m_driveTrain.setSetPoint(new double[]{value[0].doubleValue(),value[1].doubleValue()});
+    m_driveTrain.setSetpoint(value[1].doubleValue());
   }
 
   // Called once the command ends or is interrupted.
