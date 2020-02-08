@@ -13,7 +13,7 @@ FASTLED_USING_NAMESPACE
 #define NUM_LEDS    11
 CRGB leds[NUM_LEDS];
 
-#define BRIGHTNESS         50
+#define BRIGHTNESS         255
 #define FRAMES_PER_SECOND  120
 
 void setup() {
@@ -30,11 +30,11 @@ void setup() {
 }
 
 void loop() {
-  byte[] value = {0, 0};
+  byte value[] = {1, 0};
   
   // Gets value from RoboRIO and stores it in variable "value"
   if(Serial.available()) {
-    value = Serial.read();
+    Serial.readBytes(value, 10);
     Serial.println("Arduino received data.");
   }
 

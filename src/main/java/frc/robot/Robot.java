@@ -89,7 +89,7 @@ public class Robot extends TimedRobot {
     if (outboxCompare != arduinoOutbox) {
       if (timer.get() > 0.5  /* (in seconds) cooldown period, to prevent data spam */) {
         outboxCompare = arduinoOutbox;
-        arduino.write(outboxCompare, 1);
+        arduino.write(outboxCompare, 10);
         System.out.println("Sending " + outboxCompare + " to Arduino...");
         timer.reset();
       }
