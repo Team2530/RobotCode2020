@@ -67,8 +67,8 @@ public class DriveTrain extends PIDSubsystem {
 
   private final DifferentialDriveOdometry m_odometry;
 
-  private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(Constants.motor_Front_Left_Port,
-      Constants.motor_Front_Right_Port); //!this is straight up wrong
+  private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(Constants.kS,
+      Constants.kV);
 
   double integral, derivative, previous_error, setpoint, error = 0;
 
@@ -95,6 +95,8 @@ public class DriveTrain extends PIDSubsystem {
     m_odometry = new DifferentialDriveOdometry(getHeading());
     encoder_Left.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
     encoder_Right.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
+    encoder_Right.setReverseDirection(true);
+    encoder_Left.setReverseDirection(false);
     drive_right.setInverted(false);
     drive_left.setInverted(true);
   }

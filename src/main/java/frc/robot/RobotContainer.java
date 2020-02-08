@@ -58,6 +58,7 @@ public class RobotContainer {
   // -------------------- Autonomous Commands -------------------- \\
   private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   private final DelayTest delayCommand = new DelayTest(1, m_autoCommand);
+  
 
   // -------------------- Telop Commands -------------------- \\
   // private final XboxJoystickElevator elevatorCommand = new XboxJoystickElevator(elevatorSub, xbox);
@@ -95,7 +96,7 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return new PIDTune(m_driveTrain);
   }
 
   public Command getTelopCommand() {

@@ -28,7 +28,9 @@ public class PIDTune extends CommandBase {
   NetworkTableEntry P, I, D,setpoint;
   private DriveTrain m_driveTrain;
 
-  public PIDTune() {
+  public PIDTune(DriveTrain m_driveTrain) {
+    this.m_driveTrain = m_driveTrain;
+    addRequirements(this.m_driveTrain);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
