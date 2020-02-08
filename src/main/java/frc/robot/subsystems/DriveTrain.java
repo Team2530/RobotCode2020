@@ -287,4 +287,16 @@ public class DriveTrain extends PIDSubsystem{
   public void usePIDOutput(double output){
 
   }
+
+  @Override
+  protected void useOutput(double output, double setpoint) {
+    // TODO Auto-generated method stub
+
+  }
+
+  @Override
+  protected double getMeasurement() {
+    // TODO Auto-generated method stub
+    return 0;
+  }
 }
