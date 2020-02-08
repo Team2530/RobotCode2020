@@ -13,7 +13,7 @@ FASTLED_USING_NAMESPACE
 #define NUM_LEDS    11
 CRGB leds[NUM_LEDS];
 
-#define BRIGHTNESS         255
+#define BRIGHTNESS         75
 #define FRAMES_PER_SECOND  120
 
 void setup() {
@@ -29,8 +29,9 @@ void setup() {
   
 }
 
+int loopVal = 0;
 void loop() {
-  byte value[] = {1, 0};
+  byte value[] = {0, 0};
   
   // Gets value from RoboRIO and stores it in variable "value"
   if(Serial.available()) {
@@ -39,33 +40,42 @@ void loop() {
   }
 
   // Call the current pattern function once, updating the 'leds' array
-  for (int i = 0; i < 11; i++) {
+  for (int a = 0; a < NUM_LEDS; a++) {
+    leds[a] = 0;
+  }
+  for (int i = 0; i < NUM_LEDS; i++) {
     
     if (value[0] == 0 && value[1] == 0) {
       // put light pattern for no input here
-      leds[i] = CHSV(105, 75, 255);
+      leds[loopVal] = CHSV(105, 75, 255);
     }
     
     if (value[0] == 1) {
       // put light pattern for Pixy here
-      leds[i] = CRGB::Yellow;
+      leds[loopVal] = CRGB::Yellow;
     }
 
     if (value[1] == 1) {
       // put light pattern for Limelight here
-      leds[i] = CRGB::Green;
+      leds[loopVal] = CRGB::Green;
     }
 
     if (value[0] == 1 && value[1] == 1) {
       // put light pattern for Limelight + Pixy here
-      if (i < 6) {
-        leds[i] = CRGB::Yellow;
+      if (i % 2 == 0) {
+        leds[loopVal] = CRGB::Yellow;
       } else {
-        leds[i] = CRGB::Green;
+        leds[loopVal] = CRGB::Green;
       }
     }
   }
  
   FastLED.show(); 
   delay(30); 
+
+  if (loopVal < NUM_LEDS) {
+    loopVal = loopVal + 1;
+  } else {
+    loopVal = 0;
+  }
 }
