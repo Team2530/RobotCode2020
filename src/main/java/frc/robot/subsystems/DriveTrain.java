@@ -82,9 +82,9 @@ public class DriveTrain extends PIDSubsystem{
    */
   public DriveTrain() {
     super(new PIDController(Constants.kP, Constants.kI, Constants.kD));
-    P = Constants.kP;
-    I = Constants.kI;
-    D = Constants.kD;
+    double P = Constants.kP;
+    double I = Constants.kI;
+    double D = Constants.kD;
     resetEncoders();
     ahrs.reset();
     this.getController().setTolerance(Constants.tol);
@@ -280,5 +280,17 @@ public class DriveTrain extends PIDSubsystem{
   }
   public void togglePID(){
 
+  //@Override
+  /*protected void useOutput(double output, double setpoint) {
+    // TODO Auto-generated method stub
+  public void togglePID() {
+
+  } */
+
+ // @Override
+ /* protected double getMeasurement() {
+    // TODO Auto-generated method stub
+    return 0;
+  } */
   }
-}
+

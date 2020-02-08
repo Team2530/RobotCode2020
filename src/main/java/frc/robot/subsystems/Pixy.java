@@ -77,6 +77,8 @@ public class Pixy extends SubsystemBase {
       ballAge = loadedBlock.getAge();
     }
 
+
+  
     // Uses the Pixy data to do things
     /*
      * if ( <button pressed> ) { this.driveTrain = driveTrain; this.shooter =
@@ -84,4 +86,9 @@ public class Pixy extends SubsystemBase {
      * shooter //stuff using above variables }
      */
   }
+
+  public double getX() {
+      return ballX;
+  }
+
 }
