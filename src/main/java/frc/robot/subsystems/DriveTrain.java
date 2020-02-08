@@ -32,7 +32,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
-public class DriveTrain extends PIDSubsystem{
+public class DriveTrain extends PIDSubsystem {
   // private static final Port i2c_port_id = null;
 
   private static WPI_VictorSPX motor_Front_Left = new WPI_VictorSPX(Constants.motor_Front_Left_Port);
@@ -82,9 +82,6 @@ public class DriveTrain extends PIDSubsystem{
    */
   public DriveTrain() {
     super(new PIDController(Constants.kP, Constants.kI, Constants.kD));
-    P = Constants.kP;
-    I = Constants.kI;
-    D = Constants.kD;
     resetEncoders();
     ahrs.reset();
     this.getController().setTolerance(Constants.tol);
@@ -99,6 +96,7 @@ public class DriveTrain extends PIDSubsystem{
   public double getPositionalError() {
     return this.getController().getPositionError();
   }
+
   public double getVelocityError() {
     return this.getController().getVelocityError();
   }
@@ -171,7 +169,8 @@ public class DriveTrain extends PIDSubsystem{
   }
 
   public double getEncoder() {
-    //SmartDashboard.putNumber("Sensor Vel:", motor_Back_Left.getSelectedSensorVelocity(1));
+    // SmartDashboard.putNumber("Sensor Vel:",
+    // motor_Back_Left.getSelectedSensorVelocity(1));
     return 0;
   }
 
@@ -209,7 +208,6 @@ public class DriveTrain extends PIDSubsystem{
   public double getAngle() {
     return -ahrs.getAngle();
   }
-
 
   /**
    * Drives the robot with 1 Joystick
@@ -272,25 +270,16 @@ public class DriveTrain extends PIDSubsystem{
     }
 
   }
-  protected double getMeasurement(){
+
+  protected double getMeasurement() {
     return this.getController().getSetpoint();
   }
-  protected void useOutput(double output, double d){
 
-  }
-  public void togglePID(){
-
-  }
-
-  @Override
   protected void useOutput(double output, double setpoint) {
-    // TODO Auto-generated method stub
 
   }
 
-  @Override
-  protected double getMeasurement() {
-    // TODO Auto-generated method stub
-    return 0;
+  public void togglePID() {
+
   }
 }

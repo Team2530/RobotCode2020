@@ -44,7 +44,7 @@ public class PIDTune extends CommandBase {
     P.setNumber(m_driveTrain.getPID()[0]);
     I.setNumber(m_driveTrain.getPID()[1]);
     D.setNumber(m_driveTrain.getPID()[2]);
-    setpoint.setNumberArray(new Number[]{m_driveTrain.getSetPoint()[0],m_driveTrain.getSetPoint()[1]});
+    setpoint.setNumber(m_driveTrain.getSetPoint());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
