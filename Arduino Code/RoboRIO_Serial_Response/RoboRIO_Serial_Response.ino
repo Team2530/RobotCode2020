@@ -43,7 +43,9 @@ void loop() {
     
     if (value == 00) {
       // put light pattern for no input here
-      leds[i] = CRGB::White;
+      leds[i].r = 180; 
+      leds[i].g = 255; 
+      leds[i].b = 180;
     }
     
     if (value == 10) {
