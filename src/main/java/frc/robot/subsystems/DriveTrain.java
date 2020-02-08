@@ -68,7 +68,7 @@ public class DriveTrain extends PIDSubsystem {
   private final DifferentialDriveOdometry m_odometry;
 
   private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(Constants.motor_Front_Left_Port,
-      Constants.motor_Front_Right_Port);
+      Constants.motor_Front_Right_Port); //!this is straight up wrong
 
   double integral, derivative, previous_error, setpoint, error = 0;
 
@@ -136,7 +136,7 @@ public class DriveTrain extends PIDSubsystem {
     final double rightOutput = this.getController().calculate(encoder_Right_Rate, speeds.rightMetersPerSecond);
     drive_left.setVoltage(leftOutput + leftFeedforward);
     drive_right.setVoltage(rightOutput + rightFeedforward);
-    DifferentialDriveWheelSpeeds speeds1 = new DifferentialDriveWheelSpeeds();
+    // DifferentialDriveWheelSpeeds speeds1 = new DifferentialDriveWheelSpeeds();
   }
 
   public void resetEncoders() {
