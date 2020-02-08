@@ -83,11 +83,9 @@ public class Pixy extends SubsystemBase {
     }
 
     if (ballFound == 1) {
-      if (Robot.arduinoOutbox == new byte[] {00}) {
-        Robot.arduinoOutbox = new byte[] {10};
-      } else if (Robot.arduinoOutbox == new byte[] {20}) {
-        Robot.arduinoOutbox = new byte[] {12};
-      }
+      Robot.arduinoOutbox[0] = 1;
+    } else {
+      Robot.arduinoOutbox[0] = 0;
     }
 
     // Uses the Pixy data to do things

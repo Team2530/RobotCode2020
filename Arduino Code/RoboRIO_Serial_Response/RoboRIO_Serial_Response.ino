@@ -13,7 +13,7 @@ FASTLED_USING_NAMESPACE
 #define NUM_LEDS    11
 CRGB leds[NUM_LEDS];
 
-#define BRIGHTNESS          96
+#define BRIGHTNESS         50
 #define FRAMES_PER_SECOND  120
 
 void setup() {
@@ -30,36 +30,34 @@ void setup() {
 }
 
 void loop() {
-  byte value = 00;
+  byte[] value = {0, 0};
   
   // Gets value from RoboRIO and stores it in variable "value"
   if(Serial.available()) {
     value = Serial.read();
-    Serial.println("Arduino received code.");
+    Serial.println("Arduino received data.");
   }
 
   // Call the current pattern function once, updating the 'leds' array
   for (int i = 0; i < 11; i++) {
     
-    if (value == 00) {
+    if (value[0] == 0 && value[1] == 0) {
       // put light pattern for no input here
-      leds[i].r = 180; 
-      leds[i].g = 255; 
-      leds[i].b = 180;
+      leds[i] = CHSV(105, 75, 255);
     }
     
-    if (value == 10) {
+    if (value[0] == 1) {
       // put light pattern for Pixy here
       leds[i] = CRGB::Yellow;
     }
 
-    if (value == 20) {
-      // put light pattern for Pixy here
+    if (value[1] == 1) {
+      // put light pattern for Limelight here
       leds[i] = CRGB::Green;
     }
 
-    if (value == 12) {
-      // put light pattern for Pixy here
+    if (value[0] == 1 && value[1] == 1) {
+      // put light pattern for Limelight + Pixy here
       if (i < 6) {
         leds[i] = CRGB::Yellow;
       } else {

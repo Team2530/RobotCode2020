@@ -45,12 +45,11 @@ public class LimeLight extends SubsystemBase {
     SmartDashboard.putNumber("light", light);
 
     if (tv == 1) {
-      if (Robot.arduinoOutbox == new byte[] {00}) {
-        Robot.arduinoOutbox = new byte[] {20};
-      } else if (Robot.arduinoOutbox == new byte[] {10}) {
-        Robot.arduinoOutbox = new byte[] {12};
-      }
+      Robot.arduinoOutbox[1] = 1;
+    } else {
+      Robot.arduinoOutbox[1] = 0;
     }
+
     // This method will be called once per scheduler run
   }
 

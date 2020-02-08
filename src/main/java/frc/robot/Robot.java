@@ -26,15 +26,13 @@ public class Robot extends TimedRobot {
   private RobotContainer m_robotContainer;
   private SerialPort arduino;
   private Timer timer;
-  byte[] outboxCompare = {0};
+  byte[] outboxCompare = {0, 0};
 
   // This variable will automatically be pushed to the Arduino when its value changes.
   // VALUE KEY:
-  // 00 = nothing
-  // 10 = Pixy sees a ball
-  // 20 = Limelight sees a target
-  // 12 = Pixy and Limelight
-  public static byte[] arduinoOutbox = {00};
+  // item 0 - Pixy
+  // item 1 - Limelight
+  public static byte[] arduinoOutbox = {0, 0};
 
   /**
    * This function is run when the robot is first started up and should be used for any
