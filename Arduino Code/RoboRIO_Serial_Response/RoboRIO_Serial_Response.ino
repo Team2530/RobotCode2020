@@ -2,15 +2,6 @@
 
 FASTLED_USING_NAMESPACE
 
-// FastLED "100-lines-of-code" demo reel, showing just a few 
-// of the kinds of animation patterns you can quickly and easily 
-// compose using FastLED.  
-//
-// This example also shows one easy way to define multiple 
-// animations patterns and have them automatically rotate.
-//
-// -Mark Kriegsman, December 2014
-
 #if defined(FASTLED_VERSION) && (FASTLED_VERSION < 3001000)
 #warning "Requires FastLED 3.1 or later; check github for latest code."
 #endif
@@ -39,29 +30,42 @@ void setup() {
 }
 
 void loop() {
+  byte value = 00;
+  
   // Gets value from RoboRIO and stores it in variable "value"
   if(Serial.available()) {
-    byte value = Serial.read();
-    Serial.println("Arduino received code '" + value + "'.");
+    value = Serial.read();
+    Serial.println("Arduino received code.");
   }
 
   // Call the current pattern function once, updating the 'leds' array
- if (value == 0) {
-    // put light pattern for no input here
+  for (int i = 0; i < 11; i++) {
+    
+    if (value == 00) {
+      // put light pattern for no input here
+      leds[i] = CRGB::White;
+    }
+    
+    if (value == 10) {
+      // put light pattern for Pixy here
+      leds[i] = CRGB::Yellow;
+    }
+
+    if (value == 20) {
+      // put light pattern for Pixy here
+      leds[i] = CRGB::Green;
+    }
+
+    if (value == 12) {
+      // put light pattern for Pixy here
+      if (i < 6) {
+        leds[i] = CRGB::Yellow;
+      } else {
+        leds[i] = CRGB::Green;
+      }
+    }
   }
  
-  if (value == 1) {
-    // put light pattern for Pixy here
-  }
-
-   leds[0] = CRGB::Red; 
-   leds[1] = CRGB::Blue; 
-   leds[2] = CRGB::Red; 
-   leds[3] = CRGB::Orange; 
-   leds[4] = CRGB::Green; 
-   leds[5] = CRGB::Yellow; 
-        FastLED.show(); 
-        delay(30); 
-  
-  delay(50);
+  FastLED.show(); 
+  delay(30); 
 }

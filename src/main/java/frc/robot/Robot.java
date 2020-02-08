@@ -30,9 +30,11 @@ public class Robot extends TimedRobot {
 
   // This variable will automatically be pushed to the Arduino when its value changes.
   // VALUE KEY:
-  // 0 = nothing
-  // 1 = Pixy sees a ball
-  public static byte[] arduinoOutbox = {0};
+  // 00 = nothing
+  // 10 = Pixy sees a ball
+  // 20 = Limelight sees a target
+  // 12 = Pixy and Limelight
+  public static byte[] arduinoOutbox = {00};
 
   /**
    * This function is run when the robot is first started up and should be used for any
