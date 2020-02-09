@@ -10,9 +10,6 @@ import io.github.pseudoresonance.pixy2api.Pixy2CCC.Block;
 import io.github.pseudoresonance.pixy2api.links.SPILink;
 
 public class Pixy extends SubsystemBase {
-  private DriveTrain driveTrain;
-  private Shooter shooter;
-  private Elevator elevator;
   private final Pixy2 pixy;
 
   // ints for ball data

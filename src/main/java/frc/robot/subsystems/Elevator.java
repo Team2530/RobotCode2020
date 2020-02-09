@@ -72,7 +72,7 @@ public class Elevator extends SubsystemBase {
     }
   }
 
-  //TODO get Angle function return degrees
+  //TODO get Angle function return radians
   public double getAngle() { 
     /**
      * pusdo code
@@ -83,7 +83,7 @@ public class Elevator extends SubsystemBase {
     return 40; //temp
   }
   
-  //TODO get Height function return inches
+  //TODO get Height function return meters
   public double getHeight(){
     /**
      * pusdo code 

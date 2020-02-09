@@ -43,7 +43,7 @@ public final class Constants {
     public static final int motor_Right_Flywheel_Port = 9;
     public static final int motor_Left_FlyWheel_Port = 10;
 
-    public static final int motor_Ball_Leadscrew_Port = 11;
+    public static final int motor_Ball_Pully_Port = 11;
 
 
     //--------------------Sensor Ports--------------------\\
@@ -108,6 +108,7 @@ public final class Constants {
     public static final double SHOOTER_WHEEL_RADIUS = 6*2.54;
     public static final double eff = 0.8;//?effective efficiency percentage
     public static final int MAX_SHOOTING_DISTANCE = 254;//cm
+    public static final int MAX_SHOOTING_VEOLCITY = 20;//meters per sec.
     public static final int IDEAL_SHOOTING_DISTANCE = 190;//cm
     public static final double distanceTolerance = 10; //cm
     public static final double angleTolerance = 10; //degrees
@@ -120,4 +121,6 @@ public final class Constants {
     public static final double maxHeight = 18.54717*2.54; //cm
     public static final double minAngle = -32; //degrees
     public static final double minHeight = -29.68168*2.54; //cm
+	public static final double gravity = -9.8;//meters per second
+	public static final int DROP_IN_DISTANCE_PER_REVOLUTION = 0;
 }
