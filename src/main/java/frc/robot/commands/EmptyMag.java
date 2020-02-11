@@ -40,13 +40,13 @@ public class EmptyMag extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    sposition = m_limelight.getSphericalPosition(m_elevator.getAngle(), m_elevator.getLimeLightHeight());
-    if(sposition[0]<Constants.MAX_SHOOTING_DISTANCE){
-      if(Constants.ball_Weight*(Constants.target_Height-m_elevator.getHeight())>m_shooter.getShooterEnergy()){
-        m_shooter.fireBall();
-      }
+    // sposition = m_limelight.getSphericalPosition(m_elevator.getAngle(), m_elevator.getLimeLightHeight());
+    // if(sposition[0]<Constants.MAX_SHOOTING_DISTANCE){
+    //   if(Constants.ball_Weight*(Constants.target_Height-m_elevator.getHeight())>m_shooter.getShooterEnergy()){
+    //     m_shooter.fireBall();
+    //   }
       
-    }
+    // }
     
 
 

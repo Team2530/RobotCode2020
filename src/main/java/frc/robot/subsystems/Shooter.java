@@ -27,11 +27,13 @@ public class Shooter extends SubsystemBase {
   private static WPI_VictorSPX motor_Ball_Intake = new WPI_VictorSPX(Constants.motor_Ball_Pully_Port);
   private static double currentSpeed = 0;
 
-  //private static Encoder encoder_Left = new Encoder(Constants.encoder_Left_Flywheel_Ports[0],Constants.encoder_Left_Flywheel_Ports[1]);
-  //private static Encoder encoder_Right = new Encoder(Constants.encoder_Right_Flywheel_Port[0],Constants.encoder_Right_Flywheel_Port[1]);
+  // private static Encoder encoder_Left = new
+  // Encoder(Constants.encoder_Left_Flywheel_Ports[0],Constants.encoder_Left_Flywheel_Ports[1]);
+  // private static Encoder encoder_Right = new
+  // Encoder(Constants.encoder_Right_Flywheel_Port[0],Constants.encoder_Right_Flywheel_Port[1]);
 
   public Shooter() {
-    motor_Right_FlyWheel.set(ControlMode.Follower,Constants.motor_Left_FlyWheel_Port);
+    motor_Right_FlyWheel.set(ControlMode.Follower, Constants.motor_Left_FlyWheel_Port);
   }
 
   @Override
@@ -39,35 +41,40 @@ public class Shooter extends SubsystemBase {
     setFWPower(currentSpeed);
     // This method will be called once per scheduler run
   }
-  public void startFW(){
+
+  public void startFW() {
     currentSpeed = 1;
     motor_Left_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
   }
-  public void stopFW(){
+
+  public void stopFW() {
     currentSpeed = 0;
     motor_Left_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
   }
+
   /**
    * @return Average Velocity of flyweels in rad/s
    */
-  public double getAvgSpeed(){
-    return (motor_Left_FlyWheel.getSelectedSensorVelocity()+motor_Right_FlyWheel.getSelectedSensorVelocity())/2/Constants.DROP_IN_DISTANCE_PER_REVOLUTION;
+  public double getAvgSpeed() {
+    return (motor_Left_FlyWheel.getSelectedSensorVelocity() + motor_Right_FlyWheel.getSelectedSensorVelocity()) / 2
+        / Constants.DROP_IN_DISTANCE_PER_REVOLUTION;
   }
 
-  public void startSpinning(double targetballspeed){
-     double wheelspeed = targetballspeed*Math.sqrt(Constants.I/(0.5*Constants.ball_Weight+Constants.I/(Math.pow(Constants.SHOOTER_WHEEL_RADIUS,2))));
-    if(wheelspeed<Constants.MAX_SHOOTING_VEOLCITY && wheelspeed<=getAvgSpeed()){
+  public void startSpinning(double targetballspeed) {
+    double wheelspeed = targetballspeed * Math.sqrt(
+        Constants.I / (0.5 * Constants.ball_Weight + Constants.I / (Math.pow(Constants.SHOOTER_WHEEL_RADIUS, 2))));
+    if (wheelspeed < Constants.MAX_SHOOTING_VEOLCITY && wheelspeed <= getAvgSpeed()) {
       currentSpeed += 0.05;
     }
 
   }
-  public void setFWPower(double power){
+
+  public void setFWPower(double power) {
     motor_Left_FlyWheel.set(ControlMode.PercentOutput, power);
   }
-  public void fireBall(){
-    
+
+  public void fireBall() {
+
   }
-
-
 
 }
