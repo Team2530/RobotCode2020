@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
@@ -67,8 +68,7 @@ public class DriveTrain extends PIDSubsystem {
 
   private final DifferentialDriveOdometry m_odometry;
 
-  private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(Constants.kS,
-      Constants.kV);
+  private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(Constants.kS, Constants.kV);
 
   double integral, derivative, previous_error, setpoint, error = 0;
 
@@ -299,4 +299,8 @@ public class DriveTrain extends PIDSubsystem {
       this.enable();
     }
   }
+
+  // public Pose2d getOdometryPose2d() {
+  //   return m_odometry.getPoseMeters();
+  // }
 }

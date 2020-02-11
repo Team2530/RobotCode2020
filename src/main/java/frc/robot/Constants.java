@@ -95,6 +95,9 @@ public final class Constants {
     public static final double tol = 5;
     public static final int setPoint = 1;
 
+    public static final double maxVelocityMetersPerSecond = 1; //!This needs to be set
+    public static final double maxAccelerationMetersPerSecondSq = 1; //!This needs to be set
+
     //----------Field Constants----------\\
     public static final double target_Height = 105*2.54; //temp test value
     public static final double ball_Weight = 0.3125;
