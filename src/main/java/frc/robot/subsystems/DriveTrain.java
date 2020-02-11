@@ -99,6 +99,15 @@ public class DriveTrain extends PIDSubsystem {
     encoder_Left.setReverseDirection(false);
     drive_right.setInverted(false);
     drive_left.setInverted(true);
+
+    String trajectoryJSON = "paths/YourPath.wpilib.json";
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+    }
+
   }
 
   public double getPositionalError() {
@@ -292,6 +301,19 @@ public class DriveTrain extends PIDSubsystem {
      */
   }
 
+  public Pose2d getPose() {
+    return m_odometry.getPoseMeters();
+  }
+
+  public DifferentialDriveWheelSpeeds getWheelSpeeds() {
+    return new DifferentialDriveWheelSpeeds(encoder_Left_Rate, encoder_Right_Rate);
+  }
+
+  public void resetOdometry(Pose2d pose) {
+    resetEncoders();
+    m_odometry.resetPosition(pose, getHeading());
+  }
+
   public void togglePID() {
     if (this.isEnabled()) {
       this.disable();
@@ -301,6 +323,6 @@ public class DriveTrain extends PIDSubsystem {
   }
 
   // public Pose2d getOdometryPose2d() {
-  //   return m_odometry.getPoseMeters();
+  // return m_odometry.getPoseMeters();
   // }
 }
