@@ -20,9 +20,22 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Pixy;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+<<<<<<< Updated upstream
 import frc.robot.subsystems.Shooter;
+=======
+import edu.wpi.first.wpilibj.trajectory.*;
+import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+>>>>>>> Stashed changes
 
+import java.io.IOException;
+import java.nio.file.*;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -98,7 +111,36 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
+<<<<<<< Updated upstream
     return m_autoCommand;
+=======
+    String trajectoryJSON = "PathWeaver/DriveForwardFarBlue.wpilib.json";
+    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(10, 60);
+    Trajectory trajectory;
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+      
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+    }
+    RamseteCommand ramseteCommand = new RamseteCommand(
+      trajectory,
+        m_driveTrain::getPose,
+        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
+        new SimpleMotorFeedforward(DriveConstants.ksVolts,
+                                   DriveConstants.kvVoltSecondsPerMeter,
+                                   DriveConstants.kaVoltSecondsSquaredPerMeter),
+        m_driveTrain.getKinematics(),
+        m_driveTrain::getWheelSpeeds,
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        new PIDController(DriveConstants.kPDriveVel, 0, 0),
+        // RamseteCommand passes volts to the callback
+        m_robotDrive::tankDriveVolts,
+        m_robotDrive
+    );
+    return new PIDTune(m_driveTrain);
+>>>>>>> Stashed changes
   }
 
   public Command getTelopCommand() {

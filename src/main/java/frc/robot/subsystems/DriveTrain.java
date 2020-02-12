@@ -94,6 +94,19 @@ public class DriveTrain extends PIDSubsystem{
     encoder_Right.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
     drive_right.setInverted(false);
     drive_left.setInverted(true);
+<<<<<<< Updated upstream
+=======
+
+  
+
+  }
+
+  public DifferentialDriveKinematics getKinematics() {
+    return m_kinematics;
+  }
+  public SimpleMotorFeedforward getFeedForward() {
+    return m_feedforward;
+>>>>>>> Stashed changes
   }
 
   public double getPositionalError() {
