@@ -17,6 +17,9 @@ public class LocateBall extends CommandBase {
   /**
    * Creates a new LocateBall.
    */
+
+
+  private int tolerance = 40;
   private DriveTrain m_driveTrain;
   private Pixy m_pixy;
   private Shooter m_shooter;
@@ -64,16 +67,30 @@ public class LocateBall extends CommandBase {
     double Lerr = Ltol - m_pixy.getX()*2;
 
     if (Ltol > (m_pixy.getX()*2)) {
-      m_driveTrain.setSingleMotorPower(DriveMotors.FL, kP * Lerr);
+      m_driveTrain.setSingleMotorPower(DriveMotors.FR, kP * Lerr);
+      //m_driveTrain.setSingleMotorPower(DriveMotors.FL, 0.3);  // to stabilize movement
     }
     else if ((m_pixy.getX()*2) > Rtol) {
-      m_driveTrain.setSingleMotorPower(DriveMotors.FR, kP * Rerr);
+      m_driveTrain.setSingleMotorPower(DriveMotors.FL, kP * Rerr);
+      //m_driveTrain.setSingleMotorPower(DriveMotors.FR, 0.3);  // to stabilize movement
     }
 
   }
     public void driveToBall() {
-      if 
-
-    }
-
-}
+      if (m_pixy.getArea() < 80) {
+        //motors go! (here)
+       while (m_pixy.getArea() < 80) {
+        if (315 - tolerance > m_pixy.getX()*2 || m_pixy.getX()*2 > 315 + tolerance) 
+        { ajustXError(1.5, tolerance); }
+        else { 
+          m_driveTrain.setSingleMotorPower(DriveMotors.FR, 1);
+          m_driveTrain.setSingleMotorPower(DriveMotors.FL, 1);
+        }
+       } 
+      }
+        //gotoball
+        //align X
+        //ball far away? make sure ball doesn't go out of view? off screen ball tracking?
+        //start motors -> drive
+      }
+ }

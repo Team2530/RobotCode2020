@@ -91,10 +91,15 @@ public class Pixy extends SubsystemBase {
       return ballX;
   }
 
-  public Block returnLargestBall() {
-    return largestBall;
-  }
+    public double getHeight() {
+      return ballWidth;
+    }
 
+    public double getWidth() {
+      return ballHeight;
+    }
 
-
+    public double getArea() {
+      return ballWidth * ballHeight;
+    }
 }
