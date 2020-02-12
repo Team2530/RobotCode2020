@@ -43,7 +43,7 @@ public class LocateBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    
+    driveToBall();
   }
 
   // Called once the command ends or is interrupted.
@@ -85,6 +85,7 @@ public class LocateBall extends CommandBase {
         else { 
           m_driveTrain.setSingleMotorPower(DriveMotors.FR, 1);
           m_driveTrain.setSingleMotorPower(DriveMotors.FL, 1);
+
         }
        } 
       }
