@@ -29,9 +29,9 @@ void setup() {
   
 }
 
-int loopVal = 0;
+double loopVal = 0;
 void loop() {
-  byte value[] = {1, 1};
+  byte value[] = {0, 0};
   
   // Gets value from RoboRIO and stores it in variable "value"
   if(Serial.available()) {
@@ -65,16 +65,7 @@ void loop() {
       } else {
         leds[i] = CRGB::Green;
       }
-    } 
-
-    if (value[0] == 9 && value[1] == 9) {
-      // Candy cane. Celebration?
-      if (i % 2 == 0) {
-        leds[i] = CHSV(105, 75, 255);
-      } else {
-        leds[i] = CRGB::Red;
-      }
-    } 
+    }
 
     leds[i].fadeToBlackBy(abs(loopVal - i) * 245);
   }
