@@ -7,7 +7,9 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
@@ -19,12 +21,17 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 // import edu.wpi.first.wpilibj.SPI.Port;
 // import edu.wpi.first.wpilibj.controller.PIDController;
 
 import frc.robot.Constants;
 import frc.robot.Constants.*;
+
+import java.io.IOException;
+import java.nio.file.Path;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 // import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -115,7 +122,6 @@ public class DriveTrain extends PIDSubsystem {
   }
   public SimpleMotorFeedforward getFeedForward() {
     return m_feedforward;
->>>>>>> Stashed changes
   }
 
   public double getPositionalError() {
@@ -333,4 +339,16 @@ public class DriveTrain extends PIDSubsystem {
   // public Pose2d getOdometryPose2d() {
   // return m_odometry.getPoseMeters();
   // }
+
+   /**
+   * Controls the left and right sides of the drive directly with voltages.
+   *
+   * @param leftVolts  the commanded left output
+   * @param rightVolts the commanded right output
+   */
+  public void tankDriveVolts(double leftVolts, double rightVolts) {
+    drive_left.setVoltage(leftVolts);
+    drive_right.setVoltage(-rightVolts);
+    robotDrive.feed();
+  }
 }

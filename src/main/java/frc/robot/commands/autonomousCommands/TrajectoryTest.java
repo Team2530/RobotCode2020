@@ -7,56 +7,47 @@
 
 package frc.robot.commands.autonomousCommands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.trajectory.*;
-import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 
-import java.io.IOException;
-import java.nio.file.*;
 
 import frc.robot.Constants;
 
 public class TrajectoryTest extends RamseteCommand {
+  
+  String trajectoryJSON = "PathWeaver/DriveForwardFarBlue.wpilib.json";
+  TrajectoryConfig trajectoryConfig = new TrajectoryConfig(10, 60);
+  DriveTrain m_driveTrain;
+
   /**
    * Creates a new TrajectoryTest.
    */
-  String trajectoryJSON = "PathWeaver/DriveForwardFarBlue.wpilib.json";
-    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(10, 60);
-    DriveTrain m_driveTrain;
+  public TrajectoryTest(DriveTrain m_driveTrain, Trajectory trajectory) {
+    super (
+      trajectory, // TrajectoryUtil.fromPathweaverJson(Filesystem.getDeployDirectory().toPath().resolve("PathWeaver/DriveForwardFarBlue.wpilib.json")), //The Trajectory 
+      m_driveTrain::getPose, //Pose
+      new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta), //Ramsete Controller
+      m_driveTrain.getFeedForward(), //Feed Forward
+      m_driveTrain.getKinematics(), //Kinematics
+      m_driveTrain::getWheelSpeeds, //Wheel Speeds
+      m_driveTrain.getController(), //Left PID Controller
+      m_driveTrain.getController(), //Right PID Controller
+      // RamseteCommand passes volts to the callback
+      m_driveTrain::tankDriveVolts, //BiConsumer? Output Volts
+      m_driveTrain //SubSystem Requirments
+    );
+
+    // // String trajectoryJSON = "PathWeaver/DriveForwardFarBlue.wpilib.json";
+    // TrajectoryConfig trajectoryConfig = new TrajectoryConfig(10, 60);
     // try {
     //   Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-    //   trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    //   Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
       
     // } catch (IOException ex) {
     //   DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
     // }
-  public TrajectoryTest(DriveTrain m_driveTrain,Trajectory trajectory) {
-    super (
-      TrajectoryUtil.fromPathweaverJson(Filesystem.getDeployDirectory().toPath().resolve("PathWeaver/DriveForwardFarBlue.wpilib.json")),
-      m_driveTrain::getPose,
-      new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta),
-      m_driveTrain::getFeedForward,
-      m_driveTrain::getKinematics,
-      m_driveTrain::getWheelSpeeds,
-      m_driveTrain::getController,
-      m_driveTrain::getController,
-      // RamseteCommand passes volts to the callback
-      m_robotDrive::tankDriveVolts,
-      m_robotDrive
-  ));
-    String trajectoryJSON = "PathWeaver/DriveFOrwardFarBlue.wpilib.json";
-    TrajectoryConfig trajectoryConfig = new TrajectoryConfig(10, 60);
-    try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-      
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-    }
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
