@@ -110,6 +110,14 @@ public class DriveTrain extends PIDSubsystem {
 
   }
 
+  public DifferentialDriveKinematics getKinematics() {
+    return m_kinematics;
+  }
+  public SimpleMotorFeedforward getFeedForward() {
+    return m_feedforward;
+>>>>>>> Stashed changes
+  }
+
   public double getPositionalError() {
     return this.getController().getPositionError();
   }
