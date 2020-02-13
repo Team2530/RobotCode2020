@@ -348,7 +348,7 @@ public class DriveTrain extends PIDSubsystem {
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     drive_left.setVoltage(leftVolts);
-    drive_right.setVoltage(-rightVolts);
+    drive_right.setVoltage(rightVolts);
     robotDrive.feed();
   }
 }

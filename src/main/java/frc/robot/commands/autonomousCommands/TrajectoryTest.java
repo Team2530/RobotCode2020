@@ -27,15 +27,15 @@ public class TrajectoryTest extends RamseteCommand {
   public TrajectoryTest(DriveTrain m_driveTrain, Trajectory trajectory) {
     super (
       trajectory, // TrajectoryUtil.fromPathweaverJson(Filesystem.getDeployDirectory().toPath().resolve("PathWeaver/DriveForwardFarBlue.wpilib.json")), //The Trajectory 
-      m_driveTrain::getPose, //Pose
+      m_driveTrain::getPose, //Pose (Supplier)
       new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta), //Ramsete Controller
       m_driveTrain.getFeedForward(), //Feed Forward
       m_driveTrain.getKinematics(), //Kinematics
-      m_driveTrain::getWheelSpeeds, //Wheel Speeds
+      m_driveTrain::getWheelSpeeds, //Wheel Speeds (Supplier)
       m_driveTrain.getController(), //Left PID Controller
       m_driveTrain.getController(), //Right PID Controller
       // RamseteCommand passes volts to the callback
-      m_driveTrain::tankDriveVolts, //BiConsumer? Output Volts
+      m_driveTrain::tankDriveVolts, //Function that uses the Output Volts (BiConsumer)
       m_driveTrain //SubSystem Requirments
     );
 
