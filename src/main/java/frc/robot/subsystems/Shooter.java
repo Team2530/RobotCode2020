@@ -71,10 +71,10 @@ public class Shooter extends SubsystemBase {
     // motor_Left_FlyWheel.set(ControlMode.PercentOutput, power);
   }
   public void in() {
-    motor_Ball_Intake.set(ControlMode.PercentOutput, 0.5);
+    motor_Ball_Intake.set(ControlMode.PercentOutput, 1);
   }
   public void out() {
-    motor_Ball_Intake.set(ControlMode.PercentOutput, -0.5);
+    motor_Ball_Intake.set(ControlMode.PercentOutput, -1);
   }
   public void stopIntake(){
     motor_Ball_Intake.set(ControlMode.PercentOutput, 0);

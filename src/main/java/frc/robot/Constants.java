@@ -43,7 +43,7 @@ public final class Constants {
     public static final int motor_Right_Flywheel_Port = 9;
     public static final int motor_Left_FlyWheel_Port = 10;
 
-    public static final int motor_Ball_Pully_Port = 11;
+    public static final int motor_Ball_Pully_Port = 2;
 
 
     //--------------------Sensor Ports--------------------\\
