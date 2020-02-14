@@ -7,9 +7,17 @@
 
 package frc.robot;
 
+import java.io.IOException;
+import java.nio.file.Path;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.*;
 import frc.robot.commands.autonomousCommands.*;
 // import frc.robot.commands.SmallJoystickElevator;
@@ -20,6 +28,7 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Pixy;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Shooter;
 
@@ -51,7 +60,8 @@ public class RobotContainer {
   private final JoystickButton Button3 = new JoystickButton(stick1, 3);
   private final JoystickButton Button4 = new JoystickButton(stick1, 4);
   private final JoystickButton Button5 = new JoystickButton(stick1, 5);
-
+  private final JoystickButton Button6 = new JoystickButton(stick1, 6);
+  private final JoystickButton Button7 = new JoystickButton(stick1, 7);
   //Xbox Controller
   final XboxController xbox = new XboxController(0);
 
@@ -59,8 +69,16 @@ public class RobotContainer {
   private final JoystickButton XboxButton1 = new JoystickButton(xbox, 1);
 
   // -------------------- Autonomous Commands -------------------- \\
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  private final DelayTest delayCommand = new DelayTest(1, m_autoCommand);
+  
+  String trajectoryJSON = "PathWeaver/DriveForwardFarBlue.wpilib.json";
+  TrajectoryConfig trajectoryConfig = new TrajectoryConfig(10, 60);
+  
+  
+  // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  
+  //private final TrajectoryTest m_autoCommand = new TrajectoryTest(m_driveTrain, new Traj);
+  
+  //private final DelayTest delayCommand = new DelayTest(1, m_autoCommand);
   
 
   // -------------------- Telop Commands -------------------- \\
@@ -89,7 +107,9 @@ public class RobotContainer {
     Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
     Button3.whenPressed(toggleLED);
     Button5.whenPressed(new LocateBall(m_driveTrain, m_pixy, m_shooter));
-
+    Button4.whenPressed(new InstantCommand(m_shooter::in, m_shooter));
+    Button6.whenPressed(new InstantCommand(m_shooter::out, m_shooter));
+    Button7.whenPressed(new InstantCommand(m_shooter::stopIntake, m_shooter));
   }
 
   /**
@@ -99,7 +119,15 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    // try {
+    //   Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      
+       
+    // } catch (IOException ex) {
+    //   DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+    // }
+
+    return lineUp;
   }
 
   public Command getTelopCommand() {
