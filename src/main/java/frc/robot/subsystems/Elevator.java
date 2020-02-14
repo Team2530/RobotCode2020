@@ -19,8 +19,8 @@ import frc.robot.Constants.ElevatorMotors;
 
 public class Elevator extends SubsystemBase {
   
-  private static VictorSPX motor_Left_Leadscrew = new VictorSPX(Constants.motor_Left_Leadscrew_Port);
-  private static TalonSRX motor_Right_Leadscrew = new TalonSRX(Constants.motor_Right_Leadscrew_Port);
+  // private static VictorSPX motor_Left_Leadscrew = new VictorSPX(Constants.motor_Left_Leadscrew_Port);
+  // private static TalonSRX motor_Right_Leadscrew = new TalonSRX(Constants.motor_Right_Leadscrew_Port);
 
 
 
@@ -51,19 +51,19 @@ public class Elevator extends SubsystemBase {
 
       case LL:
         if(limit_Switch_Left_Leadscrew.get() && speed > 0) { // if limit switch is pressed and it wants to go up, dont
-          motor_Left_Leadscrew.set(ControlMode.PercentOutput, 0);
+          // motor_Left_Leadscrew.set(ControlMode.PercentOutput, 0);
           return;
         } else {
-          motor_Left_Leadscrew.set(ControlMode.PercentOutput, speed);
+          // motor_Left_Leadscrew.set(ControlMode.PercentOutput, speed);
           return;
         }
 
       case RL:
         if(limit_Switch_Right_Leadscrew.get() && speed > 0) { // if limit switch is pressed and it wants to go up, dont
-          motor_Right_Leadscrew.set(ControlMode.PercentOutput, 0);
+          // motor_Right_Leadscrew.set(ControlMode.PercentOutput, 0);
           return;
         } else {
-          motor_Right_Leadscrew.set(ControlMode.PercentOutput, speed);
+          // motor_Right_Leadscrew.set(ControlMode.PercentOutput, speed);
           return;
         }
 
