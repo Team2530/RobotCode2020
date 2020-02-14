@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.*;
 import frc.robot.commands.autonomousCommands.*;
+import frc.robot.subsystems.Conveyor;
 // import frc.robot.commands.SmallJoystickElevator;
 // import frc.robot.commands.XboxJoystickElevator;
 import frc.robot.subsystems.DriveTrain;
@@ -49,6 +50,7 @@ public class RobotContainer {
   private final LimeLight limeLightSub = new LimeLight();
   private final Pixy m_pixy = new Pixy();
   private final Shooter m_shooter = new Shooter();
+  private final Conveyor m_conveyor = new Conveyor();
 
   // -------------------- Joysticks and Buttons -------------------- \\
   //Joysticks
@@ -62,6 +64,9 @@ public class RobotContainer {
   private final JoystickButton Button5 = new JoystickButton(stick1, 5);
   private final JoystickButton Button6 = new JoystickButton(stick1, 6);
   private final JoystickButton Button7 = new JoystickButton(stick1, 7);
+  private final JoystickButton Button9 = new JoystickButton(stick1, 9);
+  private final JoystickButton Button10 = new JoystickButton(stick1, 10);
+
   //Xbox Controller
   final XboxController xbox = new XboxController(0);
 
@@ -106,10 +111,12 @@ public class RobotContainer {
     Button1.whileHeld(lineUp);
     Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
     Button3.whenPressed(toggleLED);
-    Button5.whenPressed(new LocateBall(m_driveTrain, m_pixy, m_shooter));
-    Button4.whenPressed(new InstantCommand(m_shooter::in, m_shooter));
-    Button6.whenPressed(new InstantCommand(m_shooter::out, m_shooter));
-    Button7.whenPressed(new InstantCommand(m_shooter::stopIntake, m_shooter));
+    // Button5.whenPressed(new LocateBall(m_driveTrain, m_pixy, m_shooter));
+    Button4.whenPressed(new InstantCommand(m_conveyor::in, m_conveyor));
+    Button6.whenPressed(new InstantCommand(m_conveyor::out, m_conveyor));
+    Button7.whenPressed(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
+    Button9.whenPressed(new InstantCommand(m_shooter::stopFW, m_shooter));
+    Button10.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
   }
 
   /**

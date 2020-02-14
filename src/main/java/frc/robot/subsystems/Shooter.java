@@ -9,7 +9,6 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -21,7 +20,6 @@ public class Shooter extends SubsystemBase {
   // private static WPI_TalonSRX motor_Left_FlyWheel = new WPI_TalonSRX(Constants.motor_Left_FlyWheel_Port);
   // private static WPI_TalonSRX motor_Right_FlyWheel = new WPI_TalonSRX(Constants.motor_Right_Flywheel_Port);
 
-  private static WPI_VictorSPX motor_Ball_Intake = new WPI_VictorSPX(Constants.motor_Ball_Pully_Port);
   private static double currentSpeed = 0;
 
   // private static Encoder encoder_Left = new
@@ -30,23 +28,26 @@ public class Shooter extends SubsystemBase {
   // Encoder(Constants.encoder_Right_Flywheel_Port[0],Constants.encoder_Right_Flywheel_Port[1]);
 
   public Shooter() {
+    motor_Right_FlyWheel.setInverted(false);
     // motor_Right_FlyWheel.set(ControlMode.Follower, Constants.motor_Left_FlyWheel_Port);
   }
 
   @Override
   public void periodic() {
-    setFWPower(currentSpeed);
+    // setFWPower(currentSpeed);
     // This method will be called once per scheduler run
   }
 
   public void startFW() {
-    currentSpeed = 1;
-    // motor_Left_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
+    currentSpeed = 1; //for testing
+    motor_Left_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
+    motor_Right_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
   }
 
   public void stopFW() {
     currentSpeed = 0;
-    // motor_Left_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
+    motor_Left_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
+    motor_Right_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
   }
 
   /**
@@ -70,16 +71,6 @@ public class Shooter extends SubsystemBase {
   public void setFWPower(double power) {
     // motor_Left_FlyWheel.set(ControlMode.PercentOutput, power);
   }
-  public void in() {
-    motor_Ball_Intake.set(ControlMode.PercentOutput, 1);
-  }
-  public void out() {
-    motor_Ball_Intake.set(ControlMode.PercentOutput, -1);
-  }
-  public void stopIntake(){
-    motor_Ball_Intake.set(ControlMode.PercentOutput, 0);
-  }
-
 
   public void fireBall() {
 
