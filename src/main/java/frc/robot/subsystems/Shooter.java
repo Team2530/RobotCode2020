@@ -18,8 +18,8 @@ public class Shooter extends SubsystemBase {
   /**
    * Creates a new Shooter.
    */
-  private static WPI_TalonSRX motor_Left_FlyWheel = new WPI_TalonSRX(Constants.motor_Left_FlyWheel_Port);
-  private static WPI_TalonSRX motor_Right_FlyWheel = new WPI_TalonSRX(Constants.motor_Right_Flywheel_Port);
+  // private static WPI_TalonSRX motor_Left_FlyWheel = new WPI_TalonSRX(Constants.motor_Left_FlyWheel_Port);
+  // private static WPI_TalonSRX motor_Right_FlyWheel = new WPI_TalonSRX(Constants.motor_Right_Flywheel_Port);
 
   private static WPI_VictorSPX motor_Ball_Intake = new WPI_VictorSPX(Constants.motor_Ball_Pully_Port);
   private static double currentSpeed = 0;
@@ -30,7 +30,7 @@ public class Shooter extends SubsystemBase {
   // Encoder(Constants.encoder_Right_Flywheel_Port[0],Constants.encoder_Right_Flywheel_Port[1]);
 
   public Shooter() {
-    motor_Right_FlyWheel.set(ControlMode.Follower, Constants.motor_Left_FlyWheel_Port);
+    // motor_Right_FlyWheel.set(ControlMode.Follower, Constants.motor_Left_FlyWheel_Port);
   }
 
   @Override
@@ -41,20 +41,21 @@ public class Shooter extends SubsystemBase {
 
   public void startFW() {
     currentSpeed = 1;
-    motor_Left_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
+    // motor_Left_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
   }
 
   public void stopFW() {
     currentSpeed = 0;
-    motor_Left_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
+    // motor_Left_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
   }
 
   /**
    * @return Average Velocity of flyweels in rad/s
    */
   public double getAvgSpeed() {
-    return (motor_Left_FlyWheel.getSelectedSensorVelocity() + motor_Right_FlyWheel.getSelectedSensorVelocity()) / 2
-        / Constants.DROP_IN_DISTANCE_PER_REVOLUTION;
+    // return (motor_Left_FlyWheel.getSelectedSensorVelocity() + motor_Right_FlyWheel.getSelectedSensorVelocity()) / 2
+        // / Constants.DROP_IN_DISTANCE_PER_REVOLUTION;
+    return 1.0;
   }
 
   public void startSpinning(double targetballspeed) {
@@ -67,7 +68,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void setFWPower(double power) {
-    motor_Left_FlyWheel.set(ControlMode.PercentOutput, power);
+    // motor_Left_FlyWheel.set(ControlMode.PercentOutput, power);
   }
 
   public void fireBall() {

@@ -20,6 +20,7 @@ import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Pixy;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Shooter;
 
@@ -89,6 +90,7 @@ public class RobotContainer {
     Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
     Button3.whenPressed(toggleLED);
     Button5.whenPressed(new LocateBall(m_driveTrain, m_pixy, m_shooter));
+    // Button4.whenPressed(new InstantCommand())
 
   }
 

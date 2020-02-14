@@ -20,18 +20,18 @@ public final class Constants {
     //--------------------Motor Ports--------------------\\
     //DriveTrain Motors
     //ports set up for test drivetrain currently
-    public static final int motor_Front_Left_Port = 1; 
-    public static final int motor_Back_Left_Port = 0;
-    public static final int motor_Back_Right_Port = 2; //? 2 motors driving one wheel on each side, i think
-    public static final int motor_Front_Right_Port = 5;
+    public static final int motor_Front_Left_Port = 5; 
+    public static final int motor_Back_Left_Port = 1;
+    public static final int motor_Back_Right_Port = 6; //? 2 motors driving one wheel on each side, i think
+    public static final int motor_Front_Right_Port = 0;
     public enum DriveMotors
     { 
         FL, FR, BL, BR; 
     } 
 
     //Elevator Motors
-    public static final int motor_Left_Leadscrew_Port = 5;
-    public static final int motor_Right_Leadscrew_Port = 6;
+    public static final int motor_Left_Leadscrew_Port = 4;
+    public static final int motor_Right_Leadscrew_Port = 3;
     public static final int motor_Left_Pulley_Port = 7;
     public static final int motor_Right_Pulley_Port = 8;
     public enum ElevatorMotors
