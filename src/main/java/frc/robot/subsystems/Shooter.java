@@ -23,6 +23,8 @@ public class Shooter extends SubsystemBase {
 
   private static double currentSpeed = 0;
 
+  private boolean enabled = false;
+
   // private static Encoder encoder_Left = new
   // Encoder(Constants.encoder_Left_Flywheel_Ports[0],Constants.encoder_Left_Flywheel_Ports[1]);
   // private static Encoder encoder_Right = new
@@ -36,12 +38,16 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Avg shooter speed", getAvgSpeed());
-    // setFWPower(currentSpeed);
+    if(enabled) {
+      startFW(currentSpeed);
+    } else {
+      stopFW();
+    }
     // This method will be called once per scheduler run
   }
 
   public void startFW(double speed) {
-    currentSpeed = 0.75; //for testing
+    // currentSpeed = 0.75; //for testing
     motor_Left_FlyWheel.set(ControlMode.PercentOutput, speed);
     motor_Right_FlyWheel.set(ControlMode.PercentOutput, -speed);
   }
@@ -76,12 +82,42 @@ public class Shooter extends SubsystemBase {
 
   }
 
-  public void setFWPower(double power) {
-    // motor_Left_FlyWheel.set(ControlMode.PercentOutput, power);
-  }
+  // public void setFWPower(double power) {
+  //   // motor_Left_FlyWheel.set(ControlMode.PercentOutput, power);
+  // }
 
   public void fireBall() {
 
+  }
+
+  public void increaseSpeed() {
+    if(currentSpeed < 1){
+      currentSpeed += 0.1;
+    }
+    SmartDashboard.putNumber("Current Shooter Speed", currentSpeed);
+  }
+
+  public void decreaseSpeed() {
+    if(currentSpeed > -1) {
+      currentSpeed -= 0.1;
+    }
+    SmartDashboard.putNumber("Current Shooter Speed", currentSpeed);
+  }
+
+  public void setSpeed(double speed) {
+    currentSpeed = speed;
+  }
+
+  public void toggleEnabled() {
+    if(enabled) {
+      enabled = false;
+    } else {
+      enabled = true;
+    }
+  }
+
+  public void setSpeed0() {
+    setSpeed(0);
   }
 
 }

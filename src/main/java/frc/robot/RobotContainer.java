@@ -73,6 +73,8 @@ public class RobotContainer {
 
   //Xbox buttons
   private final JoystickButton XboxButton1 = new JoystickButton(xbox, 1);
+  private final JoystickButton XboxButton2 = new JoystickButton(xbox, 2);
+  private final JoystickButton XboxButton3 = new JoystickButton(xbox, 3);
   private final JoystickButton XboxButton4 = new JoystickButton(xbox, 4);
 
 
@@ -131,8 +133,15 @@ public class RobotContainer {
     // XboxButton4.whenPressed(new InstantCommand(m_shooter::startIntake, m_shooter));
     // XboxButton4.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
 
-    XboxButton1.whileHeld(new StartShooter(m_shooter, xbox));
-    XboxButton4.whileHeld(new StartIntake(m_shooter, xbox));
+    // XboxButton1.whileHeld(new StartShooter(m_shooter, xbox));
+    // XboxButton4.whileHeld(new StartIntake(m_shooter, xbox));
+
+    XboxButton1.whenPressed(new InstantCommand(m_shooter::decreaseSpeed, m_shooter));
+    XboxButton4.whenPressed(new InstantCommand(m_shooter::increaseSpeed, m_shooter));
+
+    XboxButton2.whenPressed(new InstantCommand(m_shooter::toggleEnabled, m_shooter));
+    XboxButton3.whenPressed(new InstantCommand(m_shooter::setSpeed0, m_shooter));
+
   }
 
   /**
