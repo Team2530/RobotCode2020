@@ -101,7 +101,7 @@ public class RobotContainer {
   private final DualLargeJoystickDrive telopDriveCommand = new DualLargeJoystickDrive(m_driveTrain, stick1, stick2);
   private final ConveyorControl telopConveyorCommand = new ConveyorControl(m_conveyor, xbox);
   private final StartShooter telopShooterCommand = new StartShooter(m_shooter, xbox);
-  private final TelopCommands telopCommand = new TelopCommands(telopDriveCommand, telopConveyorCommand);
+  private final TelopCommands telopCommand = new TelopCommands(telopDriveCommand, telopConveyorCommand, telopShooterCommand);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
