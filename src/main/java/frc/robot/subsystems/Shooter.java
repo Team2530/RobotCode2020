@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -34,6 +35,7 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
+    SmartDashboard.putNumber("Avg shooter speed", getAvgSpeed());
     // setFWPower(currentSpeed);
     // This method will be called once per scheduler run
   }
@@ -50,19 +52,19 @@ public class Shooter extends SubsystemBase {
     motor_Right_FlyWheel.set(ControlMode.PercentOutput, 0);
   }
 
-  public void startIntake(double speed) {
-    //currentSpeed = 0.3;
-    motor_Left_FlyWheel.set(ControlMode.PercentOutput, -speed);
-    motor_Right_FlyWheel.set(ControlMode.PercentOutput, speed);
-  }
+  // public void startIntake(double speed) {
+  //   //currentSpeed = 0.3;
+  //   motor_Left_FlyWheel.set(ControlMode.PercentOutput, -speed);
+  //   motor_Right_FlyWheel.set(ControlMode.PercentOutput, speed);
+  // }
 
   /**
    * @return Average Velocity of flyweels in rad/s
    */
   public double getAvgSpeed() {
-    // return (motor_Left_FlyWheel.getSelectedSensorVelocity() + motor_Right_FlyWheel.getSelectedSensorVelocity()) / 2
+    return (motor_Left_FlyWheel.getSelectedSensorVelocity() + motor_Right_FlyWheel.getSelectedSensorVelocity()) / 2;
         // / Constants.DROP_IN_DISTANCE_PER_REVOLUTION;
-    return 1.0;
+    //return 1.0;
   }
 
   public void startSpinning(double targetballspeed) {
