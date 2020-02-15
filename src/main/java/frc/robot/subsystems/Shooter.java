@@ -17,8 +17,8 @@ public class Shooter extends SubsystemBase {
   /**
    * Creates a new Shooter.
    */
-  // private static WPI_TalonSRX motor_Left_FlyWheel = new WPI_TalonSRX(Constants.motor_Left_FlyWheel_Port);
-  // private static WPI_TalonSRX motor_Right_FlyWheel = new WPI_TalonSRX(Constants.motor_Right_Flywheel_Port);
+  private static WPI_TalonSRX motor_Left_FlyWheel = new WPI_TalonSRX(Constants.motor_Left_FlyWheel_Port);
+  private static WPI_TalonSRX motor_Right_FlyWheel = new WPI_TalonSRX(Constants.motor_Right_Flywheel_Port);
 
   private static double currentSpeed = 0;
 
@@ -38,16 +38,22 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public void startFW() {
-    currentSpeed = 1; //for testing
-    motor_Left_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
-    motor_Right_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
+  public void startFW(double speed) {
+    currentSpeed = 0.75; //for testing
+    motor_Left_FlyWheel.set(ControlMode.PercentOutput, speed);
+    motor_Right_FlyWheel.set(ControlMode.PercentOutput, -speed);
   }
 
   public void stopFW() {
     currentSpeed = 0;
-    motor_Left_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
-    motor_Right_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
+    motor_Left_FlyWheel.set(ControlMode.PercentOutput, 0);
+    motor_Right_FlyWheel.set(ControlMode.PercentOutput, 0);
+  }
+
+  public void startIntake(double speed) {
+    //currentSpeed = 0.3;
+    motor_Left_FlyWheel.set(ControlMode.PercentOutput, -speed);
+    motor_Right_FlyWheel.set(ControlMode.PercentOutput, speed);
   }
 
   /**

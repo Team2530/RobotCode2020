@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.*;
 import frc.robot.commands.autonomousCommands.*;
+import frc.robot.commands.ConstantTelopCommands.*;
 import frc.robot.subsystems.Conveyor;
 // import frc.robot.commands.SmallJoystickElevator;
 // import frc.robot.commands.XboxJoystickElevator;
@@ -72,6 +73,8 @@ public class RobotContainer {
 
   //Xbox buttons
   private final JoystickButton XboxButton1 = new JoystickButton(xbox, 1);
+  private final JoystickButton XboxButton4 = new JoystickButton(xbox, 4);
+
 
   // -------------------- Autonomous Commands -------------------- \\
   
@@ -79,7 +82,7 @@ public class RobotContainer {
   TrajectoryConfig trajectoryConfig = new TrajectoryConfig(10, 60);
   
   
-  // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   
   //private final TrajectoryTest m_autoCommand = new TrajectoryTest(m_driveTrain, new Traj);
   
@@ -90,9 +93,13 @@ public class RobotContainer {
   // private final XboxJoystickElevator elevatorCommand = new XboxJoystickElevator(elevatorSub, xbox);
   // private final SmallJoystickElevator elevatorCommand = new SmallJoystickElevator(elevatorSub, stick1);
   // private final EncoderTest m_telopCommand = new EncoderTest(m_driveTrain);
-  private final LineUp lineUp = new LineUp(m_driveTrain, limeLightSub, elevatorSub);
-  private final TestPixy pixy = new TestPixy(m_pixy);
-  private final ToggleLimeLightLED toggleLED = new ToggleLimeLightLED(limeLightSub);
+  // private final LineUp lineUp = new LineUp(m_driveTrain, limeLightSub, elevatorSub);
+  // private final TestPixy pixy = new TestPixy(m_pixy);
+  // private final ToggleLimeLightLED toggleLED = new ToggleLimeLightLED(limeLightSub);
+  private final DualLargeJoystickDrive telopDriveCommand = new DualLargeJoystickDrive(m_driveTrain, stick1, stick2);
+  private final ConveyorControl telopConveyorCommand = new ConveyorControl(m_conveyor, xbox);
+  private final TelopCommands telopCommand = new TelopCommands(telopDriveCommand, telopConveyorCommand);
+
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -108,15 +115,23 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    Button1.whileHeld(lineUp);
-    Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
-    Button3.whenPressed(toggleLED);
+    // Button1.whileHeld(lineUp);
+    // Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
+    // Button3.whenPressed(toggleLED);
     // Button5.whenPressed(new LocateBall(m_driveTrain, m_pixy, m_shooter));
     Button4.whenPressed(new InstantCommand(m_conveyor::in, m_conveyor));
     Button6.whenPressed(new InstantCommand(m_conveyor::out, m_conveyor));
     Button7.whenPressed(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
     Button9.whenPressed(new InstantCommand(m_shooter::stopFW, m_shooter));
-    Button10.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
+    // Button10.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
+
+    // XboxButton1.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
+    // XboxButton1.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
+    // XboxButton4.whenPressed(new InstantCommand(m_shooter::startIntake, m_shooter));
+    // XboxButton4.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
+
+    XboxButton1.whileHeld(new StartShooter(m_shooter, xbox));
+    XboxButton4.whileHeld(new StartIntake(m_shooter, xbox));
   }
 
   /**
@@ -134,11 +149,13 @@ public class RobotContainer {
     //   DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
     // }
 
-    return lineUp;
+    // return lineUp;
+
+    return m_autoCommand;
   }
 
   public Command getTelopCommand() {
-    return new LargeJoystickDrive(m_driveTrain, stick1);
+    return telopCommand;
   }
 
 }

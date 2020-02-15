@@ -7,6 +7,7 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -29,14 +30,14 @@ public class Conveyor extends SubsystemBase {
   }
 
   public void in() {
-    motor_Conveyor.set(1);
+    motor_Conveyor.set(ControlMode.PercentOutput, 1);
   }
 
   public void out() {
-    motor_Conveyor.set(-1);
+    motor_Conveyor.set(ControlMode.PercentOutput, -1);
   }
 
   public void stopIntake() {
-    motor_Conveyor.set(0);
+    motor_Conveyor.set(ControlMode.PercentOutput, 0);
   }
 }
