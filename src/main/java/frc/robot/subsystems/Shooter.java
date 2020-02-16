@@ -31,14 +31,17 @@ public class Shooter extends SubsystemBase {
   // Encoder(Constants.encoder_Right_Flywheel_Port[0],Constants.encoder_Right_Flywheel_Port[1]);
 
   public Shooter() {
-    motor_Right_FlyWheel.setInverted(false);
-    // motor_Right_FlyWheel.set(ControlMode.Follower, Constants.motor_Left_FlyWheel_Port);
+
+    motor_Right_FlyWheel.follow(motor_Left_FlyWheel);
+    motor_Right_FlyWheel.setInverted(true);
+    // motor_Right_FlyWheel.set(ControlMode.Follower,
+    // Constants.motor_Left_FlyWheel_Port);
   }
 
   @Override
   public void periodic() {
     SmartDashboard.putNumber("Avg shooter speed", getAvgSpeed());
-    if(enabled) {
+    if (enabled) {
       startFW(currentSpeed);
     } else {
       stopFW();
@@ -59,9 +62,9 @@ public class Shooter extends SubsystemBase {
   }
 
   // public void startIntake(double speed) {
-  //   //currentSpeed = 0.3;
-  //   motor_Left_FlyWheel.set(ControlMode.PercentOutput, -speed);
-  //   motor_Right_FlyWheel.set(ControlMode.PercentOutput, speed);
+  // //currentSpeed = 0.3;
+  // motor_Left_FlyWheel.set(ControlMode.PercentOutput, -speed);
+  // motor_Right_FlyWheel.set(ControlMode.PercentOutput, speed);
   // }
 
   /**
@@ -69,8 +72,8 @@ public class Shooter extends SubsystemBase {
    */
   public double getAvgSpeed() {
     return (motor_Left_FlyWheel.getSelectedSensorVelocity() - motor_Right_FlyWheel.getSelectedSensorVelocity()) / 2;
-        // / Constants.DROP_IN_DISTANCE_PER_REVOLUTION;
-    //return 1.0;
+    // / Constants.DROP_IN_DISTANCE_PER_REVOLUTION;
+    // return 1.0;
   }
 
   public void startSpinning(double targetballspeed) {
@@ -83,7 +86,7 @@ public class Shooter extends SubsystemBase {
   }
 
   // public void setFWPower(double power) {
-  //   // motor_Left_FlyWheel.set(ControlMode.PercentOutput, power);
+  // // motor_Left_FlyWheel.set(ControlMode.PercentOutput, power);
   // }
 
   public void fireBall() {
@@ -91,16 +94,14 @@ public class Shooter extends SubsystemBase {
   }
 
   public void increaseSpeed() {
-    if(currentSpeed < 1){
-      currentSpeed += 0.1;
-    }
+    currentSpeed = currentSpeed + 0.1;
+
     SmartDashboard.putNumber("Current Shooter Speed", currentSpeed);
   }
 
   public void decreaseSpeed() {
-    if(currentSpeed > -1) {
-      currentSpeed -= 0.1;
-    }
+
+    currentSpeed = currentSpeed - 0.1;
     SmartDashboard.putNumber("Current Shooter Speed", currentSpeed);
   }
 
@@ -109,15 +110,11 @@ public class Shooter extends SubsystemBase {
   }
 
   public void toggleEnabled() {
-    if(enabled) {
+    if (enabled) {
       enabled = false;
     } else {
       enabled = true;
     }
-  }
-
-  public void setSpeed0() {
-    setSpeed(0);
   }
 
 }

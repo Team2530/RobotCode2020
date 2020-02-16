@@ -107,14 +107,6 @@ public class DriveTrain extends PIDSubsystem {
     drive_right.setInverted(false);
     drive_left.setInverted(true);
 
-    String trajectoryJSON = "paths/YourPath.wpilib.json";
-    try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-    }
-
   }
 
   public DifferentialDriveKinematics getKinematics() {
@@ -347,6 +339,8 @@ public class DriveTrain extends PIDSubsystem {
    * @param rightVolts the commanded right output
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
+    SmartDashboard.putNumber("Left Volts", leftVolts);
+    SmartDashboard.putNumber("Right Volts", rightVolts);
     drive_left.setVoltage(leftVolts);
     drive_right.setVoltage(rightVolts);
     robotDrive.feed();

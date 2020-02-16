@@ -17,7 +17,6 @@ import frc.robot.Constants;
 
 public class TrajectoryTest extends RamseteCommand {
   
-  String trajectoryJSON = "PathWeaver/DriveForwardFarBlue.wpilib.json";
   TrajectoryConfig trajectoryConfig = new TrajectoryConfig(10, 60);
   DriveTrain m_driveTrain;
 

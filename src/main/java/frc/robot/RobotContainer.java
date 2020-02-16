@@ -54,11 +54,11 @@ public class RobotContainer {
   private final Conveyor m_conveyor = new Conveyor();
 
   // -------------------- Joysticks and Buttons -------------------- \\
-  //Joysticks
+  // Joysticks
   final Joystick stick1 = new Joystick(1); // Creates a joystick on port 1
   final Joystick stick2 = new Joystick(2); // Creates a joystick on port 2
 
-  //Joystick buttons
+  // Joystick buttons
   private final JoystickButton Button1 = new JoystickButton(stick1, 1); // Creates a new button for button 1 on stick1
   private final JoystickButton Button3 = new JoystickButton(stick1, 3);
   private final JoystickButton Button4 = new JoystickButton(stick1, 4);
@@ -68,40 +68,44 @@ public class RobotContainer {
   private final JoystickButton Button9 = new JoystickButton(stick1, 9);
   private final JoystickButton Button10 = new JoystickButton(stick1, 10);
 
-  //Xbox Controller
+  // Xbox Controller
   final XboxController xbox = new XboxController(0);
 
-  //Xbox buttons
+  // Xbox buttons
   private final JoystickButton XboxButton1 = new JoystickButton(xbox, 1);
   private final JoystickButton XboxButton2 = new JoystickButton(xbox, 2);
   private final JoystickButton XboxButton3 = new JoystickButton(xbox, 3);
   private final JoystickButton XboxButton4 = new JoystickButton(xbox, 4);
 
-
   // -------------------- Autonomous Commands -------------------- \\
+
   
-  String trajectoryJSON = "PathWeaver/DriveForwardFarBlue.wpilib.json";
   TrajectoryConfig trajectoryConfig = new TrajectoryConfig(10, 60);
-  
-  
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  
-  //private final TrajectoryTest m_autoCommand = new TrajectoryTest(m_driveTrain, new Traj);
-  
-  //private final DelayTest delayCommand = new DelayTest(1, m_autoCommand);
-  
+
+  // private final ExampleCommand m_autoCommand = new
+  // ExampleCommand(m_exampleSubsystem);
+
+  // private final TrajectoryTest m_autoCommand = new TrajectoryTest(m_driveTrain,
+  // new Traj);
+
+  // private final DelayTest delayCommand = new DelayTest(1, m_autoCommand);
 
   // -------------------- Telop Commands -------------------- \\
-  // private final XboxJoystickElevator elevatorCommand = new XboxJoystickElevator(elevatorSub, xbox);
-  // private final SmallJoystickElevator elevatorCommand = new SmallJoystickElevator(elevatorSub, stick1);
+  // private final XboxJoystickElevator elevatorCommand = new
+  // XboxJoystickElevator(elevatorSub, xbox);
+  // private final SmallJoystickElevator elevatorCommand = new
+  // SmallJoystickElevator(elevatorSub, stick1);
   // private final EncoderTest m_telopCommand = new EncoderTest(m_driveTrain);
-  // private final LineUp lineUp = new LineUp(m_driveTrain, limeLightSub, elevatorSub);
+  // private final LineUp lineUp = new LineUp(m_driveTrain, limeLightSub,
+  // elevatorSub);
   // private final TestPixy pixy = new TestPixy(m_pixy);
-  // private final ToggleLimeLightLED toggleLED = new ToggleLimeLightLED(limeLightSub);
-  private final DualLargeJoystickDrive telopDriveCommand = new DualLargeJoystickDrive(m_driveTrain, stick1, stick2);
+  // private final ToggleLimeLightLED toggleLED = new
+  // ToggleLimeLightLED(limeLightSub);
+  private final LargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1);
   private final ConveyorControl telopConveyorCommand = new ConveyorControl(m_conveyor, xbox);
   private final StartShooter telopShooterCommand = new StartShooter(m_shooter, xbox);
-  private final TelopCommands telopCommand = new TelopCommands(telopDriveCommand, telopConveyorCommand, telopShooterCommand);
+  private final TelopCommands telopCommand = new TelopCommands(telopDriveCommand, telopConveyorCommand,
+      telopShooterCommand);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -130,7 +134,8 @@ public class RobotContainer {
 
     // XboxButton1.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
     // XboxButton1.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
-    // XboxButton4.whenPressed(new InstantCommand(m_shooter::startIntake, m_shooter));
+    // XboxButton4.whenPressed(new InstantCommand(m_shooter::startIntake,
+    // m_shooter));
     // XboxButton4.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
 
     // XboxButton1.whileHeld(new StartShooter(m_shooter, xbox));
@@ -140,7 +145,7 @@ public class RobotContainer {
     XboxButton4.whenPressed(new InstantCommand(m_shooter::increaseSpeed, m_shooter));
 
     XboxButton2.whenPressed(new InstantCommand(m_shooter::toggleEnabled, m_shooter));
-    XboxButton3.whenPressed(new InstantCommand(m_shooter::setSpeed0, m_shooter));
+    XboxButton3.whenPressed(new InstantCommand(m_shooter::stopFW, m_shooter));
 
   }
 
@@ -151,17 +156,19 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    // try {
-    //   Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      
-       
-    // } catch (IOException ex) {
-    //   DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-    // }
+    Trajectory trajectory;
+    String trajectoryJSON = "paths/DriveForwardFarBlue.wpilib.json";
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+      return new TrajectoryTest(m_driveTrain, trajectory);
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
 
+    }
+    return null;
     // return lineUp;
 
-    return m_autoCommand;
   }
 
   public Command getTelopCommand() {
