@@ -69,6 +69,10 @@ public class DriveTrain extends PIDSubsystem {
   private static SpeedControllerGroup drive_left = new SpeedControllerGroup(motor_Front_Left, motor_Back_Left);
   private static SpeedControllerGroup drive_right = new SpeedControllerGroup(motor_Front_Right, motor_Back_Right);
 
+  private static PIDController m_rightPidController = new PIDController(Constants.kP, Constants.kI, Constants.kD);
+
+  private static PIDController m_leftPidController = new PIDController(Constants.kP, Constants.kI, Constants.kD);
+
   private static DifferentialDrive robotDrive = new DifferentialDrive(drive_left, drive_right);
 
   private final DifferentialDriveKinematics m_kinematics = new DifferentialDriveKinematics(Constants.WHEEL_DISTANCE);
@@ -111,6 +115,12 @@ public class DriveTrain extends PIDSubsystem {
 
   public DifferentialDriveKinematics getKinematics() {
     return m_kinematics;
+  }
+  public PIDController getLeftController(){
+    return m_leftPidController;
+  }
+  public PIDController getRightController(){
+    return m_rightPidController;
   }
   public SimpleMotorFeedforward getFeedForward() {
     return m_feedforward;
