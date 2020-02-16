@@ -7,6 +7,7 @@
 
 package frc.robot.commands.autonomousCommands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.DriveTrain;
 
@@ -25,5 +26,6 @@ public class StartMotors extends InstantCommand {
   @Override
   public void initialize() {
     driveTrain.setPower(-0.3);
+    SmartDashboard.putBoolean("Auto Stopped", false);
   }
 }
