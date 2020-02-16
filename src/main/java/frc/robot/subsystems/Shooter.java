@@ -68,7 +68,7 @@ public class Shooter extends SubsystemBase {
    * @return Average Velocity of flyweels in rad/s
    */
   public double getAvgSpeed() {
-    return (motor_Left_FlyWheel.getSelectedSensorVelocity() + motor_Right_FlyWheel.getSelectedSensorVelocity()) / 2;
+    return (motor_Left_FlyWheel.getSelectedSensorVelocity() - motor_Right_FlyWheel.getSelectedSensorVelocity()) / 2;
         // / Constants.DROP_IN_DISTANCE_PER_REVOLUTION;
     //return 1.0;
   }
