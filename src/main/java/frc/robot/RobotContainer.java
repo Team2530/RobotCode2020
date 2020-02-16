@@ -57,6 +57,7 @@ public class RobotContainer {
   // Joysticks
   final Joystick stick1 = new Joystick(1); // Creates a joystick on port 1
   final Joystick stick2 = new Joystick(2); // Creates a joystick on port 2
+  private final JoystickButton Button2 = new JoystickButton(stick1, 2);
 
   // Joystick buttons
   private final JoystickButton Button1 = new JoystickButton(stick1, 1); // Creates a new button for button 1 on stick1
@@ -112,6 +113,7 @@ public class RobotContainer {
   private final ConveyorControl telopConveyorCommand = new ConveyorControl(m_conveyor, xbox);
   private final StartShooter telopShooterCommand = new StartShooter(m_shooter, xbox);
   private final TelopCommands telopCommand = new TelopCommands(telopDriveCommand, telopConveyorCommand, telopShooterCommand);
+  private final ToggleCamera toggleCamera = new ToggleCamera(limeLightSub);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -133,6 +135,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    Button2.whenPressed(toggleCamera);
     // Button1.whileHeld(lineUp);
     // Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
     // Button3.whenPressed(toggleLED);
