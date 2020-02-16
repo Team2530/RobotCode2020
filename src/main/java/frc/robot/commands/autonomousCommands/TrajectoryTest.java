@@ -31,8 +31,8 @@ public class TrajectoryTest extends RamseteCommand {
       m_driveTrain.getFeedForward(), //Feed Forward
       m_driveTrain.getKinematics(), //Kinematics
       m_driveTrain::getWheelSpeeds, //Wheel Speeds (Supplier)
-      m_driveTrain.getController(), //Left PID Controller
-      m_driveTrain.getController(), //Right PID Controller
+      m_driveTrain.getLeftController(), //Left PID Controller
+      m_driveTrain.getRightController(), //Right PID Controller
       // RamseteCommand passes volts to the callback
       m_driveTrain::tankDriveVolts, //Function that uses the Output Volts (BiConsumer)
       m_driveTrain //SubSystem Requirments
