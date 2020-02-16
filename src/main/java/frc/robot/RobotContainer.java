@@ -113,6 +113,7 @@ public class RobotContainer {
 
     m_driveTrain.setDefaultCommand(telopDriveCommand);
     m_conveyor.setDefaultCommand(telopConveyorCommand);
+    m_shooter.setDefaultCommand(telopShooterCommand);
     // elevatorSub.setDefaultCommand(telopElevatorCommand);
   }
 
