@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj2.command.PIDSubsystem;
 // import edu.wpi.first.wpilibj.SPI.Port;
 // import edu.wpi.first.wpilibj.controller.PIDController;
-
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.*;
 
@@ -38,7 +38,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
 
-public class DriveTrain extends PIDSubsystem {
+public class DriveTrain extends SubsystemBase {
   // private static final Port i2c_port_id = null;
 
   // -------------------- Motors -------------------- \\
@@ -69,9 +69,8 @@ public class DriveTrain extends PIDSubsystem {
   private static SpeedControllerGroup drive_left = new SpeedControllerGroup(motor_Front_Left, motor_Back_Left);
   private static SpeedControllerGroup drive_right = new SpeedControllerGroup(motor_Front_Right, motor_Back_Right);
 
-  private static PIDController m_rightPidController = new PIDController(Constants.kP, Constants.kI, Constants.kD);
-
-  private static PIDController m_leftPidController = new PIDController(Constants.kP, Constants.kI, Constants.kD);
+  private static PIDController pid_left = new PIDController(Constants.kP, Constants.kI, Constants.kD);
+  private static PIDController pid_right = new PIDController(Constants.kP, Constants.kI, Constants.kD);
 
   private static DifferentialDrive robotDrive = new DifferentialDrive(drive_left, drive_right);
 
@@ -98,11 +97,10 @@ public class DriveTrain extends PIDSubsystem {
    * Creates a new DriveTrain.
    */
   public DriveTrain() {
-    super(new PIDController(Constants.kP, Constants.kI, Constants.kD));
     resetEncoders();
     ahrs.reset();
-    this.getController().setTolerance(Constants.tol);
-    this.disable();
+    pid_left.setTolerance(Constants.tol);
+    pid_left.setTolerance(Constants.tol);
     m_odometry = new DifferentialDriveOdometry(getHeading());
     encoder_Left.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
     encoder_Right.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
@@ -126,28 +124,11 @@ public class DriveTrain extends PIDSubsystem {
     return m_feedforward;
   }
 
-  public double getPositionalError() {
-    return this.getController().getPositionError();
-  }
-
-  public double getVelocityError() {
-    return this.getController().getVelocityError();
-  }
-
-  public double getSetPoint() {
-    return this.getController().getSetpoint();
-  }
-
-  public double[] getPID() {
-    double[] ret = { this.getController().getP(), this.getController().getI(), this.getController().getD() };
-    return ret;
-  }
-
-  public void setPID(double P, double I, double D) {
-    this.getController().setP(P);
-    this.getController().setI(I);
-    this.getController().setD(D);
-  }
+  // public void setPID(double P, double I, double D) {
+  //   this.getController().setP(P);
+  //   this.getController().setI(I);
+  //   this.getController().setD(D);
+  // }
 
   /**
    * Sets the speed of the left and right side motors somehow
@@ -159,8 +140,8 @@ public class DriveTrain extends PIDSubsystem {
     final double leftFeedforward = m_feedforward.calculate(speeds.leftMetersPerSecond);
     final double rightFeedforward = m_feedforward.calculate(speeds.rightMetersPerSecond);
 
-    final double leftOutput = this.getController().calculate(encoder_Left_Rate, speeds.leftMetersPerSecond);
-    final double rightOutput = this.getController().calculate(encoder_Right_Rate, speeds.rightMetersPerSecond);
+    final double leftOutput = pid_left.calculate(encoder_Left_Rate, speeds.leftMetersPerSecond);
+    final double rightOutput = pid_right.calculate(encoder_Right_Rate, speeds.rightMetersPerSecond);
     drive_left.setVoltage(leftOutput + leftFeedforward);
     drive_right.setVoltage(rightOutput + rightFeedforward);
     // DifferentialDriveWheelSpeeds speeds1 = new DifferentialDriveWheelSpeeds();
@@ -264,7 +245,7 @@ public class DriveTrain extends PIDSubsystem {
    */
   public void tankDrive(double leftSpeed, double rightSpeed) {
     robotDrive.tankDrive(leftSpeed, rightSpeed);
-    robotDrive.setSafetyEnabled(false);
+    //robotDrive.setSafetyEnabled(false);
   }
 
   /**
@@ -307,15 +288,6 @@ public class DriveTrain extends PIDSubsystem {
 
   }
 
-  protected double getMeasurement() {
-    return this.getAngle();
-  }
-
-  protected void useOutput(double output, double setpoint) {
-    /**
-     * Use output to turn motors
-     */
-  }
 
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
@@ -328,14 +300,6 @@ public class DriveTrain extends PIDSubsystem {
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
     m_odometry.resetPosition(pose, getHeading());
-  }
-
-  public void togglePID() {
-    if (this.isEnabled()) {
-      this.disable();
-    } else {
-      this.enable();
-    }
   }
 
   // public Pose2d getOdometryPose2d() {
@@ -355,4 +319,14 @@ public class DriveTrain extends PIDSubsystem {
     drive_right.setVoltage(rightVolts);
     robotDrive.feed();
   }
+
+  public PIDController getPid_left() {
+    return pid_left;
+  }
+
+
+  public PIDController getPid_right() {
+    return pid_right;
+  }
+
 }
