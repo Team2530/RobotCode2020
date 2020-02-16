@@ -87,7 +87,7 @@ public class RobotContainer {
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   
   //private final TrajectoryTest m_autoCommand = new TrajectoryTest(m_driveTrain, new Traj);
-  // private final DriveForSeconds m_autoCommand = new DriveForSeconds(m_driveTrain, 5);
+  private final DriveForSeconds m_autoCommand = new DriveForSeconds(m_driveTrain, 5);
   
   //private final DelayTest delayCommand = new DelayTest(1, m_autoCommand);
   
@@ -111,7 +111,7 @@ public class RobotContainer {
   private final LargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1);
   private final ConveyorControl telopConveyorCommand = new ConveyorControl(m_conveyor, xbox);
   private final StartShooter telopShooterCommand = new StartShooter(m_shooter, xbox);
-  private final TelopCommands telopCommand = new TelopCommands(telopDriveCommand, telopConveyorCommand, telopShooterCommand);
+  // private final TelopCommands telopCommand = new TelopCommands(telopDriveCommand, telopConveyorCommand, telopShooterCommand);
   private final ToggleCamera toggleCamera = new ToggleCamera(limeLightSub);
 
   /**
