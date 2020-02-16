@@ -87,7 +87,7 @@ public class RobotContainer {
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   
   //private final TrajectoryTest m_autoCommand = new TrajectoryTest(m_driveTrain, new Traj);
-  private final DriveForSeconds m_autoCommand = new DriveForSeconds(m_driveTrain, 5);
+  // private final DriveForSeconds m_autoCommand = new DriveForSeconds(m_driveTrain, 5);
   
   //private final DelayTest delayCommand = new DelayTest(1, m_autoCommand);
   
@@ -135,8 +135,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     Button1.whileHeld(lineUp);
-    Button2.whenPressed(toggleCamera);
     // Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
+    Button2.whenPressed(toggleCamera);
     // Button3.whenPressed(toggleLED);
     // Button5.whenPressed(new LocateBall(m_driveTrain, m_pixy, m_shooter));
     Button4.whenPressed(new InstantCommand(m_conveyor::in, m_conveyor));
@@ -179,10 +179,10 @@ public class RobotContainer {
     //   DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
 
     // }
-    // return null;
+    return null;
     // return lineUp;
 
-    return m_autoCommand;
+    // return m_autoCommand;
 
   }
 

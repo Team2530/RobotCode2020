@@ -57,18 +57,12 @@ public class LimeLight extends SubsystemBase {
     return position;
   }
 
-  public void toggleLights()
-  {
-    if(light == 1)
-    {
+  public void toggleLights() {
+    if(light == 1) {
       light = 3;
-    }
-    else
-    {
+    } else {
       light = 1;
-    
     }
-    
     table.getEntry("ledMode").setNumber(light);
   }
 
