@@ -28,6 +28,7 @@ public class XboxJoystickElevator extends CommandBase {
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(elevatorSub); //might have to do xbox = xbox
     this.xbox = xbox;
+    this.elevatorSub = elevatorSub;
   }
 
   // Called when the command is initially scheduled.
@@ -46,6 +47,8 @@ public class XboxJoystickElevator extends CommandBase {
     //y1 = 1 * (0.5 * Math.pow(y1, 3) + 0.5 * y1); prob dont need this but can add it
 
     //last stage doesnt move if stage 1 limit swtiches are NOT pressed or last stage limit switches ARE pressed
+
+    //!Need to change how the limit switches work
 
     if(elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.LL) || elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.RL)) { //stage 1 all the way up
       //only go down
