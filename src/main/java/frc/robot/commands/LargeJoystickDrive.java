@@ -19,7 +19,7 @@ public class LargeJoystickDrive extends CommandBase {
   private DriveTrain m_driveTrain;
 
   Joystick stick;
-
+  double y,z,yPow,zPow,powerfactor;
   
 
   /**
@@ -47,7 +47,21 @@ public class LargeJoystickDrive extends CommandBase {
   public void execute() {
     SmartDashboard.putNumber("joyy:", stick.getY());
     SmartDashboard.putNumber("joyz:",  stick.getZ());
-    m_driveTrain.arcadeDrive(stick.getY(),stick.getZ());
+    //x1 = stick1.getX();
+    y = stick.getY();
+    //x2 = stick2.getX();
+    z= stick.getZ();
+    yPow = (y); 
+    zPow = (z); //should? be tank drive
+
+
+    powerfactor = -stick.getRawAxis(3);
+    powerfactor = 0.5 * (powerfactor + 1); //changes max power based on slider
+    SmartDashboard.putNumber("powerfactor", powerfactor);
+
+    yPow= powerfactor*(0.25 * Math.pow(yPow, 3) + 0.75 * yPow);
+    zPow = powerfactor*(0.25 * Math.pow(zPow, 3) + 0.75 * zPow);
+    m_driveTrain.arcadeDrive(yPow,zPow);
   }
 
   // Called once the command ends or is interrupted.

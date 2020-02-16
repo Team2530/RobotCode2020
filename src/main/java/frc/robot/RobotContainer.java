@@ -87,8 +87,9 @@ public class RobotContainer {
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   
   //private final TrajectoryTest m_autoCommand = new TrajectoryTest(m_driveTrain, new Traj);
-  private final DriveForSeconds m_autoCommand = new DriveForSeconds(m_driveTrain, 5);
+  // private final DriveForSeconds m_autoCommand = new DriveForSeconds(m_driveTrain, 5);
   
+  private final StartMotors m_autoCommand = new StartMotors(m_driveTrain);
   //private final DelayTest delayCommand = new DelayTest(1, m_autoCommand);
   
 
@@ -108,8 +109,8 @@ public class RobotContainer {
   // private final TestPixy pixy = new TestPixy(m_pixy);
   // private final ToggleLimeLightLED toggleLED = new
   // ToggleLimeLightLED(limeLightSub);
-  // private final LargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1);
-  private final DualLargeJoystickDrive telopDriveCommand = new DualLargeJoystickDrive(m_driveTrain, stick1, stick2);
+  private final LargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1);
+  //private final DualLargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1, stick2);
   private final ConveyorControl telopConveyorCommand = new ConveyorControl(m_conveyor, xbox);
   private final StartShooter telopShooterCommand = new StartShooter(m_shooter, xbox);
   // private final TelopCommands telopCommand = new TelopCommands(telopDriveCommand, telopConveyorCommand, telopShooterCommand);
@@ -170,20 +171,19 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    // Trajectory trajectory;
-    // String trajectoryJSON = "paths/DriveForwardFarBlue.wpilib.json";
-    // try {
-    //   Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-    //   trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    //   return new TrajectoryTest(m_driveTrain, trajectory);
-    // } catch (IOException ex) {
-    //   DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-
-    // }
-    // return null;
+    Trajectory trajectory;
+    String trajectoryJSON = "paths/DriveForwardFarBlue.wpilib.json";
+    try {
+      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+      return new TrajectoryTest(m_driveTrain, trajectory);
+    } catch (IOException ex) {
+      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+      return null;
+    }
     // return lineUp;
 
-    return m_autoCommand;
+    // return m_autoCommand;
 
   }
 

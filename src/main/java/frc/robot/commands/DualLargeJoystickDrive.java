@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 // import frc.robot.Constants;
 // import frc.robot.Robot;
@@ -20,6 +21,11 @@ public class DualLargeJoystickDrive extends CommandBase {
 
   Joystick stick1;
   Joystick stick2;
+  double powerfactor = 0;
+  double leftPow = 0;
+  double rightPow = 0;
+  double y1,y2;
+
 
   // double leftPow;
   // double rightPow;
@@ -48,7 +54,22 @@ public class DualLargeJoystickDrive extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_driveTrain.tankDrive(stick1.getY(), -stick2.getY());
+    //x1 = stick1.getX();
+    y2 = stick1.getY();
+    //x2 = stick2.getX();
+    y1 = -stick2.getY();
+    rightPow = (y1); 
+    leftPow = (y2); //should? be tank drive
+
+
+    powerfactor = -stick1.getRawAxis(3);
+    powerfactor = 0.5 * (powerfactor + 1); //changes max power based on slider
+    SmartDashboard.putNumber("powerfactor", powerfactor);
+
+    rightPow = powerfactor*(0.5 * Math.pow(rightPow, 3) + 0.5 * rightPow);
+    leftPow = powerfactor*(0.5 * Math.pow(leftPow, 3) + 0.5 * leftPow);
+
+    m_driveTrain.tankDrive(leftPow, rightPow);
   }
 
   // Called once the command ends or is interrupted.
