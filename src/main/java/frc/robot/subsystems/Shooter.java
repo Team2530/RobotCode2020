@@ -56,7 +56,7 @@ public class Shooter extends SubsystemBase {
   }
 
   public void stopFW() {
-    currentSpeed = 0;
+    // currentSpeed = 0;
     motor_Left_FlyWheel.set(ControlMode.PercentOutput, 0);
     motor_Right_FlyWheel.set(ControlMode.PercentOutput, 0);
   }
@@ -107,6 +107,12 @@ public class Shooter extends SubsystemBase {
 
   public void setSpeed(double speed) {
     currentSpeed = speed;
+    SmartDashboard.putNumber("Current Shooter Speed", currentSpeed);
+  }
+
+  public void setSpeed0() {
+    currentSpeed = 0;
+    SmartDashboard.putNumber("Current Shooter Speed", currentSpeed);
   }
 
   public void toggleEnabled() {
@@ -115,6 +121,7 @@ public class Shooter extends SubsystemBase {
     } else {
       enabled = true;
     }
+    SmartDashboard.putBoolean("Shooter Enabled", enabled);
   }
 
 }

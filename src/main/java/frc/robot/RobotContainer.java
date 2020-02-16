@@ -104,8 +104,7 @@ public class RobotContainer {
   // private final XboxJoystickElevator elevatorCommand = new XboxJoystickElevator(elevatorSub, xbox);
   // private final SmallJoystickElevator elevatorCommand = new SmallJoystickElevator(elevatorSub, stick1);
   // private final EncoderTest m_telopCommand = new EncoderTest(m_driveTrain);
-  // private final LineUp lineUp = new LineUp(m_driveTrain, limeLightSub,
-  // elevatorSub);
+  private final LineUp lineUp = new LineUp(m_driveTrain, limeLightSub, elevatorSub);
   // private final TestPixy pixy = new TestPixy(m_pixy);
   // private final ToggleLimeLightLED toggleLED = new
   // ToggleLimeLightLED(limeLightSub);
@@ -124,7 +123,7 @@ public class RobotContainer {
 
     m_driveTrain.setDefaultCommand(telopDriveCommand);
     m_conveyor.setDefaultCommand(telopConveyorCommand);
-    m_shooter.setDefaultCommand(telopShooterCommand);
+    // m_shooter.setDefaultCommand(telopShooterCommand);
     // elevatorSub.setDefaultCommand(telopElevatorCommand);
   }
 
@@ -135,8 +134,8 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    Button1.whileHeld(lineUp);
     Button2.whenPressed(toggleCamera);
-    // Button1.whileHeld(lineUp);
     // Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
     // Button3.whenPressed(toggleLED);
     // Button5.whenPressed(new LocateBall(m_driveTrain, m_pixy, m_shooter));
@@ -159,7 +158,7 @@ public class RobotContainer {
     XboxButton4.whenPressed(new InstantCommand(m_shooter::increaseSpeed, m_shooter));
 
     XboxButton2.whenPressed(new InstantCommand(m_shooter::toggleEnabled, m_shooter));
-    XboxButton3.whenPressed(new InstantCommand(m_shooter::stopFW, m_shooter));
+    XboxButton3.whenPressed(new InstantCommand(m_shooter::setSpeed0, m_shooter));
 
   }
 
@@ -170,18 +169,20 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    Trajectory trajectory;
-    String trajectoryJSON = "paths/DriveForwardFarBlue.wpilib.json";
-    try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-      return new TrajectoryTest(m_driveTrain, trajectory);
-    } catch (IOException ex) {
-      DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
+    // Trajectory trajectory;
+    // String trajectoryJSON = "paths/DriveForwardFarBlue.wpilib.json";
+    // try {
+    //   Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
+    //   trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
+    //   return new TrajectoryTest(m_driveTrain, trajectory);
+    // } catch (IOException ex) {
+    //   DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
 
-    }
-    return null;
+    // }
+    // return null;
     // return lineUp;
+
+    return m_autoCommand;
 
   }
 
