@@ -52,12 +52,12 @@ public class DriveTrain extends SubsystemBase {
 
   // -------------------- Encoder Stuff -------------------- \\
   // Values
-  private static double encoder_Left_Value;
-  private static double encoder_Right_Value;
+  //private static double encoder_Left_Value;
+  //private static double encoder_Right_Value;
 
   // Rates
-  private static double encoder_Left_Rate;
-  private static double encoder_Right_Rate;
+  //private static double encoder_Left_Rate;
+  //private static double encoder_Right_Rate;
 
   // Encoders
   private static Encoder encoder_Left = new Encoder(Constants.encoder_Left_Ports[0], Constants.encoder_Left_Ports[1]);
@@ -100,7 +100,7 @@ public class DriveTrain extends SubsystemBase {
     resetEncoders();
     ahrs.reset();
     pid_left.setTolerance(Constants.tol);
-    pid_left.setTolerance(Constants.tol);
+    pid_right.setTolerance(Constants.tol);
     m_odometry = new DifferentialDriveOdometry(getHeading());
     encoder_Left.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
     encoder_Right.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
@@ -115,10 +115,10 @@ public class DriveTrain extends SubsystemBase {
     return m_kinematics;
   }
   public PIDController getLeftController(){
-    return m_leftPidController;
+    return pid_left;
   }
   public PIDController getRightController(){
-    return m_rightPidController;
+    return pid_right;
   }
   public SimpleMotorFeedforward getFeedForward() {
     return m_feedforward;
@@ -140,8 +140,8 @@ public class DriveTrain extends SubsystemBase {
     final double leftFeedforward = m_feedforward.calculate(speeds.leftMetersPerSecond);
     final double rightFeedforward = m_feedforward.calculate(speeds.rightMetersPerSecond);
 
-    final double leftOutput = pid_left.calculate(encoder_Left_Rate, speeds.leftMetersPerSecond);
-    final double rightOutput = pid_right.calculate(encoder_Right_Rate, speeds.rightMetersPerSecond);
+    final double leftOutput = pid_left.calculate(encoder_Left.getRate(), speeds.leftMetersPerSecond);
+    final double rightOutput = pid_right.calculate(encoder_Right.getRate(), speeds.rightMetersPerSecond);
     drive_left.setVoltage(leftOutput + leftFeedforward);
     drive_right.setVoltage(rightOutput + rightFeedforward);
     // DifferentialDriveWheelSpeeds speeds1 = new DifferentialDriveWheelSpeeds();
@@ -201,14 +201,14 @@ public class DriveTrain extends SubsystemBase {
     // encoder_Right_Rate = motor_Front_Right.getSelectedSensorVelocity(1) /
     // (Constants.DISTANCE_PER_PULSE);
 
-    encoder_Left_Value = encoder_Left.getDistance();
-    encoder_Right_Value = encoder_Right.getDistance();
-    encoder_Left_Rate = encoder_Left.getRate();
-    encoder_Right_Rate = encoder_Right.getRate();
+    // encoder_Left_Value = encoder_Left.getDistance();
+    // encoder_Right_Value = encoder_Right.getDistance();
+    // encoder_Left_Rate = encoder_Left.getRate();
+    // encoder_Right_Rate = encoder_Right.getRate();
 
     updateOdometry();
-    SmartDashboard.putNumber("Encoder left:", encoder_Left_Value);
-    SmartDashboard.putNumber("Encoder right:", encoder_Right_Value);
+    SmartDashboard.putNumber("Encoder left:", encoder_Left.getDistance());
+    SmartDashboard.putNumber("Encoder right:", encoder_Right.getDistance());
     SmartDashboard.putNumber("Angle", ahrs.getAngle());
     // This method will be called once per scheduler run
   }
@@ -261,7 +261,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void updateOdometry() {
-    m_odometry.update(getHeading(), encoder_Left_Value, encoder_Right_Value);
+    m_odometry.update(getHeading(), encoder_Left.getDistance(), encoder_Right.getDistance());
   }
 
   /**
@@ -294,7 +294,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(encoder_Left_Rate, encoder_Right_Rate);
+    return new DifferentialDriveWheelSpeeds(encoder_Left.getRate(), encoder_Right.getRate());
   }
 
   public void resetOdometry(Pose2d pose) {
