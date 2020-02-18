@@ -43,8 +43,8 @@ public class Vibrate extends CommandBase {
       xbox.setRumble(RumbleType.kRightRumble, 0);
       Rumbling = false;
     } else {
-      xbox.setRumble(RumbleType.kLeftRumble, .5);
-      xbox.setRumble(RumbleType.kRightRumble, .5);
+      xbox.setRumble(RumbleType.kLeftRumble, 1);
+      xbox.setRumble(RumbleType.kRightRumble, 1);
       Rumbling = true;
     }
   }
