@@ -158,10 +158,7 @@ public class RobotContainer {
 
     XboxButton1.whenPressed(new InstantCommand(m_shooter::decreaseSpeed, m_shooter));
     XboxButton4.whenPressed(new InstantCommand(m_shooter::increaseSpeed, m_shooter));
-
-    XboxButton2.whenPressed(new InstantCommand(m_shooter::toggleEnabled, m_shooter));
     XboxButton3.whenPressed(new InstantCommand(m_shooter::setSpeed0, m_shooter));
-
   }
 
   /**
