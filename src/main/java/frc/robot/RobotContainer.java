@@ -66,6 +66,7 @@ public class RobotContainer {
   private final JoystickButton Button7 = new JoystickButton(stick1, 7);
   private final JoystickButton Button9 = new JoystickButton(stick1, 9);
   private final JoystickButton Button10 = new JoystickButton(stick1, 10);
+  private final JoystickButton Rbutton1 = new JoystickButton(stick2, 12);
 
   //Xbox Controller
   final XboxController xbox = new XboxController(0);
@@ -117,6 +118,7 @@ public class RobotContainer {
     Button7.whenPressed(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
     Button9.whenPressed(new InstantCommand(m_shooter::stopFW, m_shooter));
     Button10.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
+    Rbutton1.whenPressed(new Vibrate(xbox));
   }
 
   /**
