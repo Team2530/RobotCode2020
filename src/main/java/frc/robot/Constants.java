@@ -41,7 +41,12 @@ public final class Constants {
     public static final int motor_Right_Flywheel_Port = 3;
     public static final int motor_Left_FlyWheel_Port = 4;
 
+
+    //Left Conveyor
     public static final int motor_Conveyor_Port = 2;
+    
+    //Right Conveyor
+    public static final int motor_Conveyor_Port1 = 10; 
 
 
     //--------------------Sensor Ports--------------------\\
