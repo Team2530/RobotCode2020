@@ -42,11 +42,11 @@ public class ConveyorControl extends CommandBase {
       //do nothing
       conveyor.stopIntake();
     } else if(dpadAngle > 90 && dpadAngle < 270) {
-      //spit out
-      conveyor.out();
-    } else if(dpadAngle > 270 || dpadAngle < 90) {
       //succ in
       conveyor.in();
+    } else if(dpadAngle > 270 || dpadAngle < 90) {
+      //spit out
+      conveyor.out();
     }
   }
 
