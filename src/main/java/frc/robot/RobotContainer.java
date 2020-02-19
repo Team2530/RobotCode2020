@@ -124,7 +124,7 @@ public class RobotContainer {
     configureButtonBindings();
 
     m_driveTrain.setDefaultCommand(telopDriveCommand);
-    m_conveyor.setDefaultCommand(telopConveyorCommand);
+    //m_conveyor.setDefaultCommand(telopConveyorCommand);
     // m_shooter.setDefaultCommand(telopShooterCommand);
     // elevatorSub.setDefaultCommand(telopElevatorCommand);
   }
@@ -141,10 +141,10 @@ public class RobotContainer {
     Button2.whenPressed(toggleCamera);
     // Button3.whenPressed(toggleLED);
     // Button5.whenPressed(new LocateBall(m_driveTrain, m_pixy, m_shooter));
-    Button4.whenPressed(new InstantCommand(m_conveyor::in, m_conveyor));
-    Button6.whenPressed(new InstantCommand(m_conveyor::out, m_conveyor));
-    Button7.whenPressed(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
-    Button9.whenPressed(new InstantCommand(m_shooter::stopFW, m_shooter));
+    ///Button4.whenPressed(new InstantCommand(m_conveyor::in, m_conveyor));
+    //Button6.whenPressed(new InstantCommand(m_conveyor::out, m_conveyor));
+    //Button7.whenPressed(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
+    //Button9.whenPressed(new InstantCommand(m_shooter::stopFW, m_shooter));
     // Button10.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
 
     // XboxButton1.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
@@ -156,11 +156,11 @@ public class RobotContainer {
     // XboxButton1.whileHeld(new StartShooter(m_shooter, xbox));
     // XboxButton4.whileHeld(new StartIntake(m_shooter, xbox));
 
-    XboxButton1.whenPressed(new InstantCommand(m_shooter::decreaseSpeed, m_shooter));
-    XboxButton4.whenPressed(new InstantCommand(m_shooter::increaseSpeed, m_shooter));
+    //XboxButton1.whenPressed(new InstantCommand(m_shooter::decreaseSpeed, m_shooter));
+    //XboxButton4.whenPressed(new InstantCommand(m_shooter::increaseSpeed, m_shooter));
 
-    XboxButton2.whenPressed(new InstantCommand(m_shooter::toggleEnabled, m_shooter));
-    XboxButton3.whenPressed(new InstantCommand(m_shooter::setSpeed0, m_shooter));
+    //XboxButton2.whenPressed(new InstantCommand(m_shooter::toggleEnabled, m_shooter));
+    //XboxButton3.whenPressed(new InstantCommand(m_shooter::setSpeed0, m_shooter));
 
   }
 

@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -71,19 +73,19 @@ public final class Constants {
     public static final int[] encoder_Right_Flywheel_Port = {11,12};
 
     //----------Sensor Constants-----------\\
-    public static final int ENCODER_TICKS_PER_REVOLUTION = 1024;
+    public static final int ENCODER_TICKS_PER_REVOLUTION = 2048;
     public static final int gyroDrift = 5;
     public static final double sensor_Limelight_Height = 25;//? mounting height in inches
 
     //----------Driving Constants----------\\
     public static final double GEAR_RATIO = 1; //?This ratio is the ratio between the encoder and the driven wheels
-    public static final double WHEEL_RADIUS = 6*2.54; //!Not diameter radius
-    public static final double DISTANCE_PER_PULSE = Constants.ENCODER_TICKS_PER_REVOLUTION * Math.PI * Math.pow(Constants.WHEEL_RADIUS, 2);
+    public static final double WHEEL_DIAMETER = Units.inchesToMeters(6.1); //!Diameter 
+    public static final double DISTANCE_PER_PULSE = Math.PI * Constants.WHEEL_DIAMETER/ENCODER_TICKS_PER_REVOLUTION;
     public static final double kRamseteB = 0.1;//! Not calculated
     public static final double kRamseteZeta = 0.5;//! Not calculated
 
     //public static final double ALIGN = 0.025;
-    public static final double WHEEL_DISTANCE = 22*2.54;//was in inches
+    public static final double WHEEL_DISTANCE = Units.inchesToMeters(22);//was in inches
     public static final double MAX_DRIVE_SPEED = 10;//Need this in m/s
     public static final double MAX_ANGULAR_SPEED = 0.5;//Need this in rad/s
     

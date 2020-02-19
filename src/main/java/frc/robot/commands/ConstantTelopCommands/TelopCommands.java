@@ -20,6 +20,6 @@ public class TelopCommands extends ParallelCommandGroup {
   public TelopCommands(Command driveCommand, Command conveyorCommand, Command shooterCommand) {
     // Add your commands in the super() call, e.g.
     // super(new FooCommand(), new BarCommand());super();
-    super(driveCommand, conveyorCommand, shooterCommand);
+    super(driveCommand);
   }
 }

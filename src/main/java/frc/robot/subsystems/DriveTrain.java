@@ -52,12 +52,12 @@ public class DriveTrain extends SubsystemBase {
 
   // -------------------- Encoder Stuff -------------------- \\
   // Values
-  //private static double encoder_Left_Value;
-  //private static double encoder_Right_Value;
+  // private static double encoder_Left_Value;
+  // private static double encoder_Right_Value;
 
   // Rates
-  //private static double encoder_Left_Rate;
-  //private static double encoder_Right_Rate;
+  // private static double encoder_Left_Rate;
+  // private static double encoder_Right_Rate;
 
   // Encoders
   private static Encoder encoder_Left = new Encoder(Constants.encoder_Left_Ports[0], Constants.encoder_Left_Ports[1]);
@@ -66,15 +66,15 @@ public class DriveTrain extends SubsystemBase {
 
   // private static boolean isEnabled;
 
-  private static SpeedControllerGroup drive_left = new SpeedControllerGroup(motor_Front_Left, motor_Back_Left);
+  private static SpeedControllerGroup drive_left;
   private static SpeedControllerGroup drive_right = new SpeedControllerGroup(motor_Front_Right, motor_Back_Right);
 
   private static PIDController pid_left = new PIDController(Constants.kP, Constants.kI, Constants.kD);
   private static PIDController pid_right = new PIDController(Constants.kP, Constants.kI, Constants.kD);
 
-  private static DifferentialDrive robotDrive = new DifferentialDrive(drive_left, drive_right);
+  private static DifferentialDrive robotDrive;
 
-  private final DifferentialDriveKinematics m_kinematics = new DifferentialDriveKinematics(Constants.WHEEL_DISTANCE);
+  private final DifferentialDriveKinematics m_kinematics;
 
   private final DifferentialDriveOdometry m_odometry;
 
@@ -102,32 +102,47 @@ public class DriveTrain extends SubsystemBase {
     pid_left.setTolerance(Constants.tol);
     pid_right.setTolerance(Constants.tol);
     m_odometry = new DifferentialDriveOdometry(getHeading());
+
     encoder_Left.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
     encoder_Right.setDistancePerPulse(Constants.DISTANCE_PER_PULSE);
-    encoder_Right.setReverseDirection(true);
-    encoder_Left.setReverseDirection(false);
+
+    encoder_Right.setReverseDirection(false);
+    encoder_Left.setReverseDirection(true);
+
+    drive_left = new SpeedControllerGroup(motor_Front_Left, motor_Back_Left);
+    drive_left.setInverted(true);
+
+    drive_right = new SpeedControllerGroup(motor_Front_Right, motor_Back_Right);
+    drive_right.setInverted(false);
+
     drive_right.setInverted(false);
     drive_left.setInverted(true);
+
+    robotDrive = new DifferentialDrive(drive_left, drive_right);
+    m_kinematics = new DifferentialDriveKinematics(Constants.WHEEL_DISTANCE);
 
   }
 
   public DifferentialDriveKinematics getKinematics() {
     return m_kinematics;
   }
-  public PIDController getLeftController(){
+
+  public PIDController getLeftController() {
     return pid_left;
   }
-  public PIDController getRightController(){
+
+  public PIDController getRightController() {
     return pid_right;
   }
+
   public SimpleMotorFeedforward getFeedForward() {
     return m_feedforward;
   }
 
   // public void setPID(double P, double I, double D) {
-  //   this.getController().setP(P);
-  //   this.getController().setI(I);
-  //   this.getController().setD(D);
+  // this.getController().setP(P);
+  // this.getController().setI(I);
+  // this.getController().setD(D);
   // }
 
   /**
@@ -245,7 +260,7 @@ public class DriveTrain extends SubsystemBase {
    */
   public void tankDrive(double leftSpeed, double rightSpeed) {
     robotDrive.tankDrive(leftSpeed, rightSpeed);
-    //robotDrive.setSafetyEnabled(false);
+    // robotDrive.setSafetyEnabled(false);
   }
 
   /**
@@ -288,7 +303,6 @@ public class DriveTrain extends SubsystemBase {
 
   }
 
-
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }
@@ -306,7 +320,7 @@ public class DriveTrain extends SubsystemBase {
   // return m_odometry.getPoseMeters();
   // }
 
-   /**
+  /**
    * Controls the left and right sides of the drive directly with voltages.
    *
    * @param leftVolts  the commanded left output
@@ -323,7 +337,6 @@ public class DriveTrain extends SubsystemBase {
   public PIDController getPid_left() {
     return pid_left;
   }
-
 
   public PIDController getPid_right() {
     return pid_right;
