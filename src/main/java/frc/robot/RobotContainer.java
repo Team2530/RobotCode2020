@@ -31,9 +31,11 @@ import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Pixy;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Shooter;
-
+import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -45,13 +47,13 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   // -------------------- Subsystems -------------------- \\
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveTrain m_driveTrain = new DriveTrain();
-  private final Elevator elevatorSub = new Elevator();
-  private final LimeLight limeLightSub = new LimeLight();
-  private final Pixy m_pixy = new Pixy();
-  private final Shooter m_shooter = new Shooter();
-  private final Conveyor m_conveyor = new Conveyor();
+  //private final Elevator elevatorSub = new Elevator();
+  //private final LimeLight limeLightSub = new LimeLight();
+  //private final Pixy m_pixy = new Pixy();
+  //private final Shooter m_shooter = new Shooter();
+  //private final Conveyor m_conveyor = new Conveyor();
 
   // -------------------- Joysticks and Buttons -------------------- \\
   // Joysticks
@@ -81,7 +83,7 @@ public class RobotContainer {
   // -------------------- Autonomous Commands -------------------- \\
 
   
-  TrajectoryConfig trajectoryConfig = new TrajectoryConfig(10, 60);
+  
   
   
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -89,7 +91,7 @@ public class RobotContainer {
   //private final TrajectoryTest m_autoCommand = new TrajectoryTest(m_driveTrain, new Traj);
   // private final DriveForSeconds m_autoCommand = new DriveForSeconds(m_driveTrain, 5);
   
-  private final StartMotors m_autoCommand = new StartMotors(m_driveTrain);
+  //private final StartMotors m_autoCommand = new StartMotors(m_driveTrain);
   //private final DelayTest delayCommand = new DelayTest(1, m_autoCommand);
   
 
@@ -105,16 +107,16 @@ public class RobotContainer {
   // private final XboxJoystickElevator elevatorCommand = new XboxJoystickElevator(elevatorSub, xbox);
   // private final SmallJoystickElevator elevatorCommand = new SmallJoystickElevator(elevatorSub, stick1);
   // private final EncoderTest m_telopCommand = new EncoderTest(m_driveTrain);
-  private final LineUp lineUp = new LineUp(m_driveTrain, limeLightSub, elevatorSub);
+  //private final LineUp lineUp = new LineUp(m_driveTrain, limeLightSub, elevatorSub);
   // private final TestPixy pixy = new TestPixy(m_pixy);
   // private final ToggleLimeLightLED toggleLED = new
   // ToggleLimeLightLED(limeLightSub);
   private final LargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1);
   //private final DualLargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1, stick2);
-  private final ConveyorControl telopConveyorCommand = new ConveyorControl(m_conveyor, xbox);
-  private final StartShooter telopShooterCommand = new StartShooter(m_shooter, xbox);
+  //private final ConveyorControl telopConveyorCommand = new ConveyorControl(m_conveyor, xbox);
+  //private final StartShooter telopShooterCommand = new StartShooter(m_shooter, xbox);
   // private final TelopCommands telopCommand = new TelopCommands(telopDriveCommand, telopConveyorCommand, telopShooterCommand);
-  private final ToggleCamera toggleCamera = new ToggleCamera(limeLightSub);
+  //private final ToggleCamera toggleCamera = new ToggleCamera(limeLightSub);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -136,9 +138,9 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    Button1.whileHeld(lineUp);
+    //Button1.whileHeld(lineUp);
     // Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
-    Button2.whenPressed(toggleCamera);
+    //Button2.whenPressed(toggleCamera);
     // Button3.whenPressed(toggleLED);
     // Button5.whenPressed(new LocateBall(m_driveTrain, m_pixy, m_shooter));
     ///Button4.whenPressed(new InstantCommand(m_conveyor::in, m_conveyor));
@@ -173,10 +175,24 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     Trajectory trajectory;
     String trajectoryJSON = "paths/DriveForwardFarBlue.wpilib.json";
+    
     try {
       Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-      return new TrajectoryTest(m_driveTrain, trajectory);
+      RamseteCommand ramseteCommand= new RamseteCommand(
+        trajectory, // TrajectoryUtil.fromPathweaverJson(Filesystem.getDeployDirectory().toPath().resolve("PathWeaver/DriveForwardFarBlue.wpilib.json")), //The Trajectory 
+        m_driveTrain::getPose, //Pose (Supplier)
+        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta), //Ramsete Controller
+        m_driveTrain.getFeedForward(), //Feed Forward
+        m_driveTrain.getKinematics(), //Kinematics
+        m_driveTrain::getWheelSpeeds, //Wheel Speeds (Supplier)
+        m_driveTrain.getLeftController(), //Left PID Controller
+        m_driveTrain.getRightController(), //Right PID Controller
+        // RamseteCommand passes volts to the callback
+        m_driveTrain::tankDriveVolts, //Function that uses the Output Volts (BiConsumer)
+        m_driveTrain //SubSystem Requirments
+      );
+      return ramseteCommand;
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
       return null;

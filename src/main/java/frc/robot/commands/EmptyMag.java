@@ -22,9 +22,9 @@ public class EmptyMag extends CommandBase {
   private double[] sposition;
 
   public EmptyMag(Shooter shooter,Elevator elevator,LimeLight limelight) {
-    m_shooter = shooter;
-    m_elevator = elevator;
-    m_limelight = limelight;
+    this.m_shooter = shooter;
+    this.m_elevator = elevator;
+    this.m_limelight = limelight;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(shooter);
     addRequirements(elevator);

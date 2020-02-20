@@ -15,7 +15,6 @@ import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Shooter;
 
-
 public class AimShooter extends CommandBase {
   /**
    * Creates a new EmptyMag.
@@ -29,7 +28,7 @@ public class AimShooter extends CommandBase {
   private Matrix matrix_change;
   private Matrix matrix_initial;
 
-  public AimShooter(Shooter shooter,Elevator elevator,LimeLight limelight) {
+  public AimShooter(Shooter shooter, Elevator elevator, LimeLight limelight) {
     m_shooter = shooter;
     m_elevator = elevator;
     m_limelight = limelight;
@@ -50,14 +49,11 @@ public class AimShooter extends CommandBase {
   public void execute() {
 
     sposition = m_limelight.getSphericalPosition(m_elevator.getAngle(), m_elevator.getLimeLightHeight());
-    double shootingV = GFG.bisection(0, 30, new double[]{
-      0.5*Constants.gravity*
-    Math.pow(sposition[0],2)*
-    Math.pow((1/Math.cos(m_elevator.getAngle())),2),
-    0,
-    -m_elevator.getHeight(),
-    1});;
-    
+    double shootingV = GFG.bisection(0, 30,
+        new double[] {
+            0.5 * Constants.gravity * Math.pow(sposition[0], 2) * Math.pow((1 / Math.cos(m_elevator.getAngle())), 2), 0,
+            -m_elevator.getHeight(), 1 });
+
     // Polynomial v0 = new Polynomial(0.5*Constants.gravity*
     // Math.pow(sposition[0],2)*
     // Math.pow((1/Math.cos(m_elevator.getAngle())),2)
@@ -67,13 +63,11 @@ public class AimShooter extends CommandBase {
     // Polynomial v = v3.plus(v2.plus(v0));
 
     // if(sposition[0]<Constants.MAX_SHOOTING_DISTANCE){
-    //   if(Constants.ball_Weight*(Constants.target_Height-m_elevator.getHeight())>m_shooter.getShooterEnergy()){
-    //     m_shooter.fireBall();
-    //   }
-      
+    // if(Constants.ball_Weight*(Constants.target_Height-m_elevator.getHeight())>m_shooter.getShooterEnergy()){
+    // m_shooter.fireBall();
     // }
-    
 
+    // }
 
   }
 
@@ -85,7 +79,7 @@ public class AimShooter extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //return true when magazine is empty|| if target is no longer in sight
+    // return true when magazine is empty|| if target is no longer in sight
     return false;
   }
 }

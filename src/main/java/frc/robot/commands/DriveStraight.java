@@ -12,14 +12,14 @@ import frc.robot.subsystems.DriveTrain;
 
 public class DriveStraight extends CommandBase {
 
-  private DriveTrain m_driveTrain;
+  private DriveTrain driveTrain;
 
   /**
    * Creates a new DriveStraight.
    */
   public DriveStraight(DriveTrain driveTrain) {
     // Use addRequirements() here to declare subsystem dependencies.
-    m_driveTrain = driveTrain;
+    this.driveTrain = driveTrain;
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(driveTrain);
   }
