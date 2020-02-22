@@ -138,25 +138,27 @@ public class Shooter extends SubsystemBase {
 
     // This method will be called once per scheduler run
   }
-  public void resetEncoders(){
-		/* Update Quadrature position */
-		motor_Left_FlyWheel.getSensorCollection().setQuadraturePosition(0, Constants.kTimeoutMs);
-		motor_Right_FlyWheel.getSensorCollection().setQuadraturePosition(0, Constants.kTimeoutMs);
+
+  public void resetEncoders() {
+    /* Update Quadrature position */
+    motor_Left_FlyWheel.getSensorCollection().setQuadraturePosition(0, Constants.kTimeoutMs);
+    motor_Right_FlyWheel.getSensorCollection().setQuadraturePosition(0, Constants.kTimeoutMs);
   }
+
   public void startFW(double speed) {
     double curl = 0;
     // currentSpeed = 0.75; //for testing
     motor_Right_FlyWheel.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
     if (!_state) {
       if (_firstCall)
-        //System.out.println("This is Arcade Drive.\n");
+        // System.out.println("This is Arcade Drive.\n");
 
-      motor_Left_FlyWheel.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, curl);
+        motor_Left_FlyWheel.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, curl);
       motor_Right_FlyWheel.set(ControlMode.PercentOutput, speed, DemandType.ArbitraryFeedForward, -curl);
     } else {
       if (_firstCall) {
-        //System.out.println("This is Drive Straight using the auxiliary feature with"
-            //+ "the difference between two encoders to maintain current heading.\n");
+        // System.out.println("This is Drive Straight using the auxiliary feature with"
+        // + "the difference between two encoders to maintain current heading.\n");
 
         /* Determine which slot affects which PID */
         motor_Right_FlyWheel.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
@@ -177,7 +179,6 @@ public class Shooter extends SubsystemBase {
     motor_Left_FlyWheel.set(ControlMode.PercentOutput, 0);
     motor_Right_FlyWheel.set(ControlMode.PercentOutput, 0);
   }
-
 
   /**
    * @return Average Velocity of flyweels in rad/s

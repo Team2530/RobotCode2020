@@ -258,6 +258,17 @@ public class DriveTrain extends SubsystemBase {
   }
 
   /**
+   * Drives the robot with 1 Joystick and makes the robot more controllable at high speeds
+   * 
+   * @param xSpeed 
+   * @param zRotation
+   * @param quickTurn If true, allows turn-in-place maneuvers
+   */
+  public void curvatureDrive(double xSpeed, double zRotation, boolean quickTurn) { //I want to test this
+    robotDrive.curvatureDrive(xSpeed, zRotation, quickTurn);
+  }
+
+  /**
    * Drives the robot with the given linear velocity and angular velocity.
    *
    * @param xSpeed Linear velocity in m/s.
