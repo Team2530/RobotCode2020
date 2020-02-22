@@ -79,23 +79,23 @@ public final class Constants {
     public static final int gyroDrift = 5;
     public static final double sensor_Limelight_Height = 25;// ? mounting height in inches
 
-    // ----------Driving Constants----------\\
-    public static final double GEAR_RATIO = 1; // ?This ratio is the ratio between the encoder and the driven wheels
-    public static final double WHEEL_DIAMETER = Units.inchesToMeters(6.1); // !Diameter
-    public static final double DISTANCE_PER_PULSE = Math.PI * Constants.WHEEL_DIAMETER / ENCODER_TICKS_PER_REVOLUTION;
-    public static final double kRamseteB = 0.1;// ! Not calculated
-    public static final double kRamseteZeta = 0.5;// ! Not calculated
+    //----------Driving Constants----------\\
+    public static final double GEAR_RATIO = 1; //?This ratio is the ratio between the encoder and the driven wheels
+    public static final double WHEEL_DIAMETER = Units.inchesToMeters(6); //!Diameter 
+    public static final double DISTANCE_PER_PULSE = Math.PI * Constants.WHEEL_DIAMETER/ENCODER_TICKS_PER_REVOLUTION;
+    public static final double kRamseteB = 0.1;//! Not calculated
+    public static final double kRamseteZeta = 0.5;//! Not calculated
 
-    // public static final double ALIGN = 0.025;
-    public static final double WHEEL_DISTANCE = Units.inchesToMeters(22);// was in inches
-    public static final double MAX_DRIVE_SPEED = 10;// Need this in m/s
-    public static final double MAX_ANGULAR_SPEED = 0.5;// Need this in rad/s
-
+    //public static final double ALIGN = 0.025;
+    public static final double WHEEL_DISTANCE = Units.inchesToMeters(22);//was in inches
+    public static final double MAX_DRIVE_SPEED = 10;//Need this in m/s
+    public static final double MAX_ANGULAR_SPEED = 0.5;//Need this in rad/s
+    
     public static final double kP = .000122;
     public static final double kI = 0;
-    public static final double kD = 0;
-    public static final double kS = 1.22;
-    public static final double kV = 0.00305;
+    public static final double kD = 0.892;
+    public static final double kS = 0.967;
+    public static final double kV = 0.784;
 
     public static final double tol = 5;
     public static final int setPoint = 1;

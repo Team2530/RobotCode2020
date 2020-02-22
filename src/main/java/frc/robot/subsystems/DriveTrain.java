@@ -73,6 +73,8 @@ public class DriveTrain extends SubsystemBase {
 
   private final SimpleMotorFeedforward m_feedforward = new SimpleMotorFeedforward(Constants.kS, Constants.kV);
 
+  // Create a voltage constraint to ensure we don't accelerate too fast
+  private DifferentialDriveVoltageConstraint autoVoltageConstraint;
   double integral, derivative, previous_error, setpoint, error = 0;
 
   // PIDController
@@ -114,6 +116,9 @@ public class DriveTrain extends SubsystemBase {
 
     robotDrive = new DifferentialDrive(drive_left, drive_right);
     m_kinematics = new DifferentialDriveKinematics(Constants.WHEEL_DISTANCE);
+    autoVoltageConstraint = new DifferentialDriveVoltageConstraint(m_feedforward, m_kinematics, 10);
+
+    robotDrive.setSafetyEnabled(false);
 
   }
 
@@ -216,9 +221,9 @@ public class DriveTrain extends SubsystemBase {
     // encoder_Right_Rate = encoder_Right.getRate();
 
     updateOdometry();
-    SmartDashboard.putNumber("Encoder left:", encoder_Left.getDistance());
-    SmartDashboard.putNumber("Encoder right:", encoder_Right.getDistance());
-    SmartDashboard.putNumber("Angle", ahrs.getAngle());
+    // SmartDashboard.putNumber("Encoder left:", encoder_Left.getDistance());
+    // SmartDashboard.putNumber("Encoder right:", encoder_Right.getDistance());
+    // SmartDashboard.putNumber("Angle", ahrs.getAngle());
     // This method will be called once per scheduler run
   }
 
@@ -332,8 +337,8 @@ public class DriveTrain extends SubsystemBase {
    * @param rightVolts the commanded right output
    */
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    SmartDashboard.putNumber("Left Volts", leftVolts);
-    SmartDashboard.putNumber("Right Volts", rightVolts);
+    // SmartDashboard.putNumber("Left Volts", leftVolts);
+    // SmartDashboard.putNumber("Right Volts", rightVolts);
     drive_left.setVoltage(leftVolts);
     drive_right.setVoltage(rightVolts);
     robotDrive.feed();

@@ -17,8 +17,8 @@ import frc.robot.Constants;
 
 public class TrajectoryTest extends RamseteCommand {
   
-  TrajectoryConfig trajectoryConfig = new TrajectoryConfig(10, 60);
-  DriveTrain m_driveTrain;
+  //TrajectoryConfig trajectoryConfig = new TrajectoryConfig(10, 60);
+  //DriveTrain m_driveTrain;
 
   /**
    * Creates a new TrajectoryTest.
@@ -37,22 +37,12 @@ public class TrajectoryTest extends RamseteCommand {
       m_driveTrain::tankDriveVolts, //Function that uses the Output Volts (BiConsumer)
       m_driveTrain //SubSystem Requirments
     );
-
-    // // String trajectoryJSON = "PathWeaver/DriveForwardFarBlue.wpilib.json";
-    // TrajectoryConfig trajectoryConfig = new TrajectoryConfig(10, 60);
-    // try {
-    //   Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
-    //   Trajectory trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-      
-    // } catch (IOException ex) {
-    //   DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
-    // }
-    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
