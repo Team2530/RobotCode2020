@@ -195,6 +195,7 @@ public class Shooter extends SubsystemBase {
     if (wheelspeed < Constants.MAX_SHOOTING_VEOLCITY && wheelspeed <= getAvgSpeed()) {
       currentSpeed += 0.05;
     }
+    startFW(currentSpeed);
     SmartDashboard.putNumber("Shooting Velocity", wheelspeed);
   }
 

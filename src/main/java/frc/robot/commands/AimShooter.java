@@ -23,10 +23,6 @@ public class AimShooter extends CommandBase {
   private Elevator m_elevator;
   private LimeLight m_limelight;
   private double[] sposition;
-  private double[][] change;
-  private double[][] inital;
-  private Matrix matrix_change;
-  private Matrix matrix_initial;
 
   public AimShooter(Shooter shooter, Elevator elevator, LimeLight limelight) {
     m_shooter = shooter;
@@ -53,7 +49,7 @@ public class AimShooter extends CommandBase {
         new double[] {
             0.5 * Constants.gravity * Math.pow(sposition[0], 2) * Math.pow((1 / Math.cos(m_elevator.getAngle())), 2), 0,
             -m_elevator.getHeight(), 1 });
-
+    m_shooter.startFW(shootingV);
     // Polynomial v0 = new Polynomial(0.5*Constants.gravity*
     // Math.pow(sposition[0],2)*
     // Math.pow((1/Math.cos(m_elevator.getAngle())),2)

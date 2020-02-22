@@ -40,7 +40,7 @@ public class LargeJoystickCurvatureDrive extends CommandBase {
     y = stick.getY();
     z = stick.getZ();
 
-    driveTrain.curvatureDrive(y, z, false); // permanently set false for now, add a button to toggle soon
+    driveTrain.curvatureDrive(y, z, true); // permanently set false for now, add a button to toggle soon
   }
 
   // Called once the command ends or is interrupted.

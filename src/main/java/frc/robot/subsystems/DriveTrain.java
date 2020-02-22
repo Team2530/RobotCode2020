@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
 // import edu.wpi.first.wpilibj.SPI.Port;
 // import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -111,12 +112,12 @@ public class DriveTrain extends SubsystemBase {
     drive_right = new SpeedControllerGroup(motor_Front_Right, motor_Back_Right);
     drive_right.setInverted(false);
 
-    drive_right.setInverted(false);
-    drive_left.setInverted(true);
+    // drive_right.setInverted(false);
+    // drive_left.setInverted(true);
 
     robotDrive = new DifferentialDrive(drive_left, drive_right);
     m_kinematics = new DifferentialDriveKinematics(Constants.WHEEL_DISTANCE);
-    autoVoltageConstraint = new DifferentialDriveVoltageConstraint(m_feedforward, m_kinematics, 10);
+    autoVoltageConstraint = new DifferentialDriveVoltageConstraint(m_feedforward, m_kinematics, 11);
 
     robotDrive.setSafetyEnabled(false);
 
@@ -270,7 +271,7 @@ public class DriveTrain extends SubsystemBase {
    * @param quickTurn If true, allows turn-in-place maneuvers
    */
   public void curvatureDrive(double xSpeed, double zRotation, boolean quickTurn) { //I want to test this
-    robotDrive.curvatureDrive(xSpeed, zRotation, quickTurn);
+    robotDrive.curvatureDrive(-xSpeed, zRotation, quickTurn);
   }
 
   /**
