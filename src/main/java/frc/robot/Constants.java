@@ -74,6 +74,8 @@ public final class Constants {
     public static final int[] encoder_Left_Flywheel_Ports = { 9, 10 };
     public static final int[] encoder_Right_Flywheel_Port = { 11, 12 };
 
+    public static final int laser_switch = 4;
+
     // ----------Sensor Constants-----------\\
     public static final int ENCODER_TICKS_PER_REVOLUTION = 2048;
     public static final int gyroDrift = 5;

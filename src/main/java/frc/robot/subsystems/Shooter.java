@@ -18,6 +18,7 @@ import com.ctre.phoenix.motorcontrol.FollowerType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
 import edu.wpi.first.wpilibj.XboxController;
 
@@ -28,10 +29,12 @@ public class Shooter extends SubsystemBase {
 
   private static WPI_TalonSRX motor_Left_FlyWheel = new WPI_TalonSRX(Constants.motor_Left_FlyWheel_Port);
   private static WPI_TalonSRX motor_Right_FlyWheel = new WPI_TalonSRX(Constants.motor_Right_Flywheel_Port);
-  private XboxController xbox;
+
+  DigitalInput laser = new DigitalInput(Constants.laser_switch);
 
   private static double currentSpeed = 0;
-
+  boolean hasCurrentBall = false;
+  int ballCount = 0;
   /** Tracking variables */
   boolean _firstCall = false;
   boolean _state = false;
@@ -135,7 +138,7 @@ public class Shooter extends SubsystemBase {
     // } else {
     // stopFW();
     // }
-
+    shotCounter();
     // This method will be called once per scheduler run
   }
 
@@ -199,9 +202,23 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Shooting Velocity", wheelspeed);
   }
 
-  // public void setFWPower(double power) {
-  // // motor_Left_FlyWheel.set(ControlMode.PercentOutput, power);
-  // }
+  public void shotCounter(){
+    if(laser.get()&&getAvgSpeed()<0&&!hasCurrentBall)
+    {
+      ballCount++;
+      hasCurrentBall = !hasCurrentBall;
+    }
+    
+    else if(laser.get()&&getAvgSpeed()>0&&!hasCurrentBall)
+    {
+      ballCount--;
+      hasCurrentBall = !hasCurrentBall;
+    }
+    else if (!laser.get()&&hasCurrentBall)
+    {
+      hasCurrentBall = !hasCurrentBall;
+    }
+  }
 
   public void fireBall() {
 
@@ -224,9 +241,8 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Current Shooter Speed", currentSpeed);
   }
 
-  public void setSpeed0() {
-    currentSpeed = 0;
-    SmartDashboard.putNumber("Current Shooter Speed", currentSpeed);
+  public boolean getHasBallNear(){
+    return hasCurrentBall;
   }
 
 }
