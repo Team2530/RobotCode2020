@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands.autonomousCommands;
+package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
@@ -53,13 +53,17 @@ public class WoFSpinner extends CommandBase {
   }
     public static void spin() {
     while (1 == 1) {
-      if (1 == 1 /*If pixy object WoF_Red or WoF_Yellow or WoF_lightBlue or WoF_limeGreen is detected, run the below code*/) {
+      if (/*If pixy object WoF_Red or WoF_Yellow or WoF_lightBlue or WoF_limeGreen is detected, run the below code*/) {
       }
       else {
         //do nothing
       }
     {
-  }  
+  } 
+  public boolean isFinished() {
+    return false;
+    //return true when the WoF has completed one stage cycle (spin or color), or when it is no longer in sight
+  } 
 }
 
   // Called once the command ends or is interrupted.
