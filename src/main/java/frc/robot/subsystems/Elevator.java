@@ -7,6 +7,8 @@
 
 package frc.robot.subsystems;
 
+import java.util.Arrays;
+
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
@@ -168,19 +170,16 @@ public class Elevator extends SubsystemBase {
      * pusdo code angle = arctan(getHeight()/bottomLeg)
      */
 
-     double radians = Math.atan2(Constants.bottomLeg, getHeight()); //(x,y)
+    // double degrees = (radians * 180)/Math.PI;
 
-    //  double degrees = (radians * 180)/Math.PI;
-
-    return radians;
+    return Math.atan2(getFloorHeight()[0], Constants.bottomLeg);
   }
-  
-  //TODO get Height function return inches
-  public double getHeight() {
+
+  // TODO get Height function return inches
+  public double[] getFloorHeight() {
     /**
-     * pusdo code 
-     * cant really do this until i know more specs of elevator from hardware
-     * return +- from level i think would be easiest for getAngle()
+     * pusdo code cant really do this until i know more specs of elevator from
+     * hardware return +- from level i think would be easiest for getAngle()
      * 
      * * any gearing?
      * 
@@ -188,22 +187,27 @@ public class Elevator extends SubsystemBase {
      * 
      * number of turns/turns per inch = inches traveled
      * 
-     * if you just set enocder to 0 where you want inches to be 0 then never have to reset
-     * will just tell you inches from that point
-     * need to figure out how to reset at that 0 point
+     * if you just set enocder to 0 where you want inches to be 0 then never have to
+     * reset will just tell you inches from that point need to figure out how to
+     * reset at that 0 point
      * 
      */
 
-    double encoderLeftPos = motor_Left.getSelectedSensorPosition(1); //* if 1 doesnt work try 0, look at pheonix tuner
+    double encoderLeftPos = motor_Left.getSelectedSensorPosition(1); // if 1 doesnt work try 0, look at pheonix tuner I
+                                                                     // believe u
     double encoderRightPos = motor_Right.getSelectedSensorPosition(1);
 
-    double numberOfTurnsLeft = encoderLeftPos/Constants.ENCODER_TICKS_PER_REVOLUTION;
-    double numberOfTurnsRight = encoderRightPos/Constants.ENCODER_TICKS_PER_REVOLUTION;
+    double numberOfTurnsLeft = encoderLeftPos / Constants.DROP_IN_DISTANCE_PER_REVOLUTION;
+    double numberOfTurnsRight = encoderRightPos / Constants.DROP_IN_DISTANCE_PER_REVOLUTION;
 
-    double leftHeight = numberOfTurnsLeft/Constants.turnsPerInch;
-    double RightHeight = numberOfTurnsRight/Constants.turnsPerInch; //they should be almost the same
+    double leftHeight = numberOfTurnsLeft / Constants.turnsPerInch;
+    double rightHeight = numberOfTurnsRight / Constants.turnsPerInch; // they should be almost the same
 
-    return 0; //average them maybe?
+    return new double[] { leftHeight, rightHeight }; // average them maybe?
+  }
+
+  public double getParallelHeight() {
+    return Arrays.stream(getFloorHeight()).average().orElse(Double.NaN)-Constants.pivotHeight;
   }
 
   // TODO get limelight height return degrees

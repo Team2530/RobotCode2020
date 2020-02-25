@@ -166,7 +166,8 @@ public final class Constants {
     // ----------Control (Elevator) Constants----------\\
     // measurements based around shooter being level
     // !these are all wrong, hardware didnt know anything
-    public static final double bottomLeg = 29.68168 * 2.54; // cm
+    public static final double bottomLeg = Units.inchesToMeters( 29.68168); // m
+    public static final double pivotHeight = Units.inchesToMeters( 0); //! m
     public static final double maxAngle = 45; // degrees (45, 45, 90 triangle)
     public static final double maxHeight = 18.54717 * 2.54; // cm
     public static final double minAngle = -32; // degrees

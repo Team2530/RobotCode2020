@@ -48,7 +48,7 @@ public class AimShooter extends CommandBase {
     double shootingV = GFG.bisection(0, 30,
         new double[] {
             0.5 * Constants.gravity * Math.pow(sposition[0], 2) * Math.pow((1 / Math.cos(m_elevator.getAngle())), 2), 0,
-            -m_elevator.getHeight(), 1 });
+            -m_elevator.getFloorHeight(), 1 });
     m_shooter.startFW(shootingV);
     // Polynomial v0 = new Polynomial(0.5*Constants.gravity*
     // Math.pow(sposition[0],2)*
