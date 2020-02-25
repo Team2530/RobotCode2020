@@ -173,6 +173,7 @@ public final class Constants {
     public static final double minHeight = -29.68168 * 2.54; // cm
     public static final double gravity = -9.8;// meters per second
     public static final double leadscrewDistancePerRotation = 10;//!
+    public static final int turnsPerInch = 10; //?idk check with hardware assuming 1 start
      /**
 	 * PID Gains may have to be adjusted based on the responsiveness of control loop.
      * kF: 1023 represents output value to Talon at 100%, 6800 represents Velocity units at 100% output

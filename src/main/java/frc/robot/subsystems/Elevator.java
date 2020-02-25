@@ -168,15 +168,42 @@ public class Elevator extends SubsystemBase {
      * pusdo code angle = arctan(getHeight()/bottomLeg)
      */
 
-    return 40; // temp
-  }
+     double radians = Math.atan2(Constants.bottomLeg, getHeight()); //(x,y)
 
-  // TODO get Height function return meters
+     double degrees = (radians * 180)/Math.PI;
+
+    return degrees;
+  }
+  
+  //TODO get Height function return inches
   public double getHeight() {
+    /**
+     * pusdo code 
+     * cant really do this until i know more specs of elevator from hardware
+     * return +- from level i think would be easiest for getAngle()
+     * 
+     * * any gearing?
+     * 
+     * encoder pos/magic number (1024) = number of turns?
+     * 
+     * number of turns/turns per inch = inches traveled
+     * 
+     * if you just set enocder to 0 where you want inches to be 0 then never have to reset
+     * will just tell you inches from that point
+     * need to figure out how to reset at that 0 point
+     * 
+     */
 
-    return Constants.leadscrewDistancePerRotation * getHeight();
-  }
+    double encoderLeftPos = motor_Left_Leadscrew.getSelectedSensorPosition(1); //* if 1 doesnt work try 0, look at pheonix tuner
+    double encoderRightPos = motor_Right_Leadscrew.getSelectedSensorPosition(1);
 
+    double numberOfTurnsLeft = encoderLeftPos/Constants.ENCODER_TICKS_PER_REVOLUTION;
+    double numberOfTurnsRight = encoderRightPos/Constants.ENCODER_TICKS_PER_REVOLUTION;
+
+    double leftHeight = numberOfTurnsLeft/Constants.turnsPerInch;
+    double RightHeight = numberOfTurnsRight/Constants.turnsPerInch; //they should be almost the same
+
+    return 0; //average them maybe?
   // TODO get limelight height return degrees
   public double getLimeLightHeight() {
 
