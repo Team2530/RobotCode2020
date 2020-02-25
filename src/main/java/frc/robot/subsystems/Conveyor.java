@@ -16,6 +16,7 @@ import frc.robot.Constants;
 public class Conveyor extends SubsystemBase {
 
   private static WPI_VictorSPX motor_Conveyor = new WPI_VictorSPX(Constants.motor_Conveyor_Port);
+  private static WPI_VictorSPX motor_Conveyor1 = new WPI_VictorSPX(Constants.motor_Conveyor_Port1);
 
   /**
    * Creates a new Conveyor.
@@ -31,13 +32,16 @@ public class Conveyor extends SubsystemBase {
 
   public void in() {
     motor_Conveyor.set(ControlMode.PercentOutput, 1);
+    motor_Conveyor1.set(ControlMode.PercentOutput, 1);
   }
 
   public void out() {
     motor_Conveyor.set(ControlMode.PercentOutput, -1);
+    motor_Conveyor1.set(ControlMode.PercentOutput, -1);
   }
 
   public void stopIntake() {
     motor_Conveyor.set(ControlMode.PercentOutput, 0);
+    motor_Conveyor1.set(ControlMode.PercentOutput, 0);
   }
 }

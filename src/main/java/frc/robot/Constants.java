@@ -47,6 +47,8 @@ public final class Constants {
     public static final int motor_Left_FlyWheel_Port = 4;
 
     public static final int motor_Conveyor_Port = 2;
+    //Needs to be changed
+    public static final int motor_Conveyor_Port1 = 20;
 
     // --------------------Sensor Ports--------------------\\
     // DriveTrain Encoders
