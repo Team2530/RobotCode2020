@@ -170,9 +170,9 @@ public class Elevator extends SubsystemBase {
 
      double radians = Math.atan2(Constants.bottomLeg, getHeight()); //(x,y)
 
-     double degrees = (radians * 180)/Math.PI;
+    //  double degrees = (radians * 180)/Math.PI;
 
-    return degrees;
+    return radians;
   }
   
   //TODO get Height function return inches
@@ -194,8 +194,8 @@ public class Elevator extends SubsystemBase {
      * 
      */
 
-    double encoderLeftPos = motor_Left_Leadscrew.getSelectedSensorPosition(1); //* if 1 doesnt work try 0, look at pheonix tuner
-    double encoderRightPos = motor_Right_Leadscrew.getSelectedSensorPosition(1);
+    double encoderLeftPos = motor_Left.getSelectedSensorPosition(1); //* if 1 doesnt work try 0, look at pheonix tuner
+    double encoderRightPos = motor_Right.getSelectedSensorPosition(1);
 
     double numberOfTurnsLeft = encoderLeftPos/Constants.ENCODER_TICKS_PER_REVOLUTION;
     double numberOfTurnsRight = encoderRightPos/Constants.ENCODER_TICKS_PER_REVOLUTION;
@@ -204,6 +204,8 @@ public class Elevator extends SubsystemBase {
     double RightHeight = numberOfTurnsRight/Constants.turnsPerInch; //they should be almost the same
 
     return 0; //average them maybe?
+  }
+
   // TODO get limelight height return degrees
   public double getLimeLightHeight() {
 
