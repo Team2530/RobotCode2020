@@ -35,7 +35,7 @@ public final class Constants {
     public static final int motor_Right_Pulley_Port = 8;
     public enum ElevatorMotors
     {
-        LeadScrew,
+        LL, RL, LP, RP;
     }
 
     //Shooter
@@ -43,10 +43,6 @@ public final class Constants {
     public static final int motor_Left_FlyWheel_Port = 10;
 
     public static final int motor_Ball_Leadscrew_Port = 11;
-
-    //elevator crap (leadscrew)
-    public static final double LSRatio = 1.57; //1 to 1 ratio. just need multiply by 2.
-
 
 
     //--------------------Sensor Ports--------------------\\
