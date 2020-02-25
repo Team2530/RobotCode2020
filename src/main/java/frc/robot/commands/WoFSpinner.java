@@ -41,24 +41,20 @@ public class WoFSpinner extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
 
   public WoFSpinner() {
-    double displaySpeed;
-    while (1 == 1) {
-      if (shooter.getAvgSpeed() > 0) {
-        displaySpeed = shooter.getAvgSpeed();
-        SmartDashboard.putString("The Shooter motor speed is: " + displaySpeed, "speed");
-      }
-      else {
-        displaySpeed = 0;
-      }}
+    double displaySpeedRads = shooter.getAvgSpeed();
+    double displaySpeedRPM = displaySpeedRads * 9.549296585513702;
+    SmartDashboard.putString("The Current Shooter Speed is: " + displaySpeedRads +"", "shooter-speed");
   }
     public static void spin() {
     while (1 == 1) {
       if (1 == 1/*If pixy object WoF_Red or WoF_Yellow or WoF_lightBlue or WoF_limeGreen is detected, run the below code*/) {
         //run motors at 0.1 speed
+        m_driveTrain.setSingleMotorPower(DriveMotors.FR, 0);
+        m_driveTrain.setSingleMotorPower(DriveMotors.FL, 0);
       }
 
       else {
-        
+
       }
     {
   } 
