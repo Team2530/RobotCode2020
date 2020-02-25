@@ -54,9 +54,11 @@ public class WoFSpinner extends CommandBase {
     public static void spin() {
     while (1 == 1) {
       if (1 == 1/*If pixy object WoF_Red or WoF_Yellow or WoF_lightBlue or WoF_limeGreen is detected, run the below code*/) {
+        //run motors at 0.1 speed
       }
+
       else {
-        //do nothing
+        
       }
     {
   } 
