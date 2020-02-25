@@ -108,7 +108,7 @@ public final class Constants {
     public static final double maxAccelerationMetersPerSecondSq = 1; // !This needs to be set
 
     // ----------Field Constants----------\\
-    public static final double target_Height = 105 * 2.54; // temp test value
+    public static final double target_Height = Units.inchesToMeters(105); // temp test value
     public static final double ball_Weight = 0.3125;
 
     // ----------Control (Joystick) Constants----------\\
@@ -129,13 +129,14 @@ public final class Constants {
     /**
 	 * PID Gains may have to be adjusted based on the responsiveness of control loop.
      * kF: 1023 represents output value to Talon at 100%, 6800 represents Velocity units at 100% output
-     * Not all set of Gains are used in this project and may be removed as desired.
+     * Not all set of Gains are used in this project and may be removed as desired. These are probably overkill but idk rn
+     * 
      * 
 	 * 	                                    			  kP   kI   kD   kF               Iz    PeakOut */
-    public final static Gains kGains_Distanc = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.50 );//! NEED TO BE SET
-	public final static Gains kGains_Turning = new Gains( 2.0, 0.0,  4.0, 0.0,            200,  1.00 );//!
-	public final static Gains kGains_Velocit = new Gains( 0.1, 0.0, 20.0, 1023.0/6800.0,  300,  0.50 );//!
-	public final static Gains kGains_MotProf = new Gains( 1.0, 0.0,  0.0, 1023.0/6800.0,  400,  1.00 );//!
+    public final static Gains kShooter_Gains_Distanc = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.50 );//! NEED TO BE SET
+	public final static Gains kShooter_Gains_Turning = new Gains( 2.0, 0.0,  4.0, 0.0,            200,  1.00 );//!
+	public final static Gains kShooter_Gains_Velocit = new Gains( 0.1, 0.0, 20.0, 1023.0/6800.0,  300,  0.50 );//!
+	public final static Gains kShooter_Gains_MotProf = new Gains( 1.0, 0.0,  0.0, 1023.0/6800.0,  400,  1.00 );//!
 
     public final static int SLOT_0 = 0;
     public final static int SLOT_1 = 1;
@@ -171,5 +172,17 @@ public final class Constants {
     public static final double minAngle = -32; // degrees
     public static final double minHeight = -29.68168 * 2.54; // cm
     public static final double gravity = -9.8;// meters per second
+    public static final double leadscrewDistancePerRotation = 10;//!
+     /**
+	 * PID Gains may have to be adjusted based on the responsiveness of control loop.
+     * kF: 1023 represents output value to Talon at 100%, 6800 represents Velocity units at 100% output
+     * Not all set of Gains are used in this project and may be removed as desired. These are probably overkill but idk rn
+     * 
+     * 
+	 * 	                                    			           kP   kI   kD   kF               Iz    PeakOut */
+	public final static Gains kElevator_Gains_Distanc = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.50 );//! NEED TO BE SET
+	public final static Gains kElevator_Gains_Turning = new Gains( 2.0, 0.0,  4.0, 0.0,            200,  1.00 );//!
+	public final static Gains kElevator_Gains_Velocit = new Gains( 0.1, 0.0, 20.0, 1023.0/6800.0,  300,  0.50 );//!
+	public final static Gains kElevator_Gains_MotProf = new Gains( 1.0, 0.0,  0.0, 1023.0/6800.0,  400,  1.00 );//!
 
 }
