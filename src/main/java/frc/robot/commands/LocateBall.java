@@ -76,7 +76,7 @@ public class LocateBall extends CommandBase {
     }
 
   }
-  double pixyDeadZone = 9.5 //area where it thinks ball is close enough to straigh ahead. radius
+  double pixyDeadZone = 9.5; //area where it thinks ball is close enough to straigh ahead. radius
     public void driveToBall() {
       if (m_pixy.getArea() < 400) {
        if (m_pixy.getX() < 157.5 - pixyDeadZone){//if ball is to far too the left
@@ -102,4 +102,3 @@ public class LocateBall extends CommandBase {
         //ball far away? make sure ball doesn't go out of view? off screen ball tracking?
         //start motors -> drive
       }
- }

@@ -351,4 +351,10 @@ public class DriveTrain extends PIDSubsystem {
     drive_right.setVoltage(rightVolts);
     robotDrive.feed();
   }
+
+public void turnLeft(double d) {
+}
+
+public void turnRight(double d) {
+}
 }
