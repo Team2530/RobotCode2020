@@ -172,10 +172,9 @@ public class Elevator extends SubsystemBase {
 
     // double degrees = (radians * 180)/Math.PI;
 
-    return Math.atan2(getFloorHeight()[0], Constants.bottomLeg);
+    return Math.atan2(getParallelHeight(), Constants.bottomLeg);
   }
 
-  // TODO get Height function return inches
   public double[] getFloorHeight() {
     /**
      * pusdo code cant really do this until i know more specs of elevator from
@@ -210,7 +209,6 @@ public class Elevator extends SubsystemBase {
     return Arrays.stream(getFloorHeight()).average().orElse(Double.NaN)-Constants.pivotHeight;
   }
 
-  // TODO get limelight height return degrees
   public double getLimeLightHeight() {
 
     return Constants.sensor_Limelight_Height; // temp test value
