@@ -57,24 +57,25 @@ public class WoFSpinner extends CommandBase {
     double displaySpeedRPM = displaySpeedRads * 9.549296585513702;
     SmartDashboard.putString("The Current Shooter Speed is: " + displaySpeedRPM +"", "shooter-speed");
   }
-    public static void spin(color) {
-      switch(color){
-        case red:
-          m_Shooter.WoFspin();
-          while(){}
-          m_Shooter.stopFW();
-        case yellow:
-          m_Shooter.WoFspin();
-          while(){}
-          m_Shooter.stopFW();
-        case green:
-          m_Shooter.WoFspin();
-          while(){}
-          m_Shooter.stopFW();
-        case blue:
-          m_Shooter.WoFspin();
-          while(){}
-          m_Shooter.stopFW();
+    public static void spin(String color) {
+      frc.robot.subsystems.Shooter m_Shooter;
+        switch(color){
+              case "red":
+                m_Shooter.WoFspin();
+                while(color != "red"){}
+                m_Shooter.stopFW();
+              case "yellow":
+                m_Shooter.WoFspin();
+                while(color != "yellow"){}
+                m_Shooter.stopFW();
+              case "green":
+                m_Shooter.WoFspin();
+                while(color != "green"){}
+                m_Shooter.stopFW();
+              case "blue":
+                m_Shooter.WoFspin();
+                while(color != "blue"){}
+                m_Shooter.stopFW();
       }
     /*while (1 == 1) {
       // run motors at 0.1 speed
