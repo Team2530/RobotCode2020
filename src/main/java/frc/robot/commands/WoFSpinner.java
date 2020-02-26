@@ -12,7 +12,10 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Pixy;
 import frc.robot.Constants.DriveMotors;
-import frc.robot.commands.LocateBall;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
+/*import frc.robot.commands.LocateBall;*/ //commented out because it is not being used yet. may or may not be used. Here anyway.
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
@@ -26,13 +29,15 @@ public class WoFSpinner extends CommandBase {
   public void WoFSpinner(Shooter shooter, Pixy pixy, DriveTrain driveTrain) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
-    DriveTrain m_driveTrain;
-    final Pixy m_pixy;
+    DriveTrain m_driveTrain; //this variable may not be initialized correctly. Fix it
+    /*final Pixy m_pixy;*/ //commented out because it is not in use yet. It will be though
     addRequirements(shooter);
     addRequirements(pixy);
   }
 
   // Called when the command is initially scheduled.
+
+  
   @Override
   public void initialize() {
   }
@@ -73,4 +78,4 @@ public class WoFSpinner extends CommandBase {
   // Called once the command ends or is interrupted.
 
   // Returns true when the command should end.
-}} 
+}} }
