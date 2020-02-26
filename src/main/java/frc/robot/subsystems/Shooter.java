@@ -38,6 +38,12 @@ public class Shooter extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
+  public void WoFspin() {
+    currentSpeed = 0.1; //for testing
+    motor_Left_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
+    motor_Right_FlyWheel.set(ControlMode.PercentOutput, -currentSpeed);
+  }
+
   public void startFW() {
     currentSpeed = 1; //for testing
     motor_Left_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);

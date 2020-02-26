@@ -44,16 +44,32 @@ public class WoFSpinner extends CommandBase {
     double displaySpeedRPM = displaySpeedRads * 9.549296585513702;
     SmartDashboard.putString("The Current Shooter Speed is: " + displaySpeedRads +"", "shooter-speed");
   }
-    public static void spin() {
-    while (1 == 1) {
+    public static void spin(color) {
+      switch(color){
+        case red:
+          m_Shooter.WoFspin()
+          while(){}
+          m_Shooter.stopFW()
+        case yellow:
+          m_Shooter.WoFspin()
+          while(){}
+          m_Shooter.stopFW()
+        case green:
+          m_Shooter.WoFspin()
+          while(){}
+          m_Shooter.stopFW()
+        case blue:
+          m_Shooter.WoFspin()
+          while(){}
+          m_Shooter.stopFW()
+      }
+    /*while (1 == 1) {
       // run motors at 0.1 speed
       DriveTrain m_driveTrain;
       m_driveTrain.setSingleMotorPower(DriveMotors.FR, 0);
       m_driveTrain.setSingleMotorPower(DriveMotors.FL, 0);
-    {
-  } 
-}
-
+      }*/
+      //I thought this looked useless
   // Called once the command ends or is interrupted.
 
   // Returns true when the command should end.
