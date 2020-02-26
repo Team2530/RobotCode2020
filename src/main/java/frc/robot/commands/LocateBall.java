@@ -7,6 +7,7 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.DriveMotors;
 import frc.robot.subsystems.DriveTrain;
@@ -23,6 +24,7 @@ public class LocateBall extends CommandBase {
   private DriveTrain m_driveTrain;
   private Pixy m_pixy;
   private Shooter m_shooter;
+  Joystick joystick;
   public LocateBall(DriveTrain driveTrain, Pixy pixy, Shooter shooter) {
     m_pixy = pixy;
     m_driveTrain = driveTrain;
@@ -43,7 +45,9 @@ public class LocateBall extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    driveToBall();
+    if (joystick.getRawButton(3)) {
+      driveToBall();
+    }
   }
 
   // Called once the command ends or is interrupted.
