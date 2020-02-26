@@ -22,7 +22,6 @@ public class WoFSpinner extends CommandBase {
    * Creates a new WoFSpinner.
    */
   Shooter shooter;
-  private static WPI_TalonSRX motor_Left_FlyWheel = new WPI_TalonSRX(Constants.motor_Left_FlyWheel_Port);
   private static WPI_TalonSRX motor_Right_FlyWheel = new WPI_TalonSRX(Constants.motor_Right_Flywheel_Port);
 
   // private static Encoder encoder_Left = new
@@ -30,14 +29,13 @@ public class WoFSpinner extends CommandBase {
   // private static Encoder encoder_Right = new
   // Encoder(Constants.encoder_Right_Flywheel_Port[0],Constants.encoder_Right_Flywheel_Port[1]);
 
-  public void Shooter() {
+  public void Shooter() { //do we need this?
     motor_Right_FlyWheel.setInverted(false);}
     // motor_Right_FlyWheel.set(ControlMode.Follower, Constants.motor_Left_FlyWheel_Port);
 
   public void WoFSpinner(Shooter shooter, Pixy pixy) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
-    DriveTrain m_driveTrain; //this variable may not be initialized correctly. Fix it
     /*final Pixy m_pixy;*/ //commented out because it is not in use yet. It will be though
     addRequirements(shooter);
     addRequirements(pixy);
@@ -59,6 +57,7 @@ public class WoFSpinner extends CommandBase {
   }
     public static void spin(String color) {
       frc.robot.subsystems.Shooter m_Shooter;
+      m_Shooter = new Shooter();
         switch(color){
               case "red":
                 m_Shooter.WoFspin();
@@ -87,4 +86,4 @@ public class WoFSpinner extends CommandBase {
   // Called once the command ends or is interrupted.
 
   // Returns true when the command should end.
-}
+}}
