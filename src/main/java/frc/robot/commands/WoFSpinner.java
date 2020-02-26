@@ -11,22 +11,30 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Pixy;
-import frc.robot.Constants.DriveMotors;
+import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
-
 /*import frc.robot.commands.LocateBall;*/ //commented out because it is not being used yet. may or may not be used. Here anyway.
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
-
 
 public class WoFSpinner extends CommandBase {
   /**
    * Creates a new WoFSpinner.
    */
   Shooter shooter;
+  private static WPI_TalonSRX motor_Left_FlyWheel = new WPI_TalonSRX(Constants.motor_Left_FlyWheel_Port);
+  private static WPI_TalonSRX motor_Right_FlyWheel = new WPI_TalonSRX(Constants.motor_Right_Flywheel_Port);
 
-  public void WoFSpinner(Shooter shooter, Pixy pixy, DriveTrain driveTrain) {
+  // private static Encoder encoder_Left = new
+  // Encoder(Constants.encoder_Left_Flywheel_Ports[0],Constants.encoder_Left_Flywheel_Ports[1]);
+  // private static Encoder encoder_Right = new
+  // Encoder(Constants.encoder_Right_Flywheel_Port[0],Constants.encoder_Right_Flywheel_Port[1]);
+
+  public void Shooter() {
+    motor_Right_FlyWheel.setInverted(false);}
+    // motor_Right_FlyWheel.set(ControlMode.Follower, Constants.motor_Left_FlyWheel_Port);
+
+  public void WoFSpinner(Shooter shooter, Pixy pixy) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
     DriveTrain m_driveTrain; //this variable may not be initialized correctly. Fix it
@@ -47,14 +55,13 @@ public class WoFSpinner extends CommandBase {
   public WoFSpinner() {
     double displaySpeedRads = shooter.getAvgSpeed();
     double displaySpeedRPM = displaySpeedRads * 9.549296585513702;
-    SmartDashboard.putString("The Current Shooter Speed is: " + displaySpeedRads +"", "shooter-speed");
+    SmartDashboard.putString("The Current Shooter Speed is: " + displaySpeedRPM +"", "shooter-speed");
   }
     public static void spin() {
     while (1 == 1) {
       // run shooter motors at 0.1 speed
-      DriveTrain m_driveTrain;
-      Object motor_Left_FlyWheel;
-      Object motor_Right_FlyWheel;
+      WPI_TalonSRX motor_Left_FlyWheel = new WPI_TalonSRX(Constants.motor_Left_FlyWheel_Port);
+      WPI_TalonSRX motor_Right_FlyWheel = new WPI_TalonSRX(Constants.motor_Right_Flywheel_Port);
 
       if(1 == 2/*any pixy colors corresponding to the WoF are detected, the motors will spin at 10% speed*/) {
           //ik this is dead code. please bear with me lol.
