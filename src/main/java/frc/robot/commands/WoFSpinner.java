@@ -60,21 +60,21 @@ public class WoFSpinner extends CommandBase {
     public static void spin(color) {
       switch(color){
         case red:
-          m_Shooter.WoFspin()
+          m_Shooter.WoFspin();
           while(){}
-          m_Shooter.stopFW()
+          m_Shooter.stopFW();
         case yellow:
-          m_Shooter.WoFspin()
+          m_Shooter.WoFspin();
           while(){}
-          m_Shooter.stopFW()
+          m_Shooter.stopFW();
         case green:
-          m_Shooter.WoFspin()
+          m_Shooter.WoFspin();
           while(){}
-          m_Shooter.stopFW()
+          m_Shooter.stopFW();
         case blue:
-          m_Shooter.WoFspin()
+          m_Shooter.WoFspin();
           while(){}
-          m_Shooter.stopFW()
+          m_Shooter.stopFW();
       }
     /*while (1 == 1) {
       // run motors at 0.1 speed
@@ -86,4 +86,4 @@ public class WoFSpinner extends CommandBase {
   // Called once the command ends or is interrupted.
 
   // Returns true when the command should end.
-}} }
+}

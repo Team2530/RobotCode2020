@@ -41,7 +41,7 @@ public class Shooter extends SubsystemBase {
   public void WoFspin() {
     currentSpeed = 0.1; //for testing
     motor_Left_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
-    motor_Right_FlyWheel.set(ControlMode.PercentOutput, -currentSpeed);
+    motor_Right_FlyWheel.set(ControlMode.PercentOutput, currentSpeed);
   }
 
   public void startFW() {
