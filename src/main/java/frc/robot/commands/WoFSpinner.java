@@ -12,6 +12,9 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Pixy;
 import frc.robot.Constants.DriveMotors;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
+
 /*import frc.robot.commands.LocateBall;*/ //commented out because it is not being used yet. may or may not be used. Here anyway.
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -33,6 +36,8 @@ public class WoFSpinner extends CommandBase {
   }
 
   // Called when the command is initially scheduled.
+
+  
   @Override
   public void initialize() {
   }
@@ -46,15 +51,27 @@ public class WoFSpinner extends CommandBase {
   }
     public static void spin() {
     while (1 == 1) {
-      // run motors at 0.1 speed
+      // run shooter motors at 0.1 speed
       DriveTrain m_driveTrain;
-      /*m_driveTrain.setSingleMotorPower(DriveMotors.FR, 0);*/ //nvm, this is the code to drive the main motors. I'll fix it
-      /*m_driveTrain.setSingleMotorPower(DriveMotors.FL, 0);*/ //same thing as the line up above
-    {
-  } 
-}
+      Object motor_Left_FlyWheel;
+      Object motor_Right_FlyWheel;
+
+      if(1 == 2/*any pixy colors corresponding to the WoF are detected, the motors will spin at 10% speed*/) {
+          //ik this is dead code. please bear with me lol.
+          motor_Right_FlyWheel.set(ControlMode.PercentOutput, 0.1);
+      motor_Left_FlyWheel.set(ControlMode.PercentOutput, 0.1);
+      }
+
+      else {
+        motor_Right_FlyWheel.set(ControlMode.PercentOutput, 0);
+        motor_Left_FlyWheel.set(ControlMode.PercentOutput, 0);
+      }
+       
+    
+
+
 
   // Called once the command ends or is interrupted.
 
   // Returns true when the command should end.
-}} 
+}} }
