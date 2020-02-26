@@ -12,7 +12,7 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Pixy;
 import frc.robot.Constants.DriveMotors;
-
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 /*import frc.robot.commands.LocateBall;*/ //commented out because it is not being used yet. may or may not be used. Here anyway.
@@ -59,7 +59,7 @@ public class WoFSpinner extends CommandBase {
       if(1 == 2/*any pixy colors corresponding to the WoF are detected, the motors will spin at 10% speed*/) {
           //ik this is dead code. please bear with me lol.
           motor_Right_FlyWheel.set(ControlMode.PercentOutput, 0.1);
-      motor_Left_FlyWheel.set(ControlMode.PercentOutput, 0.1);
+          motor_Left_FlyWheel.set(ControlMode.PercentOutput, 0.1);
       }
 
       else {
