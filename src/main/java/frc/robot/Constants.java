@@ -25,10 +25,10 @@ public final class Constants {
     // --------------------Motor Ports--------------------\\
     // DriveTrain Motors
     // ports set up for test drivetrain currently
-    public static final int motor_Front_Left_Port = 2;
-    public static final int motor_Back_Left_Port = 1;
-    public static final int motor_Back_Right_Port = 4; // ? 2 motors driving one wheel on each side, i think
-    public static final int motor_Front_Right_Port = 3;
+    public static final int motor_Front_Left_Port = 1;
+    public static final int motor_Back_Left_Port = 0;
+    public static final int motor_Back_Right_Port = 2; // ? 2 motors driving one wheel on each side, i think
+    public static final int motor_Front_Right_Port = 5;
 
     public enum DriveMotors {
         FL, FR, BL, BR;
@@ -95,11 +95,11 @@ public final class Constants {
     public static final double MAX_DRIVE_SPEED = 10;//Need this in m/s
     public static final double MAX_ANGULAR_SPEED = 0.5;//Need this in rad/s
     
-    public static final double kP = .000122;
+    public static final double kP = 4.11;//.000122;
     public static final double kI = 0;
-    public static final double kD = 0.892;
-    public static final double kS = 0.967;
-    public static final double kV = 0.784;
+    public static final double kD = 0;//0.892;
+    public static final double kS = 1.04;//0.967;
+    public static final double kV = 0.612;//0.784;
 
     public static final double tol = 5;
     public static final int setPoint = 1;
