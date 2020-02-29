@@ -121,9 +121,9 @@ public final class Constants {
     public static final double eff = 0.8;// ?effective efficiency percentage
     public static final double MAX_SHOOTING_DISTANCE = 2.54;// m
     public static final double MAX_SHOOTING_VEOLCITY = 20;// meters per sec.
-    public static final double IDEAL_SHOOTING_DISTANCE = 1.90;// m
-    public static final double distanceTolerance = .10; // m
-    public static final double angleTolerance = 10; // degrees
+    public static final double IDEAL_SHOOTING_DISTANCE = 132; // inches //1.90;// m
+    public static final double distanceTolerance = 12; // inches //.10; // m
+    public static final double angleTolerance = 3; // degrees
     public static final int DROP_IN_DISTANCE_PER_REVOLUTION = 1024;
     public static final double FLYWHEEL_DISTANCE_PER_REVOLUTION = SHOOTER_WHEEL_RADIUS * 2 * Math.PI;
     public static final double NeutralDeadband = 0.001;
