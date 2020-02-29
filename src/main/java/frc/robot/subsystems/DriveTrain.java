@@ -308,7 +308,8 @@ public class DriveTrain extends SubsystemBase {
       this.stop();
       return true;
     } else {
-      timedDrive(power * (currentDistance - targetDistance), power * (currentAngle - targetAngle));
+      // timedDrive(power * (currentDistance - targetDistance), power * (currentAngle - targetAngle));
+      arcadeDrive(power * (currentAngle - targetAngle), power * (currentDistance - targetDistance)); //fix not working?
       return false;
     }
 
