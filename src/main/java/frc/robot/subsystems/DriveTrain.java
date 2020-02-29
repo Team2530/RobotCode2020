@@ -26,7 +26,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.*;
 
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 // import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
@@ -93,7 +92,7 @@ public class DriveTrain extends SubsystemBase {
    * Creates a new DriveTrain.
    */
   public DriveTrain() {
-    
+
     resetEncoders();
     ahrs.reset();
     pid_left.setTolerance(Constants.tol);
@@ -264,13 +263,14 @@ public class DriveTrain extends SubsystemBase {
   }
 
   /**
-   * Drives the robot with 1 Joystick and makes the robot more controllable at high speeds
+   * Drives the robot with 1 Joystick and makes the robot more controllable at
+   * high speeds
    * 
-   * @param xSpeed 
+   * @param xSpeed
    * @param zRotation
    * @param quickTurn If true, allows turn-in-place maneuvers
    */
-  public void curvatureDrive(double xSpeed, double zRotation, boolean quickTurn) { //I want to test this
+  public void curvatureDrive(double xSpeed, double zRotation, boolean quickTurn) { // I want to test this
     robotDrive.curvatureDrive(-xSpeed, zRotation, quickTurn);
   }
 
@@ -301,18 +301,46 @@ public class DriveTrain extends SubsystemBase {
    */
   public boolean alignToTarget(double power, double targetAngle, double targetDistance, double currentAngle,
       double currentDistance) {
-    if (currentDistance > targetDistance - Constants.distanceTolerance
-        || currentDistance < targetDistance + Constants.distanceTolerance
-        || currentAngle > targetAngle - Constants.angleTolerance
-        || currentAngle < targetAngle + Constants.angleTolerance) {
-      this.stop();
-      return true;
-    } else {
-      // timedDrive(power * (currentDistance - targetDistance), power * (currentAngle - targetAngle));
-      arcadeDrive(power * (currentAngle - targetAngle), power * (currentDistance - targetDistance)); //fix not working?
-      return false;
-    }
+    // if (currentDistance > targetDistance - Constants.distanceTolerance
+    // || currentDistance < targetDistance + Constants.distanceTolerance
+    // || currentAngle > targetAngle - Constants.angleTolerance
+    // || currentAngle < targetAngle + Constants.angleTolerance) {
+    // this.stop();
+    // return true;
+    // } else {
+    // // timedDrive(power * (currentDistance - targetDistance), power *
+    // (currentAngle - targetAngle));
+    // arcadeDrive(power * (currentAngle - targetAngle), power * (currentDistance -
+    // targetDistance)); //fix not working?
+    // return false;
+    // }
 
+    if (Math.abs(currentAngle) < targetAngle + Constants.angleTolerance
+        && Math.abs(currentDistance) < targetDistance + Constants.distanceTolerance) { //angle AND distance is correct
+        
+          stop();
+          return true;
+
+    } else if(Math.abs(currentAngle) < targetAngle + Constants.angleTolerance) { //angle is correct but distance is not
+      //move to make distance in correct range
+      double distanceSpeed = power * (currentDistance - targetDistance);
+      arcadeDrive(0, distanceSpeed);
+      return false;
+
+    } else if(Math.abs(currentDistance) < targetDistance + Constants.distanceTolerance) { //distance is correct but angle is not
+      //move to make angle correct
+      double angleSpeed = power * (currentAngle - targetAngle);
+      arcadeDrive(angleSpeed, 0);
+      return false;
+
+    } else { //neither are correct
+      //move both
+      double angleSpeed = power * (currentAngle - targetAngle);
+      double distanceSpeed = power * (currentDistance - targetDistance);
+      arcadeDrive(angleSpeed, distanceSpeed);
+      return false;
+
+    }
   }
 
   public Pose2d getPose() {
