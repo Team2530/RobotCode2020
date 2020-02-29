@@ -172,10 +172,9 @@ public class Elevator extends SubsystemBase {
 
     // double degrees = (radians * 180)/Math.PI;
 
-    return Math.atan2(getFloorHeight()[0], Constants.bottomLeg);
+    return Math.atan2(getParallelHeight(), Constants.bottomLeg);
   }
 
-  // TODO get Height function return inches
   public double[] getFloorHeight() {
     /**
      * pusdo code cant really do this until i know more specs of elevator from
