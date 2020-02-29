@@ -14,21 +14,22 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class LimeLight extends SubsystemBase {
-  /**
-   * Creates a new LimeLight.
-   */
+  
   double tx;
   double ty;
   double ta;
   NetworkTable table;
-  int light = 1;
+  int light = 3;
   boolean limelightDriveCamOn = true;
   
-
+  /**
+   * Creates a new LimeLight.
+   */
   public LimeLight() {
 
     table = NetworkTableInstance.getDefault().getTable("limelight");
     table.getEntry("camMode").setNumber(1);
+    table.getEntry("pipeline").setNumber(1);
   }
 
   @Override
@@ -45,15 +46,15 @@ public class LimeLight extends SubsystemBase {
     // This method will be called once per scheduler run
   }
 
-  public double[] getSphericalPosition(final double angle, final double height) {
-    final double[] position = { (Constants.target_Height - height) / (Math.tan(angle + ty)), tx, ty };
+  public double[] getCylindricalPosition(double angle, double height) { 
+    final double[] position = { ((Constants.target_Height - height) / (Math.tan(Math.toRadians(angle + ty)))), tx, Constants.target_Height -height };
     return position;
   }
 
-  public double[] getCartesianPosition(final double angle, final double height) {
-    final double[] Sposition = getSphericalPosition(angle, height);
-    final double[] position = { Sposition[0] * Math.cos(Sposition[1]) * Math.sin(Sposition[2]),
-        Sposition[0] * Math.sin(Sposition[1]) * Math.sin(Sposition[2]), Sposition[0] * Math.cos(Sposition[2]) };
+  public double[] getCartesianPosition(double angle, double height) {
+    final double[] Cposition = getCylindricalPosition(angle, height);
+    final double[] position = { Cposition[0] * Math.cos(Cposition[1]),
+        Cposition[0] * Math.sin(Cposition[1]), Cposition[2] };
     return position;
   }
 
@@ -69,9 +70,12 @@ public class LimeLight extends SubsystemBase {
   public void switchCamera() {
     if (limelightDriveCamOn == true) {
       table.getEntry("camMode").setNumber(0);
+      // table.getEntry("pipeline").setNumber(1);
+      limelightDriveCamOn = false;
     } else {
-      table.getEntry("pipeline").setNumber(1);
+      // table.getEntry("pipeline").setNumber(1);
       table.getEntry("camMode").setNumber(1);
+      limelightDriveCamOn = true;
     }
   }
 }

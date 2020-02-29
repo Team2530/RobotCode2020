@@ -81,7 +81,8 @@ public final class Constants {
     // ----------Sensor Constants-----------\\
     public static final int ENCODER_TICKS_PER_REVOLUTION = 2048;
     public static final int gyroDrift = 5;
-    public static final double sensor_Limelight_Height = 25;// ? mounting height in inches
+    public static final double sensor_Limelight_Height = 24.5;// ? mounting height in inches
+    public static final double sensor_Limelight_Angle = 30; // mounting angle in degrees
 
     //----------Driving Constants----------\\
     public static final double GEAR_RATIO = 1; //?This ratio is the ratio between the encoder and the driven wheels
@@ -108,7 +109,7 @@ public final class Constants {
     public static final double maxAccelerationMetersPerSecondSq = 1; // !This needs to be set
 
     // ----------Field Constants----------\\
-    public static final double target_Height = Units.inchesToMeters(105); // temp test value
+    public static final double target_Height = 98.5;// inches //Units.inchesToMeters(105); // temp test value
     public static final double ball_Weight = 0.3125;
 
     // ----------Control (Joystick) Constants----------\\
@@ -186,5 +187,6 @@ public final class Constants {
 	public final static Gains kElevator_Gains_Turning = new Gains( 2.0, 0.0,  4.0, 0.0,            200,  1.00 );//!
 	public final static Gains kElevator_Gains_Velocit = new Gains( 0.1, 0.0, 20.0, 1023.0/6800.0,  300,  0.50 );//!
 	public final static Gains kElevator_Gains_MotProf = new Gains( 1.0, 0.0,  0.0, 1023.0/6800.0,  400,  1.00 );//!
+	public final static double magicNumberOfDeath = 0.970873786408;
 
 }

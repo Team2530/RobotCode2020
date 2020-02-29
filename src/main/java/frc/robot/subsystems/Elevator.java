@@ -210,11 +210,12 @@ public class Elevator extends SubsystemBase {
     return Arrays.stream(getFloorHeight()).average().orElse(Double.NaN)-Constants.pivotHeight;
   }
 
-  // TODO get limelight height return degrees
-  public double getLimeLightHeight() {
+  // // TODO get limelight height return degrees
+  // joking dont need this anymore
+  // public double getLimeLightHeight() {
 
-    return Constants.sensor_Limelight_Height; // temp test value
-  }
+  //   return Constants.sensor_Limelight_Height; // temp test value
+  // }
 
   public void Stop() {
     for (final ElevatorMotors motor : ElevatorMotors.values()) {

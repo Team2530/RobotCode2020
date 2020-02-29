@@ -44,7 +44,7 @@ public class AimShooter extends CommandBase {
   @Override
   public void execute() {
 
-    sposition = m_limelight.getSphericalPosition(m_elevator.getAngle(), m_elevator.getLimeLightHeight());
+    sposition = m_limelight.getCylindricalPosition(m_elevator.getAngle(), Constants.sensor_Limelight_Height);
     double shootingV = GFG.bisection(0, 30,
         new double[] {
             0.5 * Constants.gravity * Math.pow(sposition[0], 2) * Math.pow((1 / Math.cos(m_elevator.getAngle())), 2), 0,

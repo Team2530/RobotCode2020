@@ -50,8 +50,8 @@ public class RobotContainer {
   // -------------------- Subsystems -------------------- \\
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveTrain m_driveTrain = new DriveTrain();
-  //private final Elevator elevatorSub = new Elevator();
-  //private final LimeLight limeLightSub = new LimeLight();
+  // private final Elevator elevatorSub = new Elevator();
+  private final LimeLight limeLightSub = new LimeLight();
   //private final Pixy m_pixy = new Pixy();
   //private final Shooter m_shooter = new Shooter();
   //private final Conveyor m_conveyor = new Conveyor();
@@ -60,10 +60,10 @@ public class RobotContainer {
   // Joysticks
   final Joystick stick1 = new Joystick(1); // Creates a joystick on port 1
   final Joystick stick2 = new Joystick(2); // Creates a joystick on port 2
-  private final JoystickButton Button2 = new JoystickButton(stick1, 2);
 
   // Joystick buttons
   private final JoystickButton Button1 = new JoystickButton(stick1, 1); // Creates a new button for button 1 on stick1
+  private final JoystickButton Button2 = new JoystickButton(stick1, 2);
   private final JoystickButton Button3 = new JoystickButton(stick1, 3);
   private final JoystickButton Button4 = new JoystickButton(stick1, 4);
   private final JoystickButton Button5 = new JoystickButton(stick1, 5);
@@ -82,11 +82,6 @@ public class RobotContainer {
   private final JoystickButton XboxButton4 = new JoystickButton(xbox, 4);
 
   // -------------------- Autonomous Commands -------------------- \\
-
-  
-  
-  
-  
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   
   //private final TrajectoryTest m_autoCommand = new TrajectoryTest(m_driveTrain, new Traj);
@@ -104,13 +99,15 @@ public class RobotContainer {
 
   // private final DelayTest delayCommand = new DelayTest(1, m_autoCommand);
 
+
+
   // -------------------- Telop Commands -------------------- \\
   // private final XboxJoystickElevator elevatorCommand = new
   // XboxJoystickElevator(elevatorSub, xbox);
   // private final SmallJoystickElevator elevatorCommand = new
   // SmallJoystickElevator(elevatorSub, stick1);
   // private final EncoderTest m_telopCommand = new EncoderTest(m_driveTrain);
-  //private final LineUp lineUp = new LineUp(m_driveTrain, limeLightSub, elevatorSub);
+  private final LineUp lineUp = new LineUp(m_driveTrain, limeLightSub);
   // private final TestPixy pixy = new TestPixy(m_pixy);
   // private final ToggleLimeLightLED toggleLED = new
   // ToggleLimeLightLED(limeLightSub);
@@ -142,7 +139,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //Button1.whileHeld(lineUp);
+    Button1.whileHeld(lineUp);
     // Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
     //Button2.whenPressed(toggleCamera);
     // Button3.whenPressed(toggleLED);
@@ -152,6 +149,9 @@ public class RobotContainer {
     // Button7.whenPressed(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
     // Button9.whenPressed(new InstantCommand(m_shooter::stopFW, m_shooter));
     // Button10.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
+
+    Button2.whenPressed(new InstantCommand(limeLightSub::toggleLights, limeLightSub));
+    Button3.whenPressed(new InstantCommand(limeLightSub::switchCamera, limeLightSub));
 
     // XboxButton1.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
     // XboxButton1.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
@@ -170,6 +170,8 @@ public class RobotContainer {
     // XboxButton2.whenPressed(new InstantCommand(m_shooter::toggleEnabled,
     // m_shooter));
     // XboxButton3.whenPressed(new InstantCommand(m_shooter::setSpeed0, m_shooter));
+
+
 
   }
 

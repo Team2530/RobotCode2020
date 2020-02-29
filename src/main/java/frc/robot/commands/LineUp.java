@@ -19,7 +19,7 @@ public class LineUp extends CommandBase {
 
   private DriveTrain driveTrain;
   private LimeLight limeLight;
-  private Elevator elevator;
+  // private Elevator elevator;
   private double[] position;
   // private double correction = 0.2;
   private double power = 1;
@@ -27,16 +27,16 @@ public class LineUp extends CommandBase {
   /**
    * Creates a new LineUp.
    */
-  public LineUp(DriveTrain driveTrain, LimeLight limeLight, Elevator elevator) {
+  public LineUp(DriveTrain driveTrain, LimeLight limeLight) {
     // Use addRequirements() here to declare subsystem dependencies.
 
     this.driveTrain = driveTrain;
     this.limeLight = limeLight;
-    this.elevator = elevator;
+    // this.elevator = elevator;
 
     addRequirements(driveTrain);
     addRequirements(limeLight);
-    addRequirements(elevator);
+    // addRequirements(elevator);
   }
 
   // Called when the command is initially scheduled.
@@ -49,7 +49,7 @@ public class LineUp extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    position = limeLight.getSphericalPosition(elevator.getAngle(), elevator.getLimeLightHeight());
+    position = limeLight.getCylindricalPosition(Constants.sensor_Limelight_Angle, Constants.sensor_Limelight_Height);
     SmartDashboard.putNumber("position[0]", position[0]);
     SmartDashboard.putNumber("position[1]", position[1]);
     SmartDashboard.putNumber("position[2]", position[2]);
