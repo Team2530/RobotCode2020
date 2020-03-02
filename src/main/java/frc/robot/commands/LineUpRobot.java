@@ -43,7 +43,6 @@ public class LineUpRobot extends CommandBase {
   @Override
   public void initialize() {
     power = 1;
-
   }
 
   // Called every time the scheduler runs while the command is scheduled.

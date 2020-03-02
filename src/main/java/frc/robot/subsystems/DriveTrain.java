@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Transform2d;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
@@ -209,7 +210,7 @@ public class DriveTrain extends SubsystemBase {
     robotDrive.stopMotor();
   }
 
-  private double getEncoder() {
+  public double getEncoder() {
     // SmartDashboard.putNumber("Sensor Vel:",
     // motor_Back_Left.getSelectedSensorVelocity(1));
     return (encoder_Left.getDistance() + encoder_Right.getDistance()) / 2;
@@ -349,13 +350,13 @@ public class DriveTrain extends SubsystemBase {
     }
   }
 
-  public boolean alignToTarget(Pose2d pos){
+  public Trajectory getAlignToTargetTrajectory(Pose2d pos){
     List<Pose2d> waypoints = new ArrayList<Pose2d>();
-    waypoints.add(new Pose2d(Units.feetToMeters(23.7), Units.feetToMeters(6.8), Rotation2d.fromDegrees(-160)));
-    
+    waypoints.add(pos);
 
     var trajectory = TrajectoryGenerator.generateTrajectory(waypoints, config);
-    return true;
+    var transformTrajectory = trajectory.relativeTo(m_odometry.getPoseMeters());
+    return transformTrajectory;
   }
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
