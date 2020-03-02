@@ -110,15 +110,11 @@ public class RobotContainer {
   // private final EncoderTest m_telopCommand = new EncoderTest(m_driveTrain);
   private final LineUpRobot lineUp = new LineUpRobot(m_driveTrain, limeLightSub);
   // private final TestPixy pixy = new TestPixy(m_pixy);
-  // private final ToggleLimeLightLED toggleLED = new
-  // ToggleLimeLightLED(limeLightSub);
   private final LargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1);
   // private final LargeJoystickCurvatureDrive telopDriveCommand = new LargeJoystickCurvatureDrive(m_driveTrain, stick1);
   //private final DualLargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1, stick2);
   //private final ConveyorControl telopConveyorCommand = new ConveyorControl(m_conveyor, xbox);
   //private final StartShooter telopShooterCommand = new StartShooter(m_shooter, xbox);
-  // private final TelopCommands telopCommand = new TelopCommands(telopDriveCommand, telopConveyorCommand, telopShooterCommand);
-  //private final ToggleCamera toggleCamera = new ToggleCamera(limeLightSub);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
