@@ -42,12 +42,11 @@ public class AimShooter extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
     sposition = m_limelight.getCylindricalPosition(m_elevator.getAngle(), Constants.sensor_Limelight_Height);
     double shootingV = EulersMethod.bisection(0, 30,
         new double[] {
             0.5 * Constants.gravity * Math.pow(sposition[0], 2) * Math.pow((1 / Math.cos(m_elevator.getAngle())), 2), 0,
-            -m_elevator.getFloorHeight()[0], 1 });
+            -m_elevator.getFloorHeight(), 1 });
     m_shooter.startFW(shootingV);
   }
 

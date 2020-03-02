@@ -9,6 +9,8 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.geometry.Pose2d;
+import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -56,6 +58,13 @@ public class LimeLight extends SubsystemBase {
     final double[] position = { Cposition[0] * Math.cos(Cposition[1]),
         Cposition[0] * Math.sin(Cposition[1]), Cposition[2] };
     return position;
+  }
+  public Pose2d getPose2d(){
+    //!BROKE
+    return new Pose2d(tx, ty, new Rotation2d(Math.toRadians(tx)));
+  }
+  public Pose2d getPose2dFromTarget(){
+    return null;
   }
 
   public void toggleLights() {

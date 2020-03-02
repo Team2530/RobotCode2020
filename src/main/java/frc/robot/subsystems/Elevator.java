@@ -9,7 +9,10 @@ package frc.robot.subsystems;
 
 import java.util.Arrays;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
@@ -43,6 +46,19 @@ public class Elevator extends SubsystemBase {
    * Creates a new Elevator.
    */
   public Elevator() {
+
+    /* Disable all motors */
+    motor_Left.set(ControlMode.PercentOutput, 0);
+    motor_Right.set(ControlMode.PercentOutput, 0);
+
+    /* Factory Default all hardware to prevent unexpected behavior */
+    motor_Left.configFactoryDefault();
+    motor_Right.configFactoryDefault();
+
+    /* Set neutral modes */
+    motor_Left.setNeutralMode(NeutralMode.Brake);
+    motor_Right.setNeutralMode(NeutralMode.Brake);
+
     /* Configure the drivetrain's left side Feedback Sensor as a Magnet Encoder */
     motor_Left.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, // Local Feedback Source
         Constants.PID_PRIMARY, // PID Slot for Source [0, 1]
@@ -138,33 +154,33 @@ public class Elevator extends SubsystemBase {
     return ((motor_Left.getSelectedSensorPosition() + motor_Left.getSelectedSensorPosition()) / 2);
   }
 
+  @Deprecated
   public void setMotorPower(final ElevatorMotors id, final double speed) {
     switch (id) {
 
-    case LL:
-      if (limit_Switch_Left_Leadscrew.get() && speed > 0) { // if limit switch is pressed and it wants to go up, dont
-        // motor_Left_Leadscrew.set(ControlMode.PercentOutput, 0);
-        return;
-      } else {
-        // motor_Left_Leadscrew.set(ControlMode.PercentOutput, speed);
-        return;
-      }
+      case LL:
+        if (limit_Switch_Left_Leadscrew.get() && speed > 0) { // if limit switch is pressed and it wants to go up, dont
+          // motor_Left_Leadscrew.set(ControlMode.PercentOutput, 0);
+          return;
+        } else {
+          // motor_Left_Leadscrew.set(ControlMode.PercentOutput, speed);
+          return;
+        }
 
-    case RL:
-      if (limit_Switch_Right_Leadscrew.get() && speed > 0) { // if limit switch is pressed and it wants to go up, dont
-        // motor_Right_Leadscrew.set(ControlMode.PercentOutput, 0);
-        return;
-      } else {
-        // motor_Right_Leadscrew.set(ControlMode.PercentOutput, speed);
-        return;
-      }
+      case RL:
+        if (limit_Switch_Right_Leadscrew.get() && speed > 0) { // if limit switch is pressed and it wants to go up, dont
+          // motor_Right_Leadscrew.set(ControlMode.PercentOutput, 0);
+          return;
+        } else {
+          // motor_Right_Leadscrew.set(ControlMode.PercentOutput, speed);
+          return;
+        }
 
-    default:
-      return;
+      default:
+        return;
     }
   }
 
-  // TODO get Angle function return radians
   public double getAngle() {
     /**
      * pusdo code angle = arctan(getHeight()/bottomLeg)
@@ -175,7 +191,7 @@ public class Elevator extends SubsystemBase {
     return Math.atan2(getParallelHeight(), Constants.bottomLeg);
   }
 
-  public double[] getFloorHeight() {
+  public double getFloorHeight() {
     /**
      * pusdo code cant really do this until i know more specs of elevator from
      * hardware return +- from level i think would be easiest for getAngle()
@@ -190,31 +206,40 @@ public class Elevator extends SubsystemBase {
      * reset will just tell you inches from that point need to figure out how to
      * reset at that 0 point
      * 
+     * @PETER THIS MATH SHOULD HAVE BEEN COMPLETED IN THE INITALIZATION
+     * 
      */
 
-    double encoderLeftPos = motor_Left.getSelectedSensorPosition(1); // if 1 doesnt work try 0, look at pheonix tuner I
-                                                                     // believe u
-    double encoderRightPos = motor_Right.getSelectedSensorPosition(1);
+    double numberOfTurns = getEncoder();
 
-    double numberOfTurnsLeft = encoderLeftPos / Constants.DROP_IN_DISTANCE_PER_REVOLUTION;
-    double numberOfTurnsRight = encoderRightPos / Constants.DROP_IN_DISTANCE_PER_REVOLUTION;
-
-    double leftHeight = numberOfTurnsLeft / Constants.turnsPerInch;
-    double rightHeight = numberOfTurnsRight / Constants.turnsPerInch; // they should be almost the same
-
-    return new double[] { leftHeight, rightHeight }; // average them maybe?
+    return numberOfTurns / Constants.leadscrewDistancePerRotation;
   }
 
   public double getParallelHeight() {
-    return Arrays.stream(getFloorHeight()).average().orElse(Double.NaN)-Constants.pivotHeight;
+    return getFloorHeight() + Constants.pivotHeight;
   }
 
-  // // TODO get limelight height return degrees
-  // joking dont need this anymore
-  // public double getLimeLightHeight() {
-
-  //   return Constants.sensor_Limelight_Height; // temp test value
-  // }
+  public void setHeight(double speed, double height) {
+    /*
+     * Example 2 - Lift Mechanism Consider a lifting mechanism composed of two
+     * closed-loops (one for each side) and no mechanical linkage between them. In
+     * other words, the left and right side each have a unique motor controller and
+     * sensor. The goal in this circumstance is to closed-loop the elevation while
+     * keeping the left and right side reasonably synchronized.
+     * 
+     * This can be accomplished by using the sum of each side as the elevator
+     * height, and the difference as the level deviation between the left and right,
+     * which must be kept near zero.
+     * 
+     * Aux PID[1] can then be used to apply a corrective difference component
+     * (adding to one side and subtracting from the other) to maintain a synchronous
+     * left and right position, while employing Position/Velocity/Motion-Magic to
+     * the primary axis of control (the elevator height).
+     */
+    // ! I think this should work I not sure how the f term works though
+    motor_Left.set(ControlMode.Position, height, DemandType.ArbitraryFeedForward, speed);
+    motor_Right.follow(motor_Left);
+  }
 
   public void Stop() {
     for (final ElevatorMotors motor : ElevatorMotors.values()) {
@@ -224,16 +249,16 @@ public class Elevator extends SubsystemBase {
 
   public boolean getLimitSwitchValue(final ElevatorLimitSwitches id) { // * true = pressed, false = not pressed
     switch (id) { // !make sure limit switches are wired correctly
-    case LL:
-      return limit_Switch_Left_Leadscrew.get();
-    case RL:
-      return limit_Switch_Right_Leadscrew.get();
-    case LP:
-      return limit_Switch_Left_Pulley.get();
-    case RP:
-      return limit_Switch_Right_Pulley.get();
-    default:
-      return false; // uhm false? idk
+      case LL:
+        return limit_Switch_Left_Leadscrew.get();
+      case RL:
+        return limit_Switch_Right_Leadscrew.get();
+      case LP:
+        return limit_Switch_Left_Pulley.get();
+      case RP:
+        return limit_Switch_Right_Pulley.get();
+      default:
+        return false; // uhm false? idk
     }
   }
 

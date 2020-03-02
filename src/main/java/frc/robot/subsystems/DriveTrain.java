@@ -14,17 +14,25 @@ import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.geometry.Translation2d;
 import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConstraint;
+import edu.wpi.first.wpilibj.util.Units;
 // import edu.wpi.first.wpilibj.SPI.Port;
 // import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 // import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
@@ -77,6 +85,8 @@ public class DriveTrain extends SubsystemBase {
   private DifferentialDriveVoltageConstraint autoVoltageConstraint;
   double integral, derivative, previous_error, setpoint, error = 0;
 
+  TrajectoryConfig config;
+
   // PIDController
   // private static FeedbackDevice encoder_Left = new
   // FeedbackDevice(FeedbackDevice.QuadEncoder);
@@ -118,7 +128,9 @@ public class DriveTrain extends SubsystemBase {
     m_kinematics = new DifferentialDriveKinematics(Constants.WHEEL_DISTANCE);
     autoVoltageConstraint = new DifferentialDriveVoltageConstraint(m_feedforward, m_kinematics, 11);
 
-    robotDrive.setSafetyEnabled(false);
+    // robotDrive.setSafetyEnabled(false);
+    // THis set Trajectory configuration
+    config = new TrajectoryConfig(Constants.MAX_DRIVE_SPEED, Constants.maxAccelerationMetersPerSecondSq);
 
   }
 
@@ -138,11 +150,9 @@ public class DriveTrain extends SubsystemBase {
     return m_feedforward;
   }
 
-  // public void setPID(double P, double I, double D) {
-  // this.getController().setP(P);
-  // this.getController().setI(I);
-  // this.getController().setD(D);
-  // }
+  public TrajectoryConfig getTrajConfig() {
+    return config;
+  }
 
   /**
    * Sets the speed of the left and right side motors somehow
@@ -178,20 +188,20 @@ public class DriveTrain extends SubsystemBase {
    */
   public void setSingleMotorPower(final DriveMotors id, final double speed) {
     switch (id) {
-    case FL:
-      motor_Front_Left.set(speed);
-      return;
-    case BR:
-      motor_Back_Right.set(ControlMode.PercentOutput, speed);
-      return;
-    case BL:
-      motor_Back_Left.set(ControlMode.PercentOutput, speed);
-      return;
-    case FR:
-      motor_Front_Right.set(speed);
-      return;
-    default:
-      return;
+      case FL:
+        motor_Front_Left.set(speed);
+        return;
+      case BR:
+        motor_Back_Right.set(ControlMode.PercentOutput, speed);
+        return;
+      case BL:
+        motor_Back_Left.set(ControlMode.PercentOutput, speed);
+        return;
+      case FR:
+        motor_Front_Right.set(speed);
+        return;
+      default:
+        return;
     }
   }
 
@@ -199,21 +209,13 @@ public class DriveTrain extends SubsystemBase {
     robotDrive.stopMotor();
   }
 
-  public double getEncoder() {
+  private double getEncoder() {
     // SmartDashboard.putNumber("Sensor Vel:",
     // motor_Back_Left.getSelectedSensorVelocity(1));
-    return 0;
+    return (encoder_Left.getDistance() + encoder_Right.getDistance()) / 2;
   }
 
   public void periodic() {
-    // encoder_Left_Value = motor_Front_Left.getSelectedSensorPosition(1) /
-    // (Constants.DISTANCE_PER_PULSE);
-    // encoder_Right_Value = motor_Front_Right.getSelectedSensorPosition(1) /
-    // (Constants.DISTANCE_PER_PULSE);
-    // encoder_Left_Rate = motor_Front_Left.getSelectedSensorVelocity(1) /
-    // (Constants.DISTANCE_PER_PULSE);
-    // encoder_Right_Rate = motor_Front_Right.getSelectedSensorVelocity(1) /
-    // (Constants.DISTANCE_PER_PULSE);
 
     // encoder_Left_Value = encoder_Left.getDistance();
     // encoder_Right_Value = encoder_Right.getDistance();
@@ -314,27 +316,31 @@ public class DriveTrain extends SubsystemBase {
     // targetDistance)); //fix not working?
     // return false;
     // }
+  
+   
 
     if (Math.abs(currentAngle) < targetAngle + Constants.angleTolerance
-        && Math.abs(currentDistance) < targetDistance + Constants.distanceTolerance) { //angle AND distance is correct
-        
-          stop();
-          return true;
+        && Math.abs(currentDistance) < targetDistance + Constants.distanceTolerance) { // angle AND distance is correct
 
-    } else if(Math.abs(currentAngle) < targetAngle + Constants.angleTolerance) { //angle is correct but distance is not
-      //move to make distance in correct range
+      stop();
+      return true;
+
+    } else if (Math.abs(currentAngle) < targetAngle + Constants.angleTolerance) { // angle is correct but distance is
+                                                                                  // not
+      // move to make distance in correct range
       double distanceSpeed = power * (currentDistance - targetDistance);
       arcadeDrive(0, distanceSpeed);
       return false;
 
-    } else if(Math.abs(currentDistance) < targetDistance + Constants.distanceTolerance) { //distance is correct but angle is not
-      //move to make angle correct
+    } else if (Math.abs(currentDistance) < targetDistance + Constants.distanceTolerance) { // distance is correct but
+                                                                                           // angle is not
+      // move to make angle correct
       double angleSpeed = power * (currentAngle - targetAngle);
       arcadeDrive(angleSpeed, 0);
       return false;
 
-    } else { //neither are correct
-      //move both
+    } else { // neither are correct
+      // move both
       double angleSpeed = power * (currentAngle - targetAngle);
       double distanceSpeed = power * (currentDistance - targetDistance);
       arcadeDrive(angleSpeed, distanceSpeed);
@@ -343,6 +349,14 @@ public class DriveTrain extends SubsystemBase {
     }
   }
 
+  public boolean alignToTarget(Pose2d pos){
+    List<Pose2d> waypoints = new ArrayList<Pose2d>();
+    waypoints.add(new Pose2d(Units.feetToMeters(23.7), Units.feetToMeters(6.8), Rotation2d.fromDegrees(-160)));
+    
+
+    var trajectory = TrajectoryGenerator.generateTrajectory(waypoints, config);
+    return true;
+  }
   public Pose2d getPose() {
     return m_odometry.getPoseMeters();
   }

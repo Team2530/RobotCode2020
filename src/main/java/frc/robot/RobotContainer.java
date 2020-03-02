@@ -202,7 +202,7 @@ public class RobotContainer {
         m_driveTrain::tankDriveVolts, //Function that uses the Output Volts (BiConsumer)
         m_driveTrain //SubSystem Requirments
       );
-      return ramseteCommand;
+      return ramseteCommand.andThen(() -> m_driveTrain.tankDrive(0, 0));
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
       return null;
