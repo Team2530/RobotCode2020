@@ -7,7 +7,7 @@
 
 package frc.robot.libraries;
 
-public class GFG{ 
+public class EulersMethod{ 
     static final float EPSILON = (float)0.01; 
   
     // An example function whose solution is determined using 

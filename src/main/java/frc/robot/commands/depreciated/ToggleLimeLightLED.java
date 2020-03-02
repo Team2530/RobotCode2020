@@ -5,52 +5,45 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.depreciated;
 
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.LimeLight;
 
-public class LargeJoystickCurvatureDrive extends CommandBase {
-
-  DriveTrain driveTrain;
-
-  Joystick stick;
-  double y;
-  double z;
-
+public class ToggleLimeLightLED extends CommandBase {
   /**
-   * Creates a new LargeJoystickCurvatureDrive.
+   * Creates a new ToggleLimeLightLED.
    */
-  public LargeJoystickCurvatureDrive(DriveTrain driveTrain, Joystick stick) {
+  private LimeLight limeLight;
+
+  public ToggleLimeLightLED(LimeLight limeLight) {
+    this.limeLight = limeLight;
+
+    addRequirements(limeLight);
     // Use addRequirements() here to declare subsystem dependencies.
-    this.driveTrain = driveTrain;
-    this.stick = stick;
-    addRequirements(driveTrain);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    y = stick.getY();
-    z = stick.getZ();
-
-    driveTrain.curvatureDrive(y, z, true); // permanently set false for now, add a button to toggle soon
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 }

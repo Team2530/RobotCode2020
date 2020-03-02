@@ -15,7 +15,7 @@ import frc.robot.subsystems.LimeLight;
 import frc.robot.Constants;
 // import frc.robot.Constants.DriveMotors;
 
-public class LineUp extends CommandBase {
+public class LineUpRobot extends CommandBase {
 
   private DriveTrain driveTrain;
   private LimeLight limeLight;
@@ -27,7 +27,7 @@ public class LineUp extends CommandBase {
   /**
    * Creates a new LineUp.
    */
-  public LineUp(DriveTrain driveTrain, LimeLight limeLight) {
+  public LineUpRobot(DriveTrain driveTrain, LimeLight limeLight) {
     // Use addRequirements() here to declare subsystem dependencies.
 
     this.driveTrain = driveTrain;

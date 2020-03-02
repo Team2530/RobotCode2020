@@ -5,45 +5,44 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.depreciated;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.DriveTrain;
 
-public class ToggleLimeLightLED extends CommandBase {
+public class EncoderTest extends CommandBase {
   /**
-   * Creates a new ToggleLimeLightLED.
+   * Creates a new EncoderTest.
    */
-  private LimeLight limeLight;
+  private final DriveTrain m_driveTrain;
 
-  public ToggleLimeLightLED(LimeLight limeLight) {
-    this.limeLight = limeLight;
-
-    addRequirements(limeLight);
+  public EncoderTest(DriveTrain driveTrain) {
+    m_driveTrain = driveTrain;
+    addRequirements(driveTrain);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    limeLight.toggleLights();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
     
+    SmartDashboard.putNumber("Encoder", m_driveTrain.getEncoder());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-
   }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return false;
   }
 }

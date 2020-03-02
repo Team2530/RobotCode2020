@@ -20,9 +20,10 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.*;
+import frc.robot.commands.teleopDriveCommands.*;
 import frc.robot.commands.autonomousCommands.*;
 import frc.robot.commands.ConstantTelopCommands.*;
-import frc.robot.subsystems.Conveyor;
+import frc.robot.subsystems.*;
 // import frc.robot.commands.SmallJoystickElevator;
 // import frc.robot.commands.XboxJoystickElevator;
 import frc.robot.subsystems.DriveTrain;
@@ -107,7 +108,7 @@ public class RobotContainer {
   // private final SmallJoystickElevator elevatorCommand = new
   // SmallJoystickElevator(elevatorSub, stick1);
   // private final EncoderTest m_telopCommand = new EncoderTest(m_driveTrain);
-  private final LineUp lineUp = new LineUp(m_driveTrain, limeLightSub);
+  private final LineUpRobot lineUp = new LineUpRobot(m_driveTrain, limeLightSub);
   // private final TestPixy pixy = new TestPixy(m_pixy);
   // private final ToggleLimeLightLED toggleLED = new
   // ToggleLimeLightLED(limeLightSub);

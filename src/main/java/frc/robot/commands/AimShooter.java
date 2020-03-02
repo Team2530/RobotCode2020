@@ -8,9 +8,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpiutil.math.Matrix;
 import frc.robot.Constants;
-import frc.robot.libraries.GFG;
+import frc.robot.libraries.EulersMethod;
 import frc.robot.subsystems.Elevator;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Shooter;
@@ -45,26 +44,11 @@ public class AimShooter extends CommandBase {
   public void execute() {
 
     sposition = m_limelight.getCylindricalPosition(m_elevator.getAngle(), Constants.sensor_Limelight_Height);
-    double shootingV = GFG.bisection(0, 30,
+    double shootingV = EulersMethod.bisection(0, 30,
         new double[] {
             0.5 * Constants.gravity * Math.pow(sposition[0], 2) * Math.pow((1 / Math.cos(m_elevator.getAngle())), 2), 0,
             -m_elevator.getFloorHeight()[0], 1 });
     m_shooter.startFW(shootingV);
-    // Polynomial v0 = new Polynomial(0.5*Constants.gravity*
-    // Math.pow(sposition[0],2)*
-    // Math.pow((1/Math.cos(m_elevator.getAngle())),2)
-    // , 0);
-    // Polynomial v2 = new Polynomial(-m_elevator.getHeight(), 2);
-    // Polynomial v3 = new Polynomial(1, 3);
-    // Polynomial v = v3.plus(v2.plus(v0));
-
-    // if(sposition[0]<Constants.MAX_SHOOTING_DISTANCE){
-    // if(Constants.ball_Weight*(Constants.target_Height-m_elevator.getHeight())>m_shooter.getShooterEnergy()){
-    // m_shooter.fireBall();
-    // }
-
-    // }
-
   }
 
   // Called once the command ends or is interrupted.

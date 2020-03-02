@@ -5,30 +5,21 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot.commands;
+package frc.robot.commands.depreciated;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.LimeLight;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Pixy;
 
-public class EmptyMag extends CommandBase {
+public class TestPixy extends CommandBase {
   /**
-   * Creates a new EmptyMag.
+   * Creates a new TestPixy.
    */
-  private Shooter m_shooter;
-  private Elevator m_elevator;
-  private LimeLight m_limelight;
-  private double[] sposition;
+  private final Pixy m_pixy;
 
-  public EmptyMag(Shooter shooter,Elevator elevator,LimeLight limelight) {
-    this.m_shooter = shooter;
-    this.m_elevator = elevator;
-    this.m_limelight = limelight;
+  public TestPixy(Pixy pixy) {
+    this.m_pixy = pixy;
+    addRequirements(m_pixy);
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(shooter);
-    addRequirements(elevator);
-    addRequirements(limelight);
   }
 
   // Called when the command is initially scheduled.
@@ -39,16 +30,7 @@ public class EmptyMag extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // sposition = m_limelight.getSphericalPosition(m_elevator.getAngle(), m_elevator.getLimeLightHeight());
-    // if(sposition[0]<Constants.MAX_SHOOTING_DISTANCE){
-    //   if(Constants.ball_Weight*(Constants.target_Height-m_elevator.getHeight())>m_shooter.getShooterEnergy()){
-    //     m_shooter.fireBall();
-    //   }
-      
-    // }
     
-
-
   }
 
   // Called once the command ends or is interrupted.
@@ -59,7 +41,6 @@ public class EmptyMag extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    //return true when magazine is empty|| if target is no longer in sight
     return false;
   }
 }
