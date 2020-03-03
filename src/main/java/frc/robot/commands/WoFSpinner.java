@@ -9,9 +9,11 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Pixy;
 import frc.robot.Constants;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 /*import frc.robot.commands.LocateBall;*/ //commented out because it is not being used yet. may or may not be used. Here anyway.
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -20,6 +22,7 @@ public class WoFSpinner extends CommandBase {
    * Creates a new WoFSpinner.
    */
   Shooter shooter;
+  private static WPI_TalonSRX motor_Left_FlyWheel = new WPI_TalonSRX(Constants.motor_Left_FlyWheel_Port);
   private static WPI_TalonSRX motor_Right_FlyWheel = new WPI_TalonSRX(Constants.motor_Right_Flywheel_Port);
 
   // private static Encoder encoder_Left = new
@@ -27,13 +30,14 @@ public class WoFSpinner extends CommandBase {
   // private static Encoder encoder_Right = new
   // Encoder(Constants.encoder_Right_Flywheel_Port[0],Constants.encoder_Right_Flywheel_Port[1]);
 
-  public void Shooter() { //do we need this?
+  public void Shooter() {
     motor_Right_FlyWheel.setInverted(false);}
     // motor_Right_FlyWheel.set(ControlMode.Follower, Constants.motor_Left_FlyWheel_Port);
 
   public void WoFSpinner(Shooter shooter, Pixy pixy) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
+    DriveTrain m_driveTrain; //this variable may not be initialized correctly. Fix it
     /*final Pixy m_pixy;*/ //commented out because it is not in use yet. It will be though
     addRequirements(shooter);
     addRequirements(pixy);
@@ -54,25 +58,23 @@ public class WoFSpinner extends CommandBase {
     SmartDashboard.putString("The Current Shooter Speed is: " + displaySpeedRPM +"", "shooter-speed");
   }
     public static void spin(String color) {
-      frc.robot.subsystems.Shooter m_Shooter;
-      m_Shooter = new Shooter();
-        switch(color){
-              case "red":
-                m_Shooter.WoFspin();
-                while(color != "red"){}
-                m_Shooter.stopFW();
-              case "yellow":
-                m_Shooter.WoFspin();
-                while(color != "yellow"){}
-                m_Shooter.stopFW();
-              case "green":
-                m_Shooter.WoFspin();
-                while(color != "green"){}
-                m_Shooter.stopFW();
-              case "blue":
-                m_Shooter.WoFspin();
-                while(color != "blue"){}
-                m_Shooter.stopFW();
+      switch(color){
+        case "red":
+          m_Shooter.WoFspin();
+          while(){}
+          m_Shooter.stopFW();
+        case "yellow":
+          m_Shooter.WoFspin();
+          while(){}
+          m_Shooter.stopFW();
+        case "green":
+          m_Shooter.WoFspin();
+          while(){}
+          m_Shooter.stopFW();
+        case "blue":
+          m_Shooter.WoFspin();
+          while(){}
+          m_Shooter.stopFW();
       }
     /*while (1 == 1) {
       // run motors at 0.1 speed
@@ -84,4 +86,4 @@ public class WoFSpinner extends CommandBase {
   // Called once the command ends or is interrupted.
 
   // Returns true when the command should end.
-}}
+}
