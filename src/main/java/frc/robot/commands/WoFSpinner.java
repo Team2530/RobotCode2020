@@ -56,7 +56,6 @@ public class WoFSpinner extends CommandBase {
     public static void spin(String color) {
       frc.robot.subsystems.Shooter m_Shooter;
       m_Shooter = new Shooter();
-      
         switch(color){
               case "red":
                 m_Shooter.WoFspin();
@@ -74,31 +73,7 @@ public class WoFSpinner extends CommandBase {
                 m_Shooter.WoFspin();
                 while(color != "blue"){}
                 m_Shooter.stopFW();
-
-
-                
-
-                
       }
-
-      /* IF USING PIXY!!!
-
-      colorSeen = getBlockID();
-
-      //Objective Color needs to be set, but 0 = ball, and the colors are 1 through 4
-
-      if(colorSeen != objectiveColor) {
-        m_Shooter.WoFspin();
-
-
-
-      }
-
-      else{
-        m_Shooter.stopFW();
-
-      }
-      */
     /*while (1 == 1) {
       // run motors at 0.1 speed
       DriveTrain m_driveTrain;
