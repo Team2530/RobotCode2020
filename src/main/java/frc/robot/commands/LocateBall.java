@@ -77,28 +77,31 @@ public class LocateBall extends CommandBase {
 
   }
   double pixyDeadZone = 9.5; //area where it thinks ball is close enough to straigh ahead. radius
-    public void driveToBall() {
-      if (m_pixy.getArea() < 400) {
-       if (m_pixy.getX() < 157.5 - pixyDeadZone){//if ball is to far too the left
-         while((m_pixy.getX() < 157.5 - pixyDeadZone)){//turn left
+  public void driveToBall() {
+    if (m_pixy.getBiggestBlock()==null){
+      return;
+    }
+    if (m_pixy.getArea() < 900 && !(m_pixy.getBiggestBlock()==null)) {
+      if (m_pixy.getX() < 157.5 - pixyDeadZone){//if ball is to far too the left
+        while((m_pixy.getX() < 157.5 - pixyDeadZone)){//turn left
           m_driveTrain.turnLeft(0.5);
-         }
-       }
-       if (m_pixy.getX() > 157.5 + pixyDeadZone){//if ball is too far too the right
+        }
+      }
+      if (m_pixy.getX() > 157.5 + pixyDeadZone){//if ball is too far too the right
         while((m_pixy.getX() > 157.5 + pixyDeadZone)){//turn right
           m_driveTrain.turnRight(0.5);
         }
-       }
-       while (m_pixy.getArea() < 400) {
-          m_driveTrain.setSingleMotorPower(DriveMotors.FR, 1);
-          m_driveTrain.setSingleMotorPower(DriveMotors.FL, 1);
-        }
-          m_driveTrain.setSingleMotorPower(DriveMotors.FR, 0);
-          m_driveTrain.setSingleMotorPower(DriveMotors.FL, 0);
-       } 
       }
-        //gotoball
-        //align X
-        //ball far away? make sure ball doesn't go out of view? off screen ball tracking?
-        //start motors -> drive
+      while (m_pixy.getArea() < 900 && !(m_pixy.getBiggestBlock()==null)) {
+        m_driveTrain.setSingleMotorPower(DriveMotors.FR, 1);
+        m_driveTrain.setSingleMotorPower(DriveMotors.FL, 1);
       }
+        m_driveTrain.setSingleMotorPower(DriveMotors.FR, 0);
+        m_driveTrain.setSingleMotorPower(DriveMotors.FL, 0);
+    } 
+  }
+      //gotoball
+      //align X
+      //ball far away? make sure ball doesn't go out of view? off screen ball tracking?
+      //start motors -> drive
+}
