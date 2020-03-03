@@ -21,7 +21,7 @@ public class Pixy extends SubsystemBase {
   int ballAngle;
   int ballAge;
   int lastBlockCount;
-  int blockID;
+
   public Pixy() {
     // Initializes the Pixy
     pixy = Pixy2.createInstance(new SPILink());
@@ -55,7 +55,6 @@ public class Pixy extends SubsystemBase {
         largestBlock = block;
       } else if (block.getWidth() > largestBlock.getWidth()) {
         largestBlock = block;
-        blockID = block.getSignature();
       }
     }
     return largestBlock;
@@ -99,11 +98,5 @@ public class Pixy extends SubsystemBase {
 
     public double getArea() {
       return ballWidth * ballHeight;
-    }
-
-    public int getBlockID() {
-      return blockID;
-
-
     }
 }
