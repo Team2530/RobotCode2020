@@ -89,7 +89,7 @@ public class Elevator extends SubsystemBase {
         Constants.kTimeoutMs); // Configuration Timeout
 
     // Inverting Motors and Encoders
-    motor_Left.setInverted(false);
+    motor_Left.setInverted(true);
     motor_Left.setSensorPhase(true);
     motor_Right.setInverted(true);
     motor_Right.setSensorPhase(true);

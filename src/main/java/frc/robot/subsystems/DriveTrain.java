@@ -323,28 +323,29 @@ public class DriveTrain extends SubsystemBase {
     if (Math.abs(currentAngle) < targetAngle + Constants.angleTolerance
         && Math.abs(currentDistance) < targetDistance + Constants.distanceTolerance) { // angle AND distance is correct
 
-      stop();
-      return true;
-
-    } else if (Math.abs(currentAngle) < targetAngle + Constants.angleTolerance) { // angle is correct but distance is
-                                                                                  // not
-      // move to make distance in correct range
-      double distanceSpeed = power * (currentDistance - targetDistance);
-      arcadeDrive(0, distanceSpeed);
-      return false;
+    } else if(Math.abs(currentAngle) < targetAngle + Constants.angleTolerance) { //angle is correct but distance is not
+      //move to make distance in correct range
+      //!!! TEMPORARY CHANGE: disabled distance adjustment
+      if (Math.abs(currentDistance) < targetDistance + Constants.distanceTolerance) {
+        return true;
+      } else {
+        double distanceSpeed = power * (currentDistance - targetDistance);
+        arcadeDrive(0, distanceSpeed);
+        return false;
+      }
 
     } else if (Math.abs(currentDistance) < targetDistance + Constants.distanceTolerance) { // distance is correct but
                                                                                            // angle is not
       // move to make angle correct
       double angleSpeed = power * (currentAngle - targetAngle);
-      arcadeDrive(angleSpeed, 0);
+      arcadeDrive(0, angleSpeed);
       return false;
 
     } else { // neither are correct
       // move both
       double angleSpeed = power * (currentAngle - targetAngle);
       double distanceSpeed = power * (currentDistance - targetDistance);
-      arcadeDrive(angleSpeed, distanceSpeed);
+      arcadeDrive(0, angleSpeed/*distanceSpeed*/);
       return false;
 
     }
