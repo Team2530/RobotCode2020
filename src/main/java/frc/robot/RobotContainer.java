@@ -48,8 +48,8 @@ public class RobotContainer {
 
   // -------------------- Subsystems -------------------- \\
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final DriveTrain m_driveTrain = new DriveTrain();
-  // private final Elevator elevatorSub = new Elevator();
+  // private final DriveTrain m_driveTrain = new DriveTrain();
+  private final Elevator elevatorSub = new Elevator();
   private final LimeLight limeLightSub = new LimeLight();
   //private final Pixy m_pixy = new Pixy();
   //private final Shooter m_shooter = new Shooter();
@@ -68,6 +68,7 @@ public class RobotContainer {
   private final JoystickButton Button5 = new JoystickButton(stick1, 5);
   private final JoystickButton Button6 = new JoystickButton(stick1, 6);
   private final JoystickButton Button7 = new JoystickButton(stick1, 7);
+  private final JoystickButton Button8 = new JoystickButton(stick1, 8);
   private final JoystickButton Button9 = new JoystickButton(stick1, 9);
   private final JoystickButton Button10 = new JoystickButton(stick1, 10);
 
@@ -148,6 +149,14 @@ public class RobotContainer {
     Button2.whenPressed(new InstantCommand(limeLightSub::toggleLights, limeLightSub));
     Button3.whenPressed(new InstantCommand(limeLightSub::switchCamera, limeLightSub));
 
+    Button7.whenPressed(new InstantCommand(elevatorSub::setLeftPowerUp));
+    Button8.whenPressed(new InstantCommand(elevatorSub::setLeftPowerDown));
+    Button9.whenPressed(new InstantCommand(elevatorSub::setRightPowerUp));
+    Button10.whenPressed(new InstantCommand(elevatorSub::setRightPowerDown));
+    Button7.whenReleased(new InstantCommand(elevatorSub::Stop));
+    Button8.whenReleased(new InstantCommand(elevatorSub::Stop));
+    Button9.whenReleased(new InstantCommand(elevatorSub::Stop));
+    Button10.whenReleased(new InstantCommand(elevatorSub::Stop));
     // XboxButton1.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
     // XboxButton1.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
     // XboxButton4.whenPressed(new InstantCommand(m_shooter::startIntake,
@@ -183,26 +192,26 @@ public class RobotContainer {
     try {
       Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-      RamseteCommand ramseteCommand= new RamseteCommand(
-        trajectory, // TrajectoryUtil.fromPathweaverJson(Filesystem.getDeployDirectory().toPath().resolve("PathWeaver/DriveForwardFarBlue.wpilib.json")), //The Trajectory 
-        m_driveTrain::getPose, //Pose (Supplier)
-        new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta), //Ramsete Controller
-        m_driveTrain.getFeedForward(), //Feed Forward
-        m_driveTrain.getKinematics(), //Kinematics
-        m_driveTrain::getWheelSpeeds, //Wheel Speeds (Supplier)
-        m_driveTrain.getLeftController(), //Left PID Controller
-        m_driveTrain.getRightController(), //Right PID Controller
-        // RamseteCommand passes volts to the callback
-        m_driveTrain::tankDriveVolts, //Function that uses the Output Volts (BiConsumer)
-        m_driveTrain //SubSystem Requirments
-      );
-      return ramseteCommand.andThen(() -> m_driveTrain.tankDrive(0, 0));
+      // RamseteCommand ramseteCommand= new RamseteCommand(
+      //   trajectory, // TrajectoryUtil.fromPathweaverJson(Filesystem.getDeployDirectory().toPath().resolve("PathWeaver/DriveForwardFarBlue.wpilib.json")), //The Trajectory 
+        // m_driveTrain::getPose, //Pose (Supplier)
+        // new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta), //Ramsete Controller
+        // m_driveTrain.getFeedForward(), //Feed Forward
+        // m_driveTrain.getKinematics(), //Kinematics
+        // m_driveTrain::getWheelSpeeds, //Wheel Speeds (Supplier)
+        // m_driveTrain.getLeftController(), //Left PID Controller
+        // m_driveTrain.getRightController(), //Right PID Controller
+        // // RamseteCommand passes volts to the callback
+        // m_driveTrain::tankDriveVolts, //Function that uses the Output Volts (BiConsumer)
+        // m_driveTrain //SubSystem Requirments
+      // );
+      // return ramseteCommand.andThen(() -> m_driveTrain.tankDrive(0, 0));
     } catch (IOException ex) {
       DriverStation.reportError("Unable to open trajectory: " + trajectoryJSON, ex.getStackTrace());
       return null;
     }
     // return lineUp;
-
+    return null;
     // return m_autoCommand;
 
   }

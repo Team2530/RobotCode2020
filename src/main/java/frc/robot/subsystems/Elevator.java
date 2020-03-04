@@ -19,6 +19,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ElevatorLimitSwitches;
@@ -141,7 +142,8 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
+    SmartDashboard.putNumber("Left Elevator Encoder", motor_Left.getSelectedSensorPosition());
+    SmartDashboard.putNumber("Right Elevator Encoder", motor_Right.getSelectedSensorPosition());
   }
 
   public void resetEncoders() {
@@ -160,28 +162,48 @@ public class Elevator extends SubsystemBase {
     switch (id) {
 
       case Left:
-        if (limit_Switch_Left_Leadscrew.get() && speed > 0) { // if limit switch is pressed and it wants to go up, dont
-          // motor_Left_Leadscrew.set(ControlMode.PercentOutput, 0);
-          return;
-        } else {
-          // motor_Left_Leadscrew.set(ControlMode.PercentOutput, speed);
-          return;
-        }
+        // if (limit_Switch_Left_Leadscrew.get() && speed > 0) { // if limit switch is pressed and it wants to go up, dont
+        //   // motor_Left_Leadscrew.set(ControlMode.PercentOutput, 0);
+        //   return;
+        // } else {
+        //   // motor_Left_Leadscrew.set(ControlMode.PercentOutput, speed);
+        //   return;
+        // }
+        motor_Left.set(ControlMode.PercentOutput, speed);
+        return;
 
       case Right:
-        if (limit_Switch_Right_Leadscrew.get() && speed > 0) { // if limit switch is pressed and it wants to go up, dont
-          // motor_Right_Leadscrew.set(ControlMode.PercentOutput, 0);
-          return;
-        } else {
-          // motor_Right_Leadscrew.set(ControlMode.PercentOutput, speed);
-          return;
-        }
+        // if (limit_Switch_Right_Leadscrew.get() && speed > 0) { // if limit switch is pressed and it wants to go up, dont
+        //   // motor_Right_Leadscrew.set(ControlMode.PercentOutput, 0);
+        //   return;
+        // } else {
+        //   // motor_Right_Leadscrew.set(ControlMode.PercentOutput, speed);
+        //   return;
+        // }
+        motor_Right.set(ControlMode.PercentOutput, speed);
+        return;
 
       default:
         return;
     }
   }
 
+  public void setLeftPowerUp(){
+    // setMotorPower(ElevatorMotors.Left, 0.5);
+    motor_Left.set(ControlMode.PercentOutput, 0.5);
+  }
+  public void setLeftPowerDown(){
+    // setMotorPower(ElevatorMotors.Left, -0.5);
+    motor_Left.set(ControlMode.PercentOutput, -0.5);
+  }
+  public void setRightPowerUp(){
+    // setMotorPower(ElevatorMotors.Right, 0.5);
+    motor_Right.set(ControlMode.PercentOutput, 0.5);
+  }
+  public void setRightPowerDown(){
+    // setMotorPower(ElevatorMotors.Right, -0.5);
+    motor_Right.set(ControlMode.PercentOutput, -0.5);
+  }
   public double getAngle() {
     /**
      * pusdo code angle = arctan(getHeight()/bottomLeg)
