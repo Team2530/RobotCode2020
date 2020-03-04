@@ -21,6 +21,8 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.*;
 import frc.robot.commands.autonomousCommands.*;
+import frc.robot.commands.defaultCommands.*;
+import frc.robot.commands.teleopDriveCommands.*;
 import frc.robot.subsystems.*;
 // import frc.robot.commands.SmallJoystickElevator;
 // import frc.robot.commands.XboxJoystickElevator;
@@ -106,11 +108,11 @@ public class RobotContainer {
   // private final SmallJoystickElevator elevatorCommand = new
   // SmallJoystickElevator(elevatorSub, stick1);
   // private final EncoderTest m_telopCommand = new EncoderTest(m_driveTrain);
-  // private final LineUpRobot lineUp = new LineUpRobot(m_driveTrain, limeLightSub);
+  private final LineUpRobot lineUp = new LineUpRobot(m_driveTrain, limeLightSub);
   // private final TestPixy pixy = new TestPixy(m_pixy);
-  // private final LargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1);
+  private final LargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1);
   // private final LargeJoystickCurvatureDrive telopDriveCommand = new LargeJoystickCurvatureDrive(m_driveTrain, stick1);
-  //private final DualLargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1, stick2);
+  // private final DualLargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1, stick2);
   //private final ConveyorControl telopConveyorCommand = new ConveyorControl(m_conveyor, xbox);
   //private final StartShooter telopShooterCommand = new StartShooter(m_shooter, xbox);
 
@@ -121,7 +123,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
-    // m_driveTrain.setDefaultCommand(telopDriveCommand);
+    m_driveTrain.setDefaultCommand(telopDriveCommand);
     // m_conveyor.setDefaultCommand(telopConveyorCommand);
     // m_shooter.setDefaultCommand(telopShooterCommand);
     // elevatorSub.setDefaultCommand(telopElevatorCommand);
@@ -134,7 +136,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Button1.whileHeld(lineUp);
+    Button1.whileHeld(lineUp);
     // Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
     //Button2.whenPressed(toggleCamera);
     // Button3.whenPressed(toggleLED);

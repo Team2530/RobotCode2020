@@ -293,6 +293,8 @@ public class DriveTrain extends SubsystemBase {
     m_odometry.update(getHeading(), encoder_Left.getDistance(), encoder_Right.getDistance());
   }
 
+  double previousError = 1;
+
   /**
    * Drives the robot with the given linear velocity and angular velocity.
    *
@@ -317,39 +319,70 @@ public class DriveTrain extends SubsystemBase {
     // targetDistance)); //fix not working?
     // return false;
     // }
-  
-   
 
     if (Math.abs(currentAngle) < targetAngle + Constants.angleTolerance
         && Math.abs(currentDistance) < targetDistance + Constants.distanceTolerance) { // angle AND distance is correct
 
+          SmartDashboard.putBoolean("Distance Correct", true);
+          SmartDashboard.putBoolean("Angle Correct", true);
+
+          SmartDashboard.putNumber("Distance Speed", 0);
+          SmartDashboard.putNumber("Angle Speed", 0);
+    
+          arcadeDrive(0, 0);
+          return true; //done
+
     } else if(Math.abs(currentAngle) < targetAngle + Constants.angleTolerance) { //angle is correct but distance is not
       //move to make distance in correct range
-      //!!! TEMPORARY CHANGE: disabled distance adjustment
-      if (Math.abs(currentDistance) < targetDistance + Constants.distanceTolerance) {
-        return true;
-      } else {
-        double distanceSpeed = power * (currentDistance - targetDistance);
-        arcadeDrive(0, distanceSpeed);
-        return false;
-      }
+
+      SmartDashboard.putBoolean("Distance Correct", false);
+      SmartDashboard.putBoolean("Angle Correct", true);
+
+      double distanceSpeed = power * (currentDistance - targetDistance);
+
+      SmartDashboard.putNumber("Distance Speed", distanceSpeed);
+      SmartDashboard.putNumber("Angle Speed", 0);
+
+      arcadeDrive(0, distanceSpeed);
+      return false;
 
     } else if (Math.abs(currentDistance) < targetDistance + Constants.distanceTolerance) { // distance is correct but
                                                                                            // angle is not
       // move to make angle correct
-      double angleSpeed = power * (currentAngle - targetAngle);
+
+      SmartDashboard.putBoolean("Distance Correct", true);
+      SmartDashboard.putBoolean("Angle Correct", false);
+
+      double error = currentAngle - targetAngle;
+      // double integral = error * 0.02;
+      // double derivative = (error - previousError) / .02;
+      // SmartDashboard.putNumber("Derivative", derivative);
+      // previousError = error;
+
+      double angleSpeed = (power * error); //+ (integral); //+ (0.5 * derivative);
+
+      SmartDashboard.putNumber("Distance Speed", 0);
+      SmartDashboard.putNumber("Angle Speed", angleSpeed);
+
       arcadeDrive(0, angleSpeed);
       return false;
 
     } else { // neither are correct
       // move both
+
+      SmartDashboard.putBoolean("Distance Correct", false);
+      SmartDashboard.putBoolean("Angle Correct", false);
+
       double angleSpeed = power * (currentAngle - targetAngle);
       double distanceSpeed = power * (currentDistance - targetDistance);
-      arcadeDrive(0, angleSpeed/*distanceSpeed*/);
+
+      SmartDashboard.putNumber("Distance Speed", distanceSpeed);
+      SmartDashboard.putNumber("Angle Speed", angleSpeed);
+
+      arcadeDrive(distanceSpeed, angleSpeed);
       return false;
 
     }
-    return true; //uhm build
   }
 
   public Trajectory getAlignToTargetTrajectory(Pose2d pos){
