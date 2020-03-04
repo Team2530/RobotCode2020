@@ -50,17 +50,17 @@ public class SmallJoystickElevator extends CommandBase {
     if(elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.LP) || elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.RP)) { //last stage all the way up
       //only go down
       if(y1 < 0) {
-        elevatorSub.setMotorPower(ElevatorMotors.LP, y1);
-        elevatorSub.setMotorPower(ElevatorMotors.RP, y1);
+        elevatorSub.setMotorPower(ElevatorMotors.Left, y1);
+        elevatorSub.setMotorPower(ElevatorMotors.Right, y1);
       } else {
-        elevatorSub.setMotorPower(ElevatorMotors.LP, 0);
-        elevatorSub.setMotorPower(ElevatorMotors.RP, 0);
+        elevatorSub.setMotorPower(ElevatorMotors.Left, 0);
+        elevatorSub.setMotorPower(ElevatorMotors.Right, 0);
       }
 
     } else {
       //go any direction
-      elevatorSub.setMotorPower(ElevatorMotors.LP, y1);
-      elevatorSub.setMotorPower(ElevatorMotors.RP, y1);
+      elevatorSub.setMotorPower(ElevatorMotors.Left, y1);
+      elevatorSub.setMotorPower(ElevatorMotors.Right, y1);
     }
 
   }

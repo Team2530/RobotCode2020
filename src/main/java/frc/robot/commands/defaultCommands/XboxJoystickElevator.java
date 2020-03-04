@@ -53,16 +53,16 @@ public class XboxJoystickElevator extends CommandBase {
     if(elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.LL) || elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.RL)) { //stage 1 all the way up
       //only go down
       if(y1 < 0) {
-        elevatorSub.setMotorPower(ElevatorMotors.LL, y1);
-        elevatorSub.setMotorPower(ElevatorMotors.RL, y1);
+        elevatorSub.setMotorPower(ElevatorMotors.Left, y1);
+        elevatorSub.setMotorPower(ElevatorMotors.Right, y1);
       } else {
-        elevatorSub.setMotorPower(ElevatorMotors.LL, 0);
-        elevatorSub.setMotorPower(ElevatorMotors.RL, 0);
+        elevatorSub.setMotorPower(ElevatorMotors.Left, 0);
+        elevatorSub.setMotorPower(ElevatorMotors.Right, 0);
       }
     } else {
       //go any direction
-      elevatorSub.setMotorPower(ElevatorMotors.LL, y1);
-      elevatorSub.setMotorPower(ElevatorMotors.RL, y1);
+      elevatorSub.setMotorPower(ElevatorMotors.Left, y1);
+      elevatorSub.setMotorPower(ElevatorMotors.Right, y1);
     }
 
   }

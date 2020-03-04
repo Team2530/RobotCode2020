@@ -35,11 +35,11 @@ public final class Constants {
     }
 
     // Elevator Motors
-    public static final int motor_Left_Leadscrew_Port = 4;
-    public static final int motor_Right_Leadscrew_Port = 3;
+    public static final int motor_Elevator_Left_Port = 4;
+    public static final int motor_Elevator_Right_Port = 3;
 
     public enum ElevatorMotors {
-        LL, RL, LP, RP;
+        Left, Right;
     }
 
     // Shooter

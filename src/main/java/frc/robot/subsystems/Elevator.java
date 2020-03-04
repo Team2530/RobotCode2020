@@ -26,8 +26,8 @@ import frc.robot.Constants.ElevatorMotors;
 
 public class Elevator extends SubsystemBase {
 
-  private static TalonSRX motor_Left = new TalonSRX(Constants.motor_Left_Leadscrew_Port);
-  private static TalonSRX motor_Right = new TalonSRX(Constants.motor_Right_Leadscrew_Port);
+  private static TalonSRX motor_Left = new TalonSRX(Constants.motor_Elevator_Left_Port);
+  private static TalonSRX motor_Right = new TalonSRX(Constants.motor_Elevator_Right_Port);
 
   // private static Encoder encoder_Left_Leadscrew = new
   // Encoder(Constants.encoder_Left_Leadscrew_Ports[0],Constants.encoder_Left_Leadscrew_Ports[1]);
@@ -91,7 +91,7 @@ public class Elevator extends SubsystemBase {
     // Inverting Motors and Encoders
     motor_Left.setInverted(true);
     motor_Left.setSensorPhase(true);
-    motor_Right.setInverted(true);
+    motor_Right.setInverted(false);
     motor_Right.setSensorPhase(true);
 
     /* Set status frame periods */
@@ -141,6 +141,7 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
   }
 
   public void resetEncoders() {
@@ -158,7 +159,7 @@ public class Elevator extends SubsystemBase {
   public void setMotorPower(final ElevatorMotors id, final double speed) {
     switch (id) {
 
-      case LL:
+      case Left:
         if (limit_Switch_Left_Leadscrew.get() && speed > 0) { // if limit switch is pressed and it wants to go up, dont
           // motor_Left_Leadscrew.set(ControlMode.PercentOutput, 0);
           return;
@@ -167,7 +168,7 @@ public class Elevator extends SubsystemBase {
           return;
         }
 
-      case RL:
+      case Right:
         if (limit_Switch_Right_Leadscrew.get() && speed > 0) { // if limit switch is pressed and it wants to go up, dont
           // motor_Right_Leadscrew.set(ControlMode.PercentOutput, 0);
           return;
