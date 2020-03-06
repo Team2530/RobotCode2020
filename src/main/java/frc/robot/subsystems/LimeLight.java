@@ -30,7 +30,8 @@ public class LimeLight extends SubsystemBase {
   public LimeLight() {
 
     table = NetworkTableInstance.getDefault().getTable("limelight");
-    table.getEntry("camMode").setNumber(1);
+    table.getEntry("camMode").setNumber(0);
+    table.getEntry("ledMode").setNumber(3);
     table.getEntry("pipeline").setNumber(1);
   }
 
