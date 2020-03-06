@@ -379,7 +379,7 @@ public class DriveTrain extends SubsystemBase {
       SmartDashboard.putNumber("Distance Speed", distanceSpeed);
       SmartDashboard.putNumber("Angle Speed", angleSpeed);
 
-      arcadeDrive(distanceSpeed, angleSpeed);
+      arcadeDrive(power, power);
       return false;
 
     }

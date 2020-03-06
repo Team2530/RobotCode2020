@@ -42,7 +42,7 @@ public class LineUp extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    power = 0.035;
+    power = 0.15;
 
   }
 
@@ -55,6 +55,7 @@ public class LineUp extends CommandBase {
     SmartDashboard.putNumber("position[2]", position[2]);
     // driveTrain.setSetpoint(position[1]); //this will not work, but this is the idea of what we need to do
     driveTrain.alignToTarget(power, 0, Constants.IDEAL_SHOOTING_DISTANCE, position[1], position[0]);
+    
   }
 
   // Called once the command ends or is interrupted.

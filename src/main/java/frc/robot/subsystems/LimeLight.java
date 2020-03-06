@@ -44,6 +44,7 @@ public class LimeLight extends SubsystemBase {
     tx = table.getEntry("tx").getDouble(0.0);
     ty = table.getEntry("ty").getDouble(0.0);
     ta = table.getEntry("ta").getDouble(0.0);
+    SmartDashboard.putString("Pos2D",getPose2d(Constants.sensor_Limelight_Angle, Constants.sensor_Limelight_Height).toString());
     SmartDashboard.putNumber("light", light);
     // This method will be called once per scheduler run
   }
@@ -59,9 +60,10 @@ public class LimeLight extends SubsystemBase {
         Cposition[0] * Math.sin(Cposition[1]), Cposition[2] };
     return position;
   }
-  public Pose2d getPose2d(){
+  public Pose2d getPose2d(double angle, double height){
     //!BROKE
-    return new Pose2d(tx, ty, new Rotation2d(Math.toRadians(tx)));
+    var d = ((Constants.target_Height - height) / (Math.tan(Math.toRadians(angle + ty))));
+    return new Pose2d(d*Math.cos(Math.toRadians(tx)), d*Math.sin(Math.toRadians(tx)), new Rotation2d(Math.toRadians(tx)));
   }
   public Pose2d getPose2dFromTarget(){
     return null;
