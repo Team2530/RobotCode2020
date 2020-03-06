@@ -148,7 +148,7 @@ public class RobotContainer {
     // Button10.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
 
     Button2.whenPressed(new InstantCommand(limeLightSub::toggleLights, limeLightSub));
-    Button3.whenPressed(new InstantCommand(limeLightSub::switchCamera, limeLightSub));
+    Button2.whenPressed(new InstantCommand(limeLightSub::switchCamera, limeLightSub));
 
     // XboxButton1.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
     // XboxButton1.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
