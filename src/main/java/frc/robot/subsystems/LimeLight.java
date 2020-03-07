@@ -22,7 +22,7 @@ public class LimeLight extends SubsystemBase {
   double ta;
   NetworkTable table;
   int light = 3;
-  boolean limelightDriveCamOn = true;
+  boolean limelightDriveCamOn = false;
   
   /**
    * Creates a new LimeLight.
