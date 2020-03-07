@@ -46,8 +46,8 @@ public class RobotContainer {
   // private final Elevator elevatorSub = new Elevator();
   private final LimeLight limeLightSub = new LimeLight();
   //private final Pixy m_pixy = new Pixy();
-  //private final Shooter m_shooter = new Shooter();
-  //private final Conveyor m_conveyor = new Conveyor();
+  private final Shooter m_shooter = new Shooter();
+  private final Conveyor m_conveyor = new Conveyor();
 
   // -------------------- Joysticks and Buttons -------------------- \\
   // Joysticks
@@ -58,9 +58,9 @@ public class RobotContainer {
   private final JoystickButton Button1 = new JoystickButton(stick1, 1); // Creates a new button for button 1 on stick1
   private final JoystickButton Button2 = new JoystickButton(stick1, 2);
   // private final JoystickButton Button3 = new JoystickButton(stick1, 3);
-  // private final JoystickButton Button4 = new JoystickButton(stick1, 4);
-  // private final JoystickButton Button5 = new JoystickButton(stick1, 5);
-  // private final JoystickButton Button6 = new JoystickButton(stick1, 6);
+  private final JoystickButton Button4 = new JoystickButton(stick1, 4);
+  private final JoystickButton Button5 = new JoystickButton(stick1, 5);
+  private final JoystickButton Button6 = new JoystickButton(stick1, 6);
   // private final JoystickButton Button7 = new JoystickButton(stick1, 7);
   // private final JoystickButton Button9 = new JoystickButton(stick1, 9);
   // private final JoystickButton Button10 = new JoystickButton(stick1, 10);
@@ -71,10 +71,10 @@ public class RobotContainer {
   final XboxController xbox = new XboxController(0);
 
   // Xbox buttons Commented out bc not used
-  // private final JoystickButton XboxButton1 = new JoystickButton(xbox, 1);
-  // private final JoystickButton XboxButton2 = new JoystickButton(xbox, 2);
-  // private final JoystickButton XboxButton3 = new JoystickButton(xbox, 3);
-  // private final JoystickButton XboxButton4 = new JoystickButton(xbox, 4);
+  private final JoystickButton XboxButton1 = new JoystickButton(xbox, 1);
+  private final JoystickButton XboxButton2 = new JoystickButton(xbox, 2);
+  private final JoystickButton XboxButton3 = new JoystickButton(xbox, 3);
+  private final JoystickButton XboxButton4 = new JoystickButton(xbox, 4);
   // private final JoystickButton XboxButton5 = new JoystickButton(xbox, 5);
   // private final JoystickButton XboxButton6 = new JoystickButton(xbox, 6);
   // private final JoystickButton XboxButton7 = new JoystickButton(xbox, 7);
@@ -140,8 +140,10 @@ public class RobotContainer {
     //Button2.whenPressed(toggleCamera);
     // Button3.whenPressed(toggleLED);
     // Button5.whenPressed(new LocateBall(m_driveTrain, m_pixy, m_shooter));
-    /// Button4.whenPressed(new InstantCommand(m_conveyor::in, m_conveyor));
-    // Button6.whenPressed(new InstantCommand(m_conveyor::out, m_conveyor));
+    Button4.whenPressed(new InstantCommand(m_conveyor::in, m_conveyor));
+    Button6.whenPressed(new InstantCommand(m_conveyor::out, m_conveyor));
+    Button4.whenReleased(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
+    Button6.whenReleased(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
     // Button7.whenPressed(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
     // Button9.whenPressed(new InstantCommand(m_shooter::stopFW, m_shooter));
     // Button10.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
@@ -158,13 +160,13 @@ public class RobotContainer {
     // XboxButton1.whileHeld(new StartShooter(m_shooter, xbox));
     // XboxButton4.whileHeld(new StartIntake(m_shooter, xbox));
 
-    // XboxButton1.whenPressed(new InstantCommand(m_shooter::decreaseSpeed,
-    // m_shooter));
-    // XboxButton4.whenPressed(new InstantCommand(m_shooter::increaseSpeed,
-    // m_shooter));
+    XboxButton1.whenPressed(new InstantCommand(m_shooter::decreaseSpeed,
+    m_shooter));
+    XboxButton4.whenPressed(new InstantCommand(m_shooter::increaseSpeed,
+    m_shooter));
 
-    // XboxButton2.whenPressed(new InstantCommand(m_shooter::toggleEnabled,
-    // m_shooter));
+    XboxButton2.whenPressed(new InstantCommand(m_shooter::toggleEnabled,
+    m_shooter));
     // XboxButton3.whenPressed(new InstantCommand(m_shooter::setSpeed0, m_shooter));
 
 

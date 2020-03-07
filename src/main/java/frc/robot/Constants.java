@@ -26,29 +26,29 @@ public final class Constants {
     // DriveTrain Motors
     // ports set up for test drivetrain currently
     public static final int motor_Front_Left_Port = 1;
-    public static final int motor_Back_Left_Port = 0;
-    public static final int motor_Back_Right_Port = 2; // ? 2 motors driving one wheel on each side, i think
-    public static final int motor_Front_Right_Port = 5;
+    public static final int motor_Back_Left_Port = 2;
+    public static final int motor_Back_Right_Port = 3; // ? 2 motors driving one wheel on each side, i think
+    public static final int motor_Front_Right_Port = 4;
 
     public enum DriveMotors {
         FL, FR, BL, BR;
     }
 
     // Elevator Motors
-    public static final int motor_Elevator_Left_Port = 4;
-    public static final int motor_Elevator_Right_Port = 3;
+    public static final int motor_Elevator_Left_Port = 7;
+    public static final int motor_Elevator_Right_Port = 8;
 
     public enum ElevatorMotors {
         Left, Right;
     }
 
     // Shooter
-    public static final int motor_Right_Flywheel_Port = 3;
-    public static final int motor_Left_FlyWheel_Port = 4;
+    public static final int motor_Right_Flywheel_Port = 9;
+    public static final int motor_Left_FlyWheel_Port = 10;
 
-    public static final int motor_Conveyor_Port = 2;
+    public static final int motor_Conveyor_Port = 5;
     //Needs to be changed
-    public static final int motor_Conveyor_Port1 = 20;
+    public static final int motor_Conveyor_Port1 = 6;
 
     // --------------------Sensor Ports--------------------\\
     // DriveTrain Encoders

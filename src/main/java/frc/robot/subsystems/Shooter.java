@@ -37,6 +37,7 @@ public class Shooter extends SubsystemBase {
   /** Tracking variables */
   boolean _firstCall = false;
   boolean _state = false;
+  boolean enabled = false;
 
   // private static Encoder encoder_Left = new
   // Encoder(Constants.encoder_Left_Flywheel_Ports[0],Constants.encoder_Left_Flywheel_Ports[1]);
@@ -136,8 +137,14 @@ public class Shooter extends SubsystemBase {
     // } else {
     // stopFW();
     // }
-    shotCounter();
+    // shotCounter();
     // This method will be called once per scheduler run
+
+    if(enabled) {
+      setMotorsPower(currentSpeed);
+    } else {
+      stopFW();
+    }
   }
 
   public void resetEncoders() {
@@ -228,6 +235,19 @@ public class Shooter extends SubsystemBase {
 
     currentSpeed = currentSpeed - 0.1;
     SmartDashboard.putNumber("Current Shooter Speed", currentSpeed);
+  }
+
+  public void toggleEnabled() {
+    if(enabled) {
+      enabled = false;
+    } else {
+      enabled = true;
+    }
+  }
+
+  public void setMotorsPower(double speed) {
+    motor_Left.set(ControlMode.PercentOutput, speed);
+    motor_Right.set(ControlMode.PercentOutput, speed);
   }
 
   public void setSpeed(double speed) {
