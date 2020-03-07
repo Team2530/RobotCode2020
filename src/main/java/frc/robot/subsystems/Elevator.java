@@ -61,7 +61,7 @@ public class Elevator extends SubsystemBase {
     motor_Right.setNeutralMode(NeutralMode.Brake);
 
     /* Configure the drivetrain's left side Feedback Sensor as a Magnet Encoder */
-    motor_Left.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Absolute, // Local Feedback Source
+    motor_Left.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, // Local Feedback Source
         Constants.PID_PRIMARY, // PID Slot for Source [0, 1]
         Constants.kTimeoutMs);
     motor_Right.configRemoteFeedbackFilter(motor_Left.getDeviceID(), // Device ID of Source
@@ -76,7 +76,7 @@ public class Elevator extends SubsystemBase {
     // Feedback Device of Remote Talon
     motor_Right.configSensorTerm(SensorTerm.Diff1, FeedbackDevice.RemoteSensor0, Constants.kTimeoutMs);
     // Mag Encoder of current Talon
-    motor_Right.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.CTRE_MagEncoder_Absolute, Constants.kTimeoutMs);
+    motor_Right.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, Constants.kTimeoutMs);
 
     /*
      * Difference term calculated by right Talon configured to be selected sensor of
@@ -90,7 +90,7 @@ public class Elevator extends SubsystemBase {
         Constants.kTimeoutMs); // Configuration Timeout
 
     // Inverting Motors and Encoders
-    motor_Left.setInverted(true);
+    motor_Left.setInverted(false);
     motor_Left.setSensorPhase(true);
     motor_Right.setInverted(false);
     motor_Right.setSensorPhase(true);
@@ -142,8 +142,9 @@ public class Elevator extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Left Elevator Encoder", motor_Left.getSelectedSensorPosition());
-    SmartDashboard.putNumber("Right Elevator Encoder", motor_Right.getSelectedSensorPosition());
+    SmartDashboard.putNumber("Left Elevator Encoder", motor_Left.getSelectedSensorPosition(1));
+    SmartDashboard.putNumber("Right Elevator Encoder", motor_Right.getSelectedSensorPosition(1));
+    SmartDashboard.putNumber("Right Elevator Encoder2", motor_Right.getSelectedSensorPosition(0));
   }
 
   public void resetEncoders() {
@@ -203,6 +204,14 @@ public class Elevator extends SubsystemBase {
   public void setRightPowerDown(){
     // setMotorPower(ElevatorMotors.Right, -0.5);
     motor_Right.set(ControlMode.PercentOutput, -0.5);
+  }
+  public void setPowerUp(){
+    motor_Left.set(ControlMode.PercentOutput, 0.5);
+    motor_Right.follow(motor_Left);
+  }
+  public void setPowerDown(){
+    motor_Left.set(ControlMode.PercentOutput, -0.5);
+    motor_Right.follow(motor_Left);
   }
   public double getAngle() {
     /**

@@ -46,9 +46,8 @@ public final class Constants {
     public static final int motor_Right_Flywheel_Port = 3;
     public static final int motor_Left_FlyWheel_Port = 4;
 
-    public static final int motor_Conveyor_Port = 2;
-    //Needs to be changed
-    public static final int motor_Conveyor_Port1 = 20;
+    public static final int motor_Conveyor_Right_Port = 5;
+    public static final int motor_Conveyor_Left_Port = 6;
 
     // --------------------Sensor Ports--------------------\\
     // DriveTrain Encoders
@@ -124,7 +123,7 @@ public final class Constants {
     public static final double IDEAL_SHOOTING_DISTANCE = 132; // inches //1.90;// m
     public static final double distanceTolerance = 12; // inches //.10; // m
     public static final double angleTolerance = 0.4; // degrees
-    public static final int DROP_IN_DISTANCE_PER_REVOLUTION = 1024;
+    public static final int DROP_IN_DISTANCE_PER_REVOLUTION = 4096;
     public static final double FLYWHEEL_DISTANCE_PER_REVOLUTION = SHOOTER_WHEEL_RADIUS * 2 * Math.PI;
     public static final double NeutralDeadband = 0.001;
     /**

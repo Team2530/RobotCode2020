@@ -52,8 +52,8 @@ public class RobotContainer {
   private final Elevator elevatorSub = new Elevator();
   private final LimeLight limeLightSub = new LimeLight();
   //private final Pixy m_pixy = new Pixy();
-  //private final Shooter m_shooter = new Shooter();
-  //private final Conveyor m_conveyor = new Conveyor();
+  // private final Shooter m_shooter = new Shooter();
+  private final Conveyor m_conveyor = new Conveyor();
 
   // -------------------- Joysticks and Buttons -------------------- \\
   // Joysticks
@@ -71,6 +71,8 @@ public class RobotContainer {
   private final JoystickButton Button8 = new JoystickButton(stick1, 8);
   private final JoystickButton Button9 = new JoystickButton(stick1, 9);
   private final JoystickButton Button10 = new JoystickButton(stick1, 10);
+  private final JoystickButton Button11 = new JoystickButton(stick1, 11);
+  private final JoystickButton Button12 = new JoystickButton(stick1, 12);
 
   // Xbox Controller
   final XboxController xbox = new XboxController(0);
@@ -148,15 +150,25 @@ public class RobotContainer {
 
     Button2.whenPressed(new InstantCommand(limeLightSub::toggleLights, limeLightSub));
     Button3.whenPressed(new InstantCommand(limeLightSub::switchCamera, limeLightSub));
-
+    Button4.whenPressed(new InstantCommand(elevatorSub::resetEncoders));
+    Button5.whenPressed(new InstantCommand(m_conveyor::in,m_conveyor));
+    Button6.whenPressed(new InstantCommand(m_conveyor::out,m_conveyor));
     Button7.whenPressed(new InstantCommand(elevatorSub::setLeftPowerUp));
     Button8.whenPressed(new InstantCommand(elevatorSub::setLeftPowerDown));
     Button9.whenPressed(new InstantCommand(elevatorSub::setRightPowerUp));
     Button10.whenPressed(new InstantCommand(elevatorSub::setRightPowerDown));
+    Button11.whenPressed(new InstantCommand(elevatorSub::setPowerUp));
+    Button12.whenPressed(new InstantCommand(elevatorSub::setPowerDown));
+
+    Button5.whenReleased(new InstantCommand(m_conveyor::stopIntake,m_conveyor));
+    Button6.whenReleased(new InstantCommand(m_conveyor::stopIntake,m_conveyor));
     Button7.whenReleased(new InstantCommand(elevatorSub::Stop));
     Button8.whenReleased(new InstantCommand(elevatorSub::Stop));
     Button9.whenReleased(new InstantCommand(elevatorSub::Stop));
     Button10.whenReleased(new InstantCommand(elevatorSub::Stop));
+    Button11.whenReleased(new InstantCommand(elevatorSub::Stop));
+    Button12.whenReleased(new InstantCommand(elevatorSub::Stop));
+
     // XboxButton1.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
     // XboxButton1.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
     // XboxButton4.whenPressed(new InstantCommand(m_shooter::startIntake,
