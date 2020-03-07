@@ -7,8 +7,6 @@
 
 package frc.robot.subsystems;
 
-import java.util.Arrays;
-
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -19,7 +17,6 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ElevatorLimitSwitches;
@@ -155,7 +152,7 @@ public class Elevator extends SubsystemBase {
     return ((motor_Left.getSelectedSensorPosition() + motor_Left.getSelectedSensorPosition()) / 2);
   }
 
-  @Deprecated
+  // @Deprecated
   public void setMotorPower(final ElevatorMotors id, final double speed) {
     switch (id) {
 

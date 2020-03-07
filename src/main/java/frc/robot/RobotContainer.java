@@ -20,24 +20,16 @@ import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.*;
-import frc.robot.commands.autonomousCommands.*;
-import frc.robot.commands.defaultCommands.*;
+// import frc.robot.commands.autonomousCommands.*;
+// import frc.robot.commands.defaultCommands.*;
 import frc.robot.commands.teleopDriveCommands.*;
 import frc.robot.subsystems.*;
-// import frc.robot.commands.SmallJoystickElevator;
-// import frc.robot.commands.XboxJoystickElevator;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Elevator;
-import frc.robot.subsystems.ExampleSubsystem;
-import frc.robot.subsystems.LimeLight;
-import frc.robot.subsystems.Pixy;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.controller.RamseteController;
-import edu.wpi.first.wpilibj2.command.RamseteCommand;
+
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -60,28 +52,36 @@ public class RobotContainer {
   // -------------------- Joysticks and Buttons -------------------- \\
   // Joysticks
   final Joystick stick1 = new Joystick(1); // Creates a joystick on port 1
-  final Joystick stick2 = new Joystick(2); // Creates a joystick on port 2
+  // final Joystick stick2 = new Joystick(2); // Creates a joystick on port 2
 
-  // Joystick buttons
+  // Joystick buttons commented out bc not used
   private final JoystickButton Button1 = new JoystickButton(stick1, 1); // Creates a new button for button 1 on stick1
   private final JoystickButton Button2 = new JoystickButton(stick1, 2);
-  private final JoystickButton Button3 = new JoystickButton(stick1, 3);
-  private final JoystickButton Button4 = new JoystickButton(stick1, 4);
-  private final JoystickButton Button5 = new JoystickButton(stick1, 5);
-  private final JoystickButton Button6 = new JoystickButton(stick1, 6);
-  private final JoystickButton Button7 = new JoystickButton(stick1, 7);
-  private final JoystickButton Button9 = new JoystickButton(stick1, 9);
-  private final JoystickButton Button10 = new JoystickButton(stick1, 10);
+  // private final JoystickButton Button3 = new JoystickButton(stick1, 3);
+  // private final JoystickButton Button4 = new JoystickButton(stick1, 4);
+  // private final JoystickButton Button5 = new JoystickButton(stick1, 5);
+  // private final JoystickButton Button6 = new JoystickButton(stick1, 6);
+  // private final JoystickButton Button7 = new JoystickButton(stick1, 7);
+  // private final JoystickButton Button9 = new JoystickButton(stick1, 9);
+  // private final JoystickButton Button10 = new JoystickButton(stick1, 10);
+  // private final JoystickButton Button11 = new JoystickButton(stick1, 11);
+  // private final JoystickButton Button12 = new JoystickButton(stick1, 12);
 
   // Xbox Controller
   final XboxController xbox = new XboxController(0);
 
-  // Xbox buttons
-  private final JoystickButton XboxButton1 = new JoystickButton(xbox, 1);
-  private final JoystickButton XboxButton2 = new JoystickButton(xbox, 2);
-  private final JoystickButton XboxButton3 = new JoystickButton(xbox, 3);
-  private final JoystickButton XboxButton4 = new JoystickButton(xbox, 4);
-
+  // Xbox buttons Commented out bc not used
+  // private final JoystickButton XboxButton1 = new JoystickButton(xbox, 1);
+  // private final JoystickButton XboxButton2 = new JoystickButton(xbox, 2);
+  // private final JoystickButton XboxButton3 = new JoystickButton(xbox, 3);
+  // private final JoystickButton XboxButton4 = new JoystickButton(xbox, 4);
+  // private final JoystickButton XboxButton5 = new JoystickButton(xbox, 5);
+  // private final JoystickButton XboxButton6 = new JoystickButton(xbox, 6);
+  // private final JoystickButton XboxButton7 = new JoystickButton(xbox, 7);
+  // private final JoystickButton XboxButton8 = new JoystickButton(xbox, 8);
+  // private final JoystickButton XboxButton9 = new JoystickButton(xbox, 9);
+  // private final JoystickButton XboxButton10 = new JoystickButton(xbox, 10);
+  
   // -------------------- Autonomous Commands -------------------- \\
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   
@@ -91,7 +91,6 @@ public class RobotContainer {
   //private final StartMotors m_autoCommand = new StartMotors(m_driveTrain);
   //private final DelayTest delayCommand = new DelayTest(1, m_autoCommand);
   
-
   // private final ExampleCommand m_autoCommand = new
   // ExampleCommand(m_exampleSubsystem);
 
