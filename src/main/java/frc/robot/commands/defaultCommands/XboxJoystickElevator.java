@@ -16,19 +16,20 @@ import frc.robot.Constants.ElevatorMotors;
 import frc.robot.subsystems.Elevator;
 
 public class XboxJoystickElevator extends CommandBase {
-  private Elevator elevatorSub;
+  private Elevator elevator;
   private XboxController xbox;
 
   double y1;
+  boolean endGame;
 
   /**
    * Creates a new XboxJoystickElevator.
    */
   public XboxJoystickElevator(Elevator elevatorSub, XboxController xbox) {
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(elevatorSub); //might have to do xbox = xbox
+    addRequirements(elevatorSub); // might have to do xbox = xbox
     this.xbox = xbox;
-    this.elevatorSub = elevatorSub;
+    elevator = elevatorSub;
   }
 
   // Called when the command is initially scheduled.
@@ -44,25 +45,53 @@ public class XboxJoystickElevator extends CommandBase {
       y1 = 0;
     }
 
-    //y1 = 1 * (0.5 * Math.pow(y1, 3) + 0.5 * y1); prob dont need this but can add it
+    endGame = elevator.getEndgame();
 
-    //last stage doesnt move if stage 1 limit swtiches are NOT pressed or last stage limit switches ARE pressed
+    // y1 = 1 * (0.5 * Math.pow(y1, 3) + 0.5 * y1); prob dont need this but can add
+    // it
 
-    //!Need to change how the limit switches work
+    if (elevator.getLimitSwitchValue(ElevatorLimitSwitches.LeftTop)
+        || elevator.getLimitSwitchValue(ElevatorLimitSwitches.RightTop)) { // if we are at the very top
 
-    if(elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.LL) || elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.RL)) { //stage 1 all the way up
-      //only go down
-      if(y1 < 0) {
-        elevatorSub.setMotorPower(ElevatorMotors.Left, y1);
-        elevatorSub.setMotorPower(ElevatorMotors.Right, y1);
+      // only go down
+      if (y1 <= 0) {
+        elevator.setMotorPower(ElevatorMotors.Left, y1);
+        elevator.setMotorPower(ElevatorMotors.Right, y1);
       } else {
-        elevatorSub.setMotorPower(ElevatorMotors.Left, 0);
-        elevatorSub.setMotorPower(ElevatorMotors.Right, 0);
+        elevator.setMotorPower(ElevatorMotors.Left, 0);
+        elevator.setMotorPower(ElevatorMotors.Right, 0);
       }
-    } else {
-      //go any direction
-      elevatorSub.setMotorPower(ElevatorMotors.Left, y1);
-      elevatorSub.setMotorPower(ElevatorMotors.Right, y1);
+
+    } else if (elevator.getLimitSwitchValue(ElevatorLimitSwitches.LeftBottom)
+        || elevator.getLimitSwitchValue(ElevatorLimitSwitches.RightBottom)) { // if we are at the bottom
+
+      // only go up
+      if (y1 >= 0) {
+        elevator.setMotorPower(ElevatorMotors.Left, y1);
+        elevator.setMotorPower(ElevatorMotors.Right, y1);
+      } else {
+        elevator.setMotorPower(ElevatorMotors.Left, 0);
+        elevator.setMotorPower(ElevatorMotors.Right, 0);
+      }
+
+    } else if ((elevator.getLimitSwitchValue(ElevatorLimitSwitches.LeftMiddle)
+        || elevator.getLimitSwitchValue(ElevatorLimitSwitches.RightMiddle)) && !endGame) { // if we are at the
+                                                                                           // middle/top and not endgame
+
+      // only go down
+      if (y1 <= 0) {
+        elevator.setMotorPower(ElevatorMotors.Left, y1);
+        elevator.setMotorPower(ElevatorMotors.Right, y1);
+      } else {
+        elevator.setMotorPower(ElevatorMotors.Left, 0);
+        elevator.setMotorPower(ElevatorMotors.Right, 0);
+      }
+
+    } else { //doesnt matter direction
+
+      elevator.setMotorPower(ElevatorMotors.Left, y1);
+      elevator.setMotorPower(ElevatorMotors.Right, y1);
+
     }
 
   }
@@ -70,7 +99,7 @@ public class XboxJoystickElevator extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    elevatorSub.Stop();
+    elevator.Stop();
   }
 
   // Returns true when the command should end.

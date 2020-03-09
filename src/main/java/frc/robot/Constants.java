@@ -61,14 +61,22 @@ public final class Constants {
     // public static final int[] encoder_Right_Leadscrew_Ports = {7,8};
 
     // Elevator Limit Switches
-    public static final int limit_Switch_Left_Leadscrew_Port = 5;
-    public static final int limit_Switch_Right_Leadscrew_Port = 6;
+    public static final int limit_Switch_Left_Bottom_Port = 5;
+    public static final int limit_Switch_Right_Bottom_Port = 6;
 
-    public static final int limit_Switch_Left_Pulley_Port = 7;
-    public static final int limit_Switch_Right_Pulley_Port = 8;
+    public static final int limit_Switch_Left_Top_Port = 7;
+    public static final int limit_Switch_Right_Top_Port = 8;
+
+    public static final int limit_Switch_Left_Middle_Port = 9;
+    public static final int limit_Switch_Right_Middle_Port = 10;
 
     public enum ElevatorLimitSwitches {
-        LL, RL, LP, RP; // ? or we could just use elevatorMotors enum.
+        LeftBottom,
+        RightBottom,
+        LeftTop,
+        RightTop,
+        LeftMiddle,
+        RightMiddle
     }
 
     // Shooter

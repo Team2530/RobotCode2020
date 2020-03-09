@@ -47,7 +47,7 @@ public class SmallJoystickElevator extends CommandBase {
 
     //y1 = 1 * (0.5 * Math.pow(y1, 3) + 0.5 * y1); prob dont need this but can add it
 
-    if(elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.LP) || elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.RP)) { //last stage all the way up
+    if(elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.LeftTop) || elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.RightTop)) { //last stage all the way up
       //only go down
       if(y1 < 0) {
         elevatorSub.setMotorPower(ElevatorMotors.Left, y1);

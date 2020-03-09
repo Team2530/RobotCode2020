@@ -19,6 +19,7 @@ import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -35,13 +36,16 @@ public class Elevator extends SubsystemBase {
   // private static Encoder encoder_Right_Leadscrew = new
   // Encoder(Constants.encoder_Right_Leadscrew_Ports[0],Constants.encoder_Right_Leadscrew_Ports[1]);
 
-  private static DigitalInput limit_Switch_Left_Leadscrew = new DigitalInput(
-      Constants.limit_Switch_Left_Leadscrew_Port);
-  private static DigitalInput limit_Switch_Right_Leadscrew = new DigitalInput(
-      Constants.limit_Switch_Right_Leadscrew_Port);
+  private static DigitalInput limit_Switch_Left_Bottom = new DigitalInput(Constants.limit_Switch_Left_Bottom_Port);
+  private static DigitalInput limit_Switch_Right_Bottom = new DigitalInput(Constants.limit_Switch_Right_Bottom_Port);
 
-  private static DigitalInput limit_Switch_Left_Pulley = new DigitalInput(Constants.limit_Switch_Left_Pulley_Port);
-  private static DigitalInput limit_Switch_Right_Pulley = new DigitalInput(Constants.limit_Switch_Right_Pulley_Port);
+  private static DigitalInput limit_Switch_Left_Top = new DigitalInput(Constants.limit_Switch_Left_Top_Port);
+  private static DigitalInput limit_Switch_Right_Top = new DigitalInput(Constants.limit_Switch_Right_Top_Port);
+
+  private static DigitalInput limit_Switch_Left_Middle = new DigitalInput(Constants.limit_Switch_Left_Middle_Port);
+  private static DigitalInput limit_Switch_Right_Middle = new DigitalInput(Constants.limit_Switch_Right_Middle_Port);
+
+  private boolean endGame = false; //dont go above 45 inches if this is false
 
   /**
    * Creates a new Elevator.
@@ -158,61 +162,69 @@ public class Elevator extends SubsystemBase {
     return ((motor_Left.getSelectedSensorPosition() + motor_Left.getSelectedSensorPosition()) / 2);
   }
 
-  @Deprecated
+  // @Deprecated
   public void setMotorPower(final ElevatorMotors id, final double speed) {
     switch (id) {
 
-      case Left:
-        // if (limit_Switch_Left_Leadscrew.get() && speed > 0) { // if limit switch is pressed and it wants to go up, dont
-        //   // motor_Left_Leadscrew.set(ControlMode.PercentOutput, 0);
-        //   return;
-        // } else {
-        //   // motor_Left_Leadscrew.set(ControlMode.PercentOutput, speed);
-        //   return;
-        // }
-        motor_Left.set(ControlMode.PercentOutput, speed);
-        return;
+    case Left:
+      // if (limit_Switch_Left_Leadscrew.get() && speed > 0) { // if limit switch is
+      // pressed and it wants to go up, dont
+      // // motor_Left_Leadscrew.set(ControlMode.PercentOutput, 0);
+      // return;
+      // } else {
+      // // motor_Left_Leadscrew.set(ControlMode.PercentOutput, speed);
+      // return;
+      // }
+      motor_Left.set(ControlMode.PercentOutput, speed);
+      return;
 
-      case Right:
-        // if (limit_Switch_Right_Leadscrew.get() && speed > 0) { // if limit switch is pressed and it wants to go up, dont
-        //   // motor_Right_Leadscrew.set(ControlMode.PercentOutput, 0);
-        //   return;
-        // } else {
-        //   // motor_Right_Leadscrew.set(ControlMode.PercentOutput, speed);
-        //   return;
-        // }
-        motor_Right.set(ControlMode.PercentOutput, speed);
-        return;
+    case Right:
+      // if (limit_Switch_Right_Leadscrew.get() && speed > 0) { // if limit switch is
+      // pressed and it wants to go up, dont
+      // // motor_Right_Leadscrew.set(ControlMode.PercentOutput, 0);
+      // return;
+      // } else {
+      // // motor_Right_Leadscrew.set(ControlMode.PercentOutput, speed);
+      // return;
+      // }
+      motor_Right.set(ControlMode.PercentOutput, speed);
+      return;
 
-      default:
-        return;
+    default:
+      return;
     }
   }
 
-  public void setLeftPowerUp(){
+  public void setLeftPowerUp() {
     // setMotorPower(ElevatorMotors.Left, 0.5);
     motor_Left.set(ControlMode.PercentOutput, 0.5);
   }
-  public void setLeftPowerDown(){
+
+  public void setLeftPowerDown() {
     // setMotorPower(ElevatorMotors.Left, -0.5);
     motor_Left.set(ControlMode.PercentOutput, -0.5);
   }
-  public void setRightPowerUp(){
+
+  public void setRightPowerUp() {
     // setMotorPower(ElevatorMotors.Right, 0.5);
     motor_Right.set(ControlMode.PercentOutput, 0.5);
   }
-  public void setRightPowerDown(){
+
+  public void setRightPowerDown() {
     // setMotorPower(ElevatorMotors.Right, -0.5);
     motor_Right.set(ControlMode.PercentOutput, -0.5);
   }
-  public void setPowerUp(){
+
+  public void setPowerUp() {
     motor_Left.set(ControlMode.PercentOutput, 0.5);
     motor_Right.follow(motor_Left);
   }
-  public void setPowerDown(){
+
+  public void setPowerDown() {
     motor_Left.set(ControlMode.PercentOutput, -0.5);
     motor_Right.follow(motor_Left);
   }
+
   public double getAngle() {
     /**
      * pusdo code angle = arctan(getHeight()/bottomLeg)
@@ -281,17 +293,38 @@ public class Elevator extends SubsystemBase {
 
   public boolean getLimitSwitchValue(final ElevatorLimitSwitches id) { // * true = pressed, false = not pressed
     switch (id) { // !make sure limit switches are wired correctly
-      case LL:
-        return limit_Switch_Left_Leadscrew.get();
-      case RL:
-        return limit_Switch_Right_Leadscrew.get();
-      case LP:
-        return limit_Switch_Left_Pulley.get();
-      case RP:
-        return limit_Switch_Right_Pulley.get();
-      default:
-        return false; // uhm false? idk
+
+    case LeftBottom:
+      return limit_Switch_Left_Bottom.get();
+
+    case RightBottom:
+      return limit_Switch_Right_Bottom.get();
+
+    case LeftTop:
+      return limit_Switch_Left_Top.get();
+
+    case RightTop:
+      return limit_Switch_Right_Top.get();
+
+    case LeftMiddle:
+      return limit_Switch_Left_Middle.get();
+
+    case RightMiddle:
+      return limit_Switch_Right_Middle.get();
+
+    default:
+      DriverStation.reportWarning("Elevator.getLimitSwtichValue default case", true);
+      return false; //something went wrong somehow
+
     }
+  }
+
+  public void activateEndGame() {
+    endGame = true;
+  }
+
+  public boolean getEndgame() {
+    return endGame;
   }
 
 }
