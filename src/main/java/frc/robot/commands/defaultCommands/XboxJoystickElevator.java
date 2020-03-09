@@ -45,54 +45,10 @@ public class XboxJoystickElevator extends CommandBase {
       y1 = 0;
     }
 
-    endGame = elevator.getEndgame();
+    //y1 = 1 * (0.5 * Math.pow(y1, 3) + 0.5 * y1); prob dont need this but can add it
 
-    // y1 = 1 * (0.5 * Math.pow(y1, 3) + 0.5 * y1); prob dont need this but can add
-    // it
-
-    if (elevator.getLimitSwitchValue(ElevatorLimitSwitches.LeftTop)
-        || elevator.getLimitSwitchValue(ElevatorLimitSwitches.RightTop)) { // if we are at the very top
-
-      // only go down
-      if (y1 <= 0) {
-        elevator.setMotorPower(ElevatorMotors.Left, y1);
-        elevator.setMotorPower(ElevatorMotors.Right, y1);
-      } else {
-        elevator.setMotorPower(ElevatorMotors.Left, 0);
-        elevator.setMotorPower(ElevatorMotors.Right, 0);
-      }
-
-    } else if (elevator.getLimitSwitchValue(ElevatorLimitSwitches.LeftBottom)
-        || elevator.getLimitSwitchValue(ElevatorLimitSwitches.RightBottom)) { // if we are at the bottom
-
-      // only go up
-      if (y1 >= 0) {
-        elevator.setMotorPower(ElevatorMotors.Left, y1);
-        elevator.setMotorPower(ElevatorMotors.Right, y1);
-      } else {
-        elevator.setMotorPower(ElevatorMotors.Left, 0);
-        elevator.setMotorPower(ElevatorMotors.Right, 0);
-      }
-
-    } else if ((elevator.getLimitSwitchValue(ElevatorLimitSwitches.LeftMiddle)
-        || elevator.getLimitSwitchValue(ElevatorLimitSwitches.RightMiddle)) && !endGame) { // if we are at the
-                                                                                           // middle/top and not endgame
-
-      // only go down
-      if (y1 <= 0) {
-        elevator.setMotorPower(ElevatorMotors.Left, y1);
-        elevator.setMotorPower(ElevatorMotors.Right, y1);
-      } else {
-        elevator.setMotorPower(ElevatorMotors.Left, 0);
-        elevator.setMotorPower(ElevatorMotors.Right, 0);
-      }
-
-    } else { //doesnt matter direction
-
-      elevator.setMotorPower(ElevatorMotors.Left, y1);
-      elevator.setMotorPower(ElevatorMotors.Right, y1);
-
-    }
+    elevator.setMotorPower(ElevatorMotors.Left, y1);
+    elevator.setMotorPower(ElevatorMotors.Right, y1);
 
   }
 

@@ -45,7 +45,7 @@ public class Elevator extends SubsystemBase {
   private static DigitalInput limit_Switch_Left_Middle = new DigitalInput(Constants.limit_Switch_Left_Middle_Port);
   private static DigitalInput limit_Switch_Right_Middle = new DigitalInput(Constants.limit_Switch_Right_Middle_Port);
 
-  private boolean endGame = false; //dont go above 45 inches if this is false
+  private boolean endGame = false; // dont go above 45 inches if this is false
 
   /**
    * Creates a new Elevator.
@@ -167,27 +167,74 @@ public class Elevator extends SubsystemBase {
     switch (id) {
 
     case Left:
-      // if (limit_Switch_Left_Leadscrew.get() && speed > 0) { // if limit switch is
-      // pressed and it wants to go up, dont
-      // // motor_Left_Leadscrew.set(ControlMode.PercentOutput, 0);
-      // return;
-      // } else {
-      // // motor_Left_Leadscrew.set(ControlMode.PercentOutput, speed);
-      // return;
-      // }
-      motor_Left.set(ControlMode.PercentOutput, speed);
+      if (limit_Switch_Left_Top.get()) { // if we are at the very top
+
+        // only go down
+        if (speed <= 0) {
+          motor_Left.set(ControlMode.PercentOutput, speed);
+        } else {
+          motor_Left.set(ControlMode.PercentOutput, 0);
+        }
+
+      } else if (limit_Switch_Left_Bottom.get()) { // if we are at the bottom
+
+        // only go up
+        if (speed >= 0) {
+          motor_Left.set(ControlMode.PercentOutput, speed);
+        } else {
+          motor_Left.set(ControlMode.PercentOutput, 0);
+        }
+
+      } else if (limit_Switch_Left_Middle.get() && !endGame) { // if we are at the middle/top and not endgame
+
+        // only go down
+        if (speed <= 0) {
+          motor_Left.set(ControlMode.PercentOutput, speed);
+        } else {
+          motor_Left.set(ControlMode.PercentOutput, 0);
+        }
+
+      } else { // doesnt matter direction
+
+        motor_Left.set(ControlMode.PercentOutput, speed);
+
+      }
+
       return;
 
     case Right:
-      // if (limit_Switch_Right_Leadscrew.get() && speed > 0) { // if limit switch is
-      // pressed and it wants to go up, dont
-      // // motor_Right_Leadscrew.set(ControlMode.PercentOutput, 0);
-      // return;
-      // } else {
-      // // motor_Right_Leadscrew.set(ControlMode.PercentOutput, speed);
-      // return;
-      // }
-      motor_Right.set(ControlMode.PercentOutput, speed);
+      if (limit_Switch_Right_Top.get()) { // if we are at the very top
+
+        // only go down
+        if (speed <= 0) {
+          motor_Right.set(ControlMode.PercentOutput, speed);
+        } else {
+          motor_Right.set(ControlMode.PercentOutput, 0);
+        }
+
+      } else if (limit_Switch_Right_Bottom.get()) { // if we are at the bottom
+
+        // only go up
+        if (speed >= 0) {
+          motor_Right.set(ControlMode.PercentOutput, speed);
+        } else {
+          motor_Right.set(ControlMode.PercentOutput, 0);
+        }
+
+      } else if (limit_Switch_Right_Middle.get() && !endGame) { // if we are at the middle/top and not endgame
+
+        // only go down
+        if (speed <= 0) {
+          motor_Right.set(ControlMode.PercentOutput, speed);
+        } else {
+          motor_Right.set(ControlMode.PercentOutput, 0);
+        }
+
+      } else { // doesnt matter direction
+
+        motor_Right.set(ControlMode.PercentOutput, speed);
+
+      }
       return;
 
     default:
@@ -314,7 +361,7 @@ public class Elevator extends SubsystemBase {
 
     default:
       DriverStation.reportWarning("Elevator.getLimitSwtichValue default case", true);
-      return false; //something went wrong somehow
+      return false; // something went wrong somehow
 
     }
   }

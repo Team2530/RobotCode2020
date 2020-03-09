@@ -17,10 +17,9 @@ import frc.robot.subsystems.Elevator;
 public class SmallJoystickElevator extends CommandBase {
   Elevator elevatorSub;
 
-  Joystick stick1; 
+  Joystick stick1;
 
   double y1;
-
 
   /**
    * Creates a new SmallJoystickElevator.
@@ -45,23 +44,11 @@ public class SmallJoystickElevator extends CommandBase {
       y1 = 0;
     }
 
-    //y1 = 1 * (0.5 * Math.pow(y1, 3) + 0.5 * y1); prob dont need this but can add it
+    // y1 = 1 * (0.5 * Math.pow(y1, 3) + 0.5 * y1); prob dont need this but can add
+    // it
 
-    if(elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.LeftTop) || elevatorSub.getLimitSwitchValue(ElevatorLimitSwitches.RightTop)) { //last stage all the way up
-      //only go down
-      if(y1 < 0) {
-        elevatorSub.setMotorPower(ElevatorMotors.Left, y1);
-        elevatorSub.setMotorPower(ElevatorMotors.Right, y1);
-      } else {
-        elevatorSub.setMotorPower(ElevatorMotors.Left, 0);
-        elevatorSub.setMotorPower(ElevatorMotors.Right, 0);
-      }
-
-    } else {
-      //go any direction
-      elevatorSub.setMotorPower(ElevatorMotors.Left, y1);
-      elevatorSub.setMotorPower(ElevatorMotors.Right, y1);
-    }
+    elevatorSub.setMotorPower(ElevatorMotors.Left, y1);
+    elevatorSub.setMotorPower(ElevatorMotors.Right, y1);
 
   }
 
