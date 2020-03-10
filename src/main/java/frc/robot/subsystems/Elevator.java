@@ -12,6 +12,7 @@ import java.util.Arrays;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
@@ -45,6 +46,7 @@ public class Elevator extends SubsystemBase {
   private static DigitalInput limit_Switch_Left_Middle = new DigitalInput(Constants.limit_Switch_Left_Middle_Port);
   private static DigitalInput limit_Switch_Right_Middle = new DigitalInput(Constants.limit_Switch_Right_Middle_Port);
 
+  private static boolean firstCall = true;
   private boolean endGame = false; // dont go above 45 inches if this is false
 
   /**
@@ -70,7 +72,7 @@ public class Elevator extends SubsystemBase {
         Constants.kTimeoutMs);
     motor_Right.configRemoteFeedbackFilter(motor_Left.getDeviceID(), // Device ID of Source
         RemoteSensorSource.TalonSRX_SelectedSensor, // Remote Feedback Source
-        Constants.REMOTE_0, // Source number [0, 1]
+        Constants.REMOTE_1, // Source number [0, 1]
         Constants.kTimeoutMs); // Configuration Timeout
     /*
      * Setup difference signal to be used for turn when performing Drive Straight
@@ -78,19 +80,19 @@ public class Elevator extends SubsystemBase {
      */
 
     // Feedback Device of Remote Talon
-    motor_Right.configSensorTerm(SensorTerm.Diff1, FeedbackDevice.RemoteSensor0, Constants.kTimeoutMs);
+    motor_Right.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.RemoteSensor1, Constants.kTimeoutMs);
     // Mag Encoder of current Talon
-    motor_Right.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.QuadEncoder, Constants.kTimeoutMs);
+    motor_Right.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kTimeoutMs);
 
     /*
      * Difference term calculated by right Talon configured to be selected sensor of
      * turn PID
      */
-    motor_Right.configSelectedFeedbackSensor(FeedbackDevice.SensorDifference, Constants.PID_TURN, Constants.kTimeoutMs);
+    motor_Right.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, Constants.PID_PRIMARY, Constants.kTimeoutMs);
 
     motor_Right.configSelectedFeedbackCoefficient(
-        ((double) Constants.DROP_IN_DISTANCE_PER_REVOLUTION) / Constants.FLYWHEEL_DISTANCE_PER_REVOLUTION, // Coefficient
-        Constants.PID_TURN, // PID Slot of Source
+        0.5*((double) Constants.DROP_IN_DISTANCE_PER_REVOLUTION), // Coefficient
+        Constants.PID_PRIMARY, // PID Slot of Source
         Constants.kTimeoutMs); // Configuration Timeout
 
     // Inverting Motors and Encoders
@@ -101,7 +103,7 @@ public class Elevator extends SubsystemBase {
 
     /* Set status frame periods */
     motor_Right.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 20, Constants.kTimeoutMs);
-    motor_Right.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1, 20, Constants.kTimeoutMs);
+    motor_Right.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 20, Constants.kTimeoutMs);
     // Used remotely by right Talon, speed up
     motor_Left.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, Constants.kTimeoutMs);
 
@@ -147,8 +149,8 @@ public class Elevator extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Left Elevator Encoder", motor_Left.getSelectedSensorPosition(1));
-    SmartDashboard.putNumber("Right Elevator Encoder", motor_Right.getSelectedSensorPosition(1));
-    SmartDashboard.putNumber("Right Elevator Encoder2", motor_Right.getSelectedSensorPosition(0));
+    //SmartDashboard.putNumber("Right Elevator Encoder", motor_Right.getSelectedSensorPosition(1));
+    //SmartDashboard.putNumber("Right Elevator Encoder2", motor_Right.getSelectedSensorPosition(0));
   }
 
   public void resetEncoders() {
@@ -263,13 +265,11 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setPowerUp() {
-    motor_Left.set(ControlMode.PercentOutput, 0.5);
-    motor_Right.follow(motor_Left);
+    setHeight(0.5, 50);
   }
 
   public void setPowerDown() {
-    motor_Left.set(ControlMode.PercentOutput, -0.5);
-    motor_Right.follow(motor_Left);
+    setHeight(-0.5, 50);
   }
 
   public double getAngle() {
@@ -310,7 +310,7 @@ public class Elevator extends SubsystemBase {
     return getFloorHeight() + Constants.pivotHeight;
   }
 
-  public void setHeight(double speed, double height) {
+  public void setHeight(double power, double height) {
     /*
      * Example 2 - Lift Mechanism Consider a lifting mechanism composed of two
      * closed-loops (one for each side) and no mechanical linkage between them. In
@@ -327,9 +327,14 @@ public class Elevator extends SubsystemBase {
      * left and right position, while employing Position/Velocity/Motion-Magic to
      * the primary axis of control (the elevator height).
      */
-    // ! I think this should work I not sure how the f term works though
-    motor_Left.set(ControlMode.Position, height, DemandType.ArbitraryFeedForward, speed);
-    motor_Right.follow(motor_Left);
+    
+    if(firstCall){
+      motor_Left.selectProfileSlot(Constants.kSlot_Distanc, Constants.PID_PRIMARY);
+      firstCall = false;
+    } // ! I think this should work I not sure how the f term works though
+    double target_sensorUnits = power * Constants.ENCODER_TICKS_PER_REVOLUTION*Constants.leadscrewDistancePerRotation*height;
+    motor_Left.set(ControlMode.Position, target_sensorUnits, DemandType.AuxPID,0);
+    motor_Right.follow(motor_Left, FollowerType.AuxOutput1);
   }
 
   public void Stop() {
