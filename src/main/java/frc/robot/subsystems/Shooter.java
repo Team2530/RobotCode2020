@@ -225,6 +225,11 @@ public class Shooter extends SubsystemBase {
     SmartDashboard.putNumber("Current Shooter Speed", currentSpeed);
   }
 
+  public void resetSpeed(){
+    
+    currentSpeed = 0;
+    SmartDashboard.putNumber("Current Shooter Speed", currentSpeed);
+  }
   public void decreaseSpeed() {
 
     currentSpeed = currentSpeed - 0.1;
