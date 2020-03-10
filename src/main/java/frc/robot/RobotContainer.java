@@ -52,8 +52,9 @@ public class RobotContainer {
   private final Elevator elevatorSub = new Elevator();
   private final LimeLight limeLightSub = new LimeLight();
   //private final Pixy m_pixy = new Pixy();
-  // private final Shooter m_shooter = new Shooter();
+  private final Shooter m_shooter = new Shooter();
   private final Conveyor m_conveyor = new Conveyor();
+  private final Shooter shooter = new Shooter();
 
   // -------------------- Joysticks and Buttons -------------------- \\
   // Joysticks
@@ -77,11 +78,11 @@ public class RobotContainer {
   // Xbox Controller
   final XboxController xbox = new XboxController(0);
 
-  // Xbox buttons
-  private final JoystickButton XboxButton1 = new JoystickButton(xbox, 1);
-  private final JoystickButton XboxButton2 = new JoystickButton(xbox, 2);
-  private final JoystickButton XboxButton3 = new JoystickButton(xbox, 3);
-  private final JoystickButton XboxButton4 = new JoystickButton(xbox, 4);
+  // Xbox buttons (Updated the number and wrote the letter according ot the internet)
+  private final JoystickButton XboxButton1 = new JoystickButton(xbox, 0); // A BUTTON
+  private final JoystickButton XboxButton2 = new JoystickButton(xbox, 1); // X BUTTON
+  private final JoystickButton XboxButton3 = new JoystickButton(xbox, 2); // Y BUTTON
+  private final JoystickButton XboxButton4 = new JoystickButton(xbox, 3); // B BUTTON
 
   // -------------------- Autonomous Commands -------------------- \\
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
@@ -169,13 +170,20 @@ public class RobotContainer {
     Button11.whenReleased(new InstantCommand(elevatorSub::Stop));
     Button12.whenReleased(new InstantCommand(elevatorSub::Stop));
 
+
+
+    //These may need to be flipped around... I wasn't sure which way increase speed was
+    XboxButton1.whenPressed(new InstantCommand(m_shooter::decreaseSpeed, m_shooter));
+    XboxButton3.whenPressed(new InstantCommand(m_shooter::increaseSpeed, m_shooter));
+    XboxButton2.whenPressed(new InstantCommand(m_shooter::resetSpeed, m_shooter));
+
     // XboxButton1.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
     // XboxButton1.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
     // XboxButton4.whenPressed(new InstantCommand(m_shooter::startIntake,
     // m_shooter));
     // XboxButton4.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
 
-    // XboxButton1.whileHeld(new StartShooter(m_shooter, xbox));
+    //XboxButton1.whileHeld(new StartShooter(m_shooter, xbox));
     // XboxButton4.whileHeld(new StartIntake(m_shooter, xbox));
 
     // XboxButton1.whenPressed(new InstantCommand(m_shooter::decreaseSpeed,
