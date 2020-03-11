@@ -188,5 +188,6 @@ public final class Constants {
 	public final static Gains kElevator_Gains_Velocit = new Gains( 0.1, 0.0, 20.0, 1023.0/6800.0,  300,  0.50 );//!
 	public final static Gains kElevator_Gains_MotProf = new Gains( 1.0, 0.0,  0.0, 1023.0/6800.0,  400,  1.00 );//!
 	public final static double magicNumberOfDeath = 0.970873786408;
+	public static final long MAIN_LOOP_Ts = 0;
 
 }
