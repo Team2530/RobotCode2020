@@ -21,8 +21,10 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.Constants;
 import frc.robot.Constants.ElevatorLimitSwitches;
 import frc.robot.Constants.ElevatorMotors;
@@ -46,14 +48,19 @@ public class Elevator extends SubsystemBase {
   private static DigitalInput limit_Switch_Left_Middle = new DigitalInput(Constants.limit_Switch_Left_Middle_Port);
   private static DigitalInput limit_Switch_Right_Middle = new DigitalInput(Constants.limit_Switch_Right_Middle_Port);
 
-  private static boolean firstCall = true;
+  boolean _firstCall = false;
   private boolean endGame = false; // dont go above 45 inches if this is false
+  private static Joystick _gamepad;
+  /** Tracking variables */
+	boolean _state = false;
+	double _lockedDistance = 0;
+	double _targetAngle = 0;
 
   /**
    * Creates a new Elevator.
    */
-  public Elevator() {
-
+  public Elevator(Joystick _gamepad) {
+    this._gamepad = _gamepad;
     /* Disable all motors */
     motor_Left.set(ControlMode.PercentOutput, 0);
     motor_Right.set(ControlMode.PercentOutput, 0);
@@ -84,6 +91,10 @@ public class Elevator extends SubsystemBase {
     // Mag Encoder of current Talon
     motor_Right.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kTimeoutMs);
 
+    motor_Right.configSensorTerm(SensorTerm.Diff1, FeedbackDevice.RemoteSensor1, Constants.kTimeoutMs);
+    // Mag Encoder of current Talon
+    motor_Right.configSensorTerm(SensorTerm.Diff0, FeedbackDevice.CTRE_MagEncoder_Relative, Constants.kTimeoutMs);
+
     /*
      * Difference term calculated by right Talon configured to be selected sensor of
      * turn PID
@@ -91,20 +102,29 @@ public class Elevator extends SubsystemBase {
     motor_Right.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, Constants.PID_PRIMARY, Constants.kTimeoutMs);
 
     motor_Right.configSelectedFeedbackCoefficient(
-        0.5*((double) Constants.DROP_IN_DISTANCE_PER_REVOLUTION), // Coefficient
+        0.5, // Coefficient
         Constants.PID_PRIMARY, // PID Slot of Source
         Constants.kTimeoutMs); // Configuration Timeout
 
+    /* Configure Difference [Difference between both QuadEncoders] to be used for Auxiliary PID Index */
+		motor_Right.configSelectedFeedbackSensor(	FeedbackDevice.SensorDifference, 
+													Constants.PID_TURN, 
+													Constants.kTimeoutMs);
+		
+		/* Scale the Feedback Sensor using a coefficient */
+		motor_Right.configSelectedFeedbackCoefficient(	1,
+														Constants.PID_TURN, 
+														Constants.kTimeoutMs);
     // Inverting Motors and Encoders
     motor_Left.setInverted(false);
-    motor_Left.setSensorPhase(true);
+    motor_Left.setSensorPhase(false);
     motor_Right.setInverted(false);
-    motor_Right.setSensorPhase(true);
+    motor_Right.setSensorPhase(false);
 
     /* Set status frame periods */
     motor_Right.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 20, Constants.kTimeoutMs);
     motor_Right.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 20, Constants.kTimeoutMs);
-    // Used remotely by right Talon, speed up
+    motor_Right.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1, 20, Constants.kTimeoutMs);
     motor_Left.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, Constants.kTimeoutMs);
 
     /* Configure neutral deadband */
@@ -116,17 +136,30 @@ public class Elevator extends SubsystemBase {
     motor_Right.configPeakOutputForward(+1.0, Constants.kTimeoutMs);
     motor_Right.configPeakOutputReverse(-1.0, Constants.kTimeoutMs);
 
+    //distance servo
+
+    motor_Right.config_kP(Constants.kSlot_Distanc, Constants.kElevator_Gains_Distanc.kP, Constants.kTimeoutMs);
+    motor_Right.config_kI(Constants.kSlot_Distanc, Constants.kElevator_Gains_Distanc.kI, Constants.kTimeoutMs);
+    motor_Right.config_kD(Constants.kSlot_Distanc, Constants.kElevator_Gains_Distanc.kD, Constants.kTimeoutMs);
+    motor_Right.config_kF(Constants.kSlot_Distanc, Constants.kElevator_Gains_Distanc.kF, Constants.kTimeoutMs);
+    motor_Right.config_IntegralZone(Constants.kSlot_Distanc, Constants.kElevator_Gains_Distanc.kIzone,
+        Constants.kTimeoutMs);
+    motor_Right.configClosedLoopPeakOutput(Constants.kSlot_Distanc, Constants.kShooter_Gains_Distanc.kPeakOutput,
+        Constants.kTimeoutMs);
+    motor_Right.configAllowableClosedloopError(Constants.kSlot_Distanc, 0, Constants.kTimeoutMs);
+
     /* FPID Gains for turn servo */
-    motor_Right.config_kP(Constants.kSlot_Turning, Constants.kElevator_Gains_Velocit.kP, Constants.kTimeoutMs);
-    motor_Right.config_kI(Constants.kSlot_Turning, Constants.kElevator_Gains_Velocit.kI, Constants.kTimeoutMs);
-    motor_Right.config_kD(Constants.kSlot_Turning, Constants.kElevator_Gains_Velocit.kD, Constants.kTimeoutMs);
-    motor_Right.config_kF(Constants.kSlot_Turning, Constants.kElevator_Gains_Velocit.kF, Constants.kTimeoutMs);
-    motor_Right.config_IntegralZone(Constants.kSlot_Turning, Constants.kShooter_Gains_Turning.kIzone,
+    motor_Right.config_kP(Constants.kSlot_Turning, Constants.kElevator_Gains_Turning.kP, Constants.kTimeoutMs);
+    motor_Right.config_kI(Constants.kSlot_Turning, Constants.kElevator_Gains_Turning.kI, Constants.kTimeoutMs);
+    motor_Right.config_kD(Constants.kSlot_Turning, Constants.kElevator_Gains_Turning.kD, Constants.kTimeoutMs);
+    motor_Right.config_kF(Constants.kSlot_Turning, Constants.kElevator_Gains_Turning.kF, Constants.kTimeoutMs);
+    motor_Right.config_IntegralZone(Constants.kSlot_Turning, Constants.kElevator_Gains_Turning.kIzone,
         Constants.kTimeoutMs);
     motor_Right.configClosedLoopPeakOutput(Constants.kSlot_Turning, Constants.kShooter_Gains_Turning.kPeakOutput,
         Constants.kTimeoutMs);
     motor_Right.configAllowableClosedloopError(Constants.kSlot_Turning, 0, Constants.kTimeoutMs);
 
+    
     /*
      * 1ms per loop. PID loop can be slowed down if need be. For example, - if
      * sensor updates are too slow - sensor deltas are very small per update, so
@@ -143,20 +176,67 @@ public class Elevator extends SubsystemBase {
      * local output is PID0 - PID1, and other side Talon is PID0 + PID1
      */
     motor_Right.configAuxPIDPolarity(false, Constants.kTimeoutMs);
+    _firstCall = true;
+		_state = false;
+		resetEncoders();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Left Elevator Encoder", motor_Left.getSelectedSensorPosition(0));
     SmartDashboard.putNumber("Left Elevator Encoder", motor_Left.getSelectedSensorPosition(1));
-    //SmartDashboard.putNumber("Right Elevator Encoder", motor_Right.getSelectedSensorPosition(1));
-    //SmartDashboard.putNumber("Right Elevator Encoder2", motor_Right.getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Right Elevator Encoder", motor_Right.getSelectedSensorPosition(1));
+    SmartDashboard.putNumber("Right Elevator Encoder2", motor_Right.getSelectedSensorPosition(0));
+
+    /* Gamepad processing */
+		double forward = Deadband(-1 * _gamepad.getY());
+		double turn = Deadband(_gamepad.getTwist());
+		/* Button processing for state toggle and sensor zeroing */
+		if(new JoystickButton(_gamepad, 2).get()  && !new JoystickButton(_gamepad, 2).get()){
+			_state = !_state; 		// Toggle state
+			_firstCall = true;		// State change, do first call operation
+			_targetAngle = motor_Right.getSelectedSensorPosition(1);
+			_lockedDistance = motor_Right.getSelectedSensorPosition(0);
+		}else if (new JoystickButton(_gamepad, 1).get()  && new JoystickButton(_gamepad, 1).get() ) {
+			resetEncoders();			// Zero Sensors
+		}
+		//System.arraycopy(btns, 0, _btns, 0, Constants.kNumButtonsPlusOne);
+		
+		if(!_state){
+			if (_firstCall)
+				System.out.println("This is a Arcade Drive.\n");
+			
+			  motor_Left.set(ControlMode.PercentOutput, forward, DemandType.ArbitraryFeedForward, +turn);
+			  motor_Right.set(ControlMode.PercentOutput, forward, DemandType.ArbitraryFeedForward, -turn);
+		}else{
+			if (_firstCall) {
+				System.out.println("This is Drive Straight Distance with the Auxiliary PID using the difference between two encoders.");
+				System.out.println("Servo [-6, 6] rotations while also maintaining a straight heading.\n");
+				
+				/* Determine which slot affects which PID */
+				motor_Right.selectProfileSlot(Constants.kSlot_Distanc, Constants.PID_PRIMARY);
+				motor_Right.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
+			}
+			
+			/* Calculate targets from gamepad inputs */
+      
+      double target_sensorUnits = forward * Constants.ENCODER_TICKS_PER_REVOLUTION*Constants.leadscrewDistancePerRotation  + _lockedDistance;
+			double target_turn = _targetAngle;
+			SmartDashboard.putNumber("Target_sensorUnits", target_sensorUnits);
+			/* Configured for Position Closed loop on Quad Encoders' Sum and Auxiliary PID on Quad Encoders' Difference */
+			motor_Right.set(ControlMode.Position, target_sensorUnits, DemandType.AuxPID, target_turn);
+			motor_Left.follow(motor_Right, FollowerType.AuxOutput1);
+		}
+		_firstCall = false;
   }
 
   public void resetEncoders() {
     /* Update Quadrature position */
     motor_Left.getSensorCollection().setQuadraturePosition(0, Constants.kTimeoutMs);
     motor_Right.getSensorCollection().setQuadraturePosition(0, Constants.kTimeoutMs);
+    motor_Left.getSensorCollection().setQuadraturePosition(1, Constants.kTimeoutMs);
+    motor_Right.getSensorCollection().setQuadraturePosition(1, Constants.kTimeoutMs);
   }
 
   private int getEncoder() {
@@ -265,11 +345,11 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setPowerUp() {
-    setHeight(0.5, 50);
+    //setHeight(0.5, 50);
   }
 
   public void setPowerDown() {
-    setHeight(-0.5, 50);
+    //setHeight(-0.5, 50);
   }
 
   public double getAngle() {
@@ -328,9 +408,9 @@ public class Elevator extends SubsystemBase {
      * the primary axis of control (the elevator height).
      */
     
-    if(firstCall){
+    if(_firstCall){
       motor_Left.selectProfileSlot(Constants.kSlot_Distanc, Constants.PID_PRIMARY);
-      firstCall = false;
+      _firstCall = false;
     } // ! I think this should work I not sure how the f term works though
     double target_sensorUnits = power * Constants.ENCODER_TICKS_PER_REVOLUTION*Constants.leadscrewDistancePerRotation*height;
     motor_Left.set(ControlMode.Position, target_sensorUnits, DemandType.AuxPID,0);
@@ -378,5 +458,17 @@ public class Elevator extends SubsystemBase {
   public boolean getEndgame() {
     return endGame;
   }
+  double Deadband(double value) {
+		/* Upper deadband */
+		if (value >= +Constants.deadzone) 
+			return value;
+		
+		/* Lower deadband */
+		if (value <= -Constants.deadzone)
+			return value;
+		
+		/* Outside deadband */
+		return 0;
+	}
 
 }

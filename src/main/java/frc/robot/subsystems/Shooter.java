@@ -30,7 +30,7 @@ public class Shooter extends SubsystemBase {
   private static WPI_TalonSRX motor_Left = new WPI_TalonSRX(Constants.motor_Left_FlyWheel_Port);
   private static WPI_TalonSRX motor_Right = new WPI_TalonSRX(Constants.motor_Right_Flywheel_Port);
 
-  DigitalInput laser = new DigitalInput(Constants.laser_switch);
+  //DigitalInput laser = new DigitalInput(Constants.laser_switch);
 
   private static double currentSpeed = 0;
   boolean hasCurrentBall = false;
@@ -128,8 +128,8 @@ public class Shooter extends SubsystemBase {
 
   @Override
   public void periodic() {
-    SmartDashboard.putNumber("Left voltage", motor_Left.getBusVoltage());
-    SmartDashboard.putNumber("Right voltage", motor_Right.getBusVoltage());
+    //SmartDashboard.putNumber("Left voltage", motor_Left.getBusVoltage());
+    //SmartDashboard.putNumber("Right voltage", motor_Right.getBusVoltage());
     // if (xbox.getRawAxis(3) > 0) {
     // startFW(currentSpeed);
     // } else if (xbox.getRawAxis(3) < 0) {
@@ -202,17 +202,17 @@ public class Shooter extends SubsystemBase {
   }
 
   public void shotCounter() {
-    if (laser.get() && getAvgSpeed() < 0 && !hasCurrentBall) {
-      ballCount++;
-      hasCurrentBall = !hasCurrentBall;
-    }
+	// if (laser.get() && getAvgSpeed() < 0 && !hasCurrentBall) {
+  //     ballCount++;
+  //     hasCurrentBall = !hasCurrentBall;
+  //   }
 
-    else if (laser.get() && getAvgSpeed() > 0 && !hasCurrentBall) {
-      ballCount--;
-      hasCurrentBall = !hasCurrentBall;
-    } else if (!laser.get() && hasCurrentBall) {
-      hasCurrentBall = !hasCurrentBall;
-    }
+  //   else if (laser.get() && getAvgSpeed() > 0 && !hasCurrentBall) {
+  //     ballCount--;
+  //     hasCurrentBall = !hasCurrentBall;
+  //   } else if (!laser.get() && hasCurrentBall) {
+  //     hasCurrentBall = !hasCurrentBall;
+  //   }
   }
 
   public void fireBall() {

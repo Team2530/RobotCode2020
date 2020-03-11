@@ -49,7 +49,7 @@ public class RobotContainer {
   // -------------------- Subsystems -------------------- \\
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   // private final DriveTrain m_driveTrain = new DriveTrain();
-  private final Elevator elevatorSub = new Elevator();
+  
   private final LimeLight limeLightSub = new LimeLight();
   //private final Pixy m_pixy = new Pixy();
   private final Shooter m_shooter = new Shooter();
@@ -79,11 +79,11 @@ public class RobotContainer {
   final XboxController xbox = new XboxController(0);
 
   // Xbox buttons (Updated the number and wrote the letter according ot the internet)
-  private final JoystickButton XboxButton1 = new JoystickButton(xbox, 0); // A BUTTON
-  private final JoystickButton XboxButton2 = new JoystickButton(xbox, 1); // X BUTTON
-  private final JoystickButton XboxButton3 = new JoystickButton(xbox, 2); // Y BUTTON
-  private final JoystickButton XboxButton4 = new JoystickButton(xbox, 3); // B BUTTON
-
+  private final JoystickButton XboxButton1 = new JoystickButton(xbox, 1); // A BUTTON
+  private final JoystickButton XboxButton2 = new JoystickButton(xbox, 2); // X BUTTON
+  private final JoystickButton XboxButton3 = new JoystickButton(xbox, 3); // Y BUTTON
+  private final JoystickButton XboxButton4 = new JoystickButton(xbox, 4); // B BUTTON
+  private final Elevator elevatorSub = new Elevator(stick1);
   // -------------------- Autonomous Commands -------------------- \\
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   
@@ -149,8 +149,8 @@ public class RobotContainer {
     // Button9.whenPressed(new InstantCommand(m_shooter::stopFW, m_shooter));
     // Button10.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
 
-    Button2.whenPressed(new InstantCommand(limeLightSub::toggleLights, limeLightSub));
-    Button3.whenPressed(new InstantCommand(limeLightSub::switchCamera, limeLightSub));
+    //Button2.whenPressed(new InstantCommand(limeLightSub::toggleLights, limeLightSub));
+    //Button3.whenPressed(new InstantCommand(limeLightSub::switchCamera, limeLightSub));
     Button4.whenPressed(new InstantCommand(elevatorSub::resetEncoders));
     Button5.whenPressed(new InstantCommand(m_conveyor::in,m_conveyor));
     Button6.whenPressed(new InstantCommand(m_conveyor::out,m_conveyor));
