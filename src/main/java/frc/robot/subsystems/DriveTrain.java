@@ -322,7 +322,7 @@ public class DriveTrain extends SubsystemBase {
 
     if (Math.abs(currentAngle) < targetAngle + Constants.angleTolerance
         && Math.abs(currentDistance) < targetDistance + Constants.distanceTolerance) { // angle AND distance is correct
-
+          return true;
     } else if(Math.abs(currentAngle) < targetAngle + Constants.angleTolerance) { //angle is correct but distance is not
       //move to make distance in correct range
       //!!! TEMPORARY CHANGE: disabled distance adjustment
@@ -349,7 +349,7 @@ public class DriveTrain extends SubsystemBase {
       return false;
 
     }
-    return true; //uhm build
+     //uhm build
   }
 
   public Trajectory getAlignToTargetTrajectory(Pose2d pos){
@@ -372,10 +372,6 @@ public class DriveTrain extends SubsystemBase {
     resetEncoders();
     m_odometry.resetPosition(pose, getHeading());
   }
-
-  // public Pose2d getOdometryPose2d() {
-  // return m_odometry.getPoseMeters();
-  // }
 
   /**
    * Controls the left and right sides of the drive directly with voltages.

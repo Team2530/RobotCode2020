@@ -18,9 +18,8 @@ import com.ctre.phoenix.motorcontrol.FollowerType;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import edu.wpi.first.wpilibj.DigitalInput;
 import frc.robot.Constants;
-import edu.wpi.first.wpilibj.XboxController;
+
 
 public class Shooter extends SubsystemBase {
   /**
