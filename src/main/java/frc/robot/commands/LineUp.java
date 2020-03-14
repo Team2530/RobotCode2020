@@ -27,16 +27,14 @@ public class LineUp extends CommandBase {
   /**
    * Creates a new LineUp.
    */
-  public LineUp(DriveTrain driveTrain, LimeLight limeLight, Elevator elevator) {
+  public LineUp(DriveTrain driveTrain, LimeLight limeLight) {
     // Use addRequirements() here to declare subsystem dependencies.
 
     this.driveTrain = driveTrain;
     this.limeLight = limeLight;
-    this.elevator = elevator;
 
     addRequirements(driveTrain);
     addRequirements(limeLight);
-    addRequirements(elevator);
   }
 
   // Called when the command is initially scheduled.

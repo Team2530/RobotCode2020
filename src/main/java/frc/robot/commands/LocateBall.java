@@ -22,15 +22,12 @@ public class LocateBall extends CommandBase {
   private int tolerance = 40;
   private DriveTrain m_driveTrain;
   private Pixy m_pixy;
-  private Shooter m_shooter;
-  public LocateBall(DriveTrain driveTrain, Pixy pixy, Shooter shooter) {
+  public LocateBall(DriveTrain driveTrain, Pixy pixy) {
     m_pixy = pixy;
     m_driveTrain = driveTrain;
-    m_shooter = shooter;
 
     addRequirements(pixy);
     addRequirements(driveTrain);
-    addRequirements(shooter);
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -54,7 +51,7 @@ public class LocateBall extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return true;
   }
 
 
@@ -77,6 +74,7 @@ public class LocateBall extends CommandBase {
 
   }
   double pixyDeadZone = 9.5; //area where it thinks ball is close enough to straigh ahead. radius
+
   public void driveToBall() {
     if (m_pixy.getBiggestBlock()==null){
       return;

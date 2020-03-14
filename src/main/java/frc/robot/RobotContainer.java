@@ -46,11 +46,11 @@ public class RobotContainer {
   // -------------------- Subsystems -------------------- \\
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveTrain m_driveTrain = new DriveTrain();
-  private final Elevator elevatorSub = new Elevator();
+  //private final Elevator elevatorSub = new Elevator();
   private final LimeLight limeLightSub = new LimeLight();
   private final Pixy m_pixy = new Pixy();
-  private final Shooter m_shooter = new Shooter();
-  private final Conveyor m_conveyor = new Conveyor();
+  //private final Shooter m_shooter = new Shooter();
+  //private final Conveyor m_conveyor = new Conveyor();
 
   // -------------------- Joysticks and Buttons -------------------- \\
   //Joysticks
@@ -90,7 +90,7 @@ public class RobotContainer {
   // private final XboxJoystickElevator elevatorCommand = new XboxJoystickElevator(elevatorSub, xbox);
   // private final SmallJoystickElevator elevatorCommand = new SmallJoystickElevator(elevatorSub, stick1);
   // private final EncoderTest m_telopCommand = new EncoderTest(m_driveTrain);
-  private final LineUp lineUp = new LineUp(m_driveTrain, limeLightSub, elevatorSub);
+  private final LineUp lineUp = new LineUp(m_driveTrain, limeLightSub);
   private final TestPixy pixy = new TestPixy(m_pixy);
   private final ToggleLimeLightLED toggleLED = new ToggleLimeLightLED(limeLightSub);
   /**
@@ -111,12 +111,12 @@ public class RobotContainer {
     Button1.whileHeld(lineUp);
     Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
     Button3.whenPressed(toggleLED);
-    Button5.whenPressed(new LocateBall(m_driveTrain, m_pixy, m_shooter));
-    Button4.whenPressed(new InstantCommand(m_conveyor::in, m_conveyor));
-    Button6.whenPressed(new InstantCommand(m_conveyor::out, m_conveyor));
-    Button7.whenPressed(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
-    Button9.whenPressed(new InstantCommand(m_shooter::stopFW, m_shooter));
-    Button10.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
+    Button5.whenPressed(new LocateBall(m_driveTrain, m_pixy));
+    //Button4.whenPressed(new InstantCommand(m_conveyor::in, m_conveyor));
+    //Button6.whenPressed(new InstantCommand(m_conveyor::out, m_conveyor));
+    //Button7.whenPressed(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
+    //Button9.whenPressed(new InstantCommand(m_shooter::stopFW, m_shooter));
+    //Button10.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
   }
 
   /**
