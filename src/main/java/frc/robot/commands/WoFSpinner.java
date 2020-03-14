@@ -21,7 +21,7 @@ public class WoFSpinner extends CommandBase {
   /**
    * Creates a new WoFSpinner.
    */
-  Shooter shooter;
+  static Shooter shooter;
   private static WPI_TalonSRX motor_Left_FlyWheel = new WPI_TalonSRX(Constants.motor_Left_FlyWheel_Port);
   private static WPI_TalonSRX motor_Right_FlyWheel = new WPI_TalonSRX(Constants.motor_Right_Flywheel_Port);
 
@@ -31,21 +31,22 @@ public class WoFSpinner extends CommandBase {
   // Encoder(Constants.encoder_Right_Flywheel_Port[0],Constants.encoder_Right_Flywheel_Port[1]);
 
   public void Shooter() {
-    motor_Right_FlyWheel.setInverted(false);}
-    // motor_Right_FlyWheel.set(ControlMode.Follower, Constants.motor_Left_FlyWheel_Port);
+    motor_Right_FlyWheel.setInverted(false);
+  }
+  // motor_Right_FlyWheel.set(ControlMode.Follower,
+  // Constants.motor_Left_FlyWheel_Port);
 
   public void WoFSpinner(Shooter shooter, Pixy pixy) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.shooter = shooter;
-    DriveTrain m_driveTrain; //this variable may not be initialized correctly. Fix it
-    /*final Pixy m_pixy;*/ //commented out because it is not in use yet. It will be though
+    DriveTrain m_driveTrain; // this variable may not be initialized correctly. Fix it
+    /* final Pixy m_pixy; */ // commented out because it is not in use yet. It will be though
     addRequirements(shooter);
     addRequirements(pixy);
   }
 
   // Called when the command is initially scheduled.
 
-  
   @Override
   public void initialize() {
   }
@@ -55,27 +56,29 @@ public class WoFSpinner extends CommandBase {
   public WoFSpinner() {
     double displaySpeedRads = shooter.getAvgSpeed();
     double displaySpeedRPM = displaySpeedRads * 9.549296585513702;
-    SmartDashboard.putString("The Current Shooter Speed is: " + displaySpeedRPM +"", "shooter-speed");
+    SmartDashboard.putString("The Current Shooter Speed is: " + displaySpeedRPM + "", "shooter-speed");
   }
-    public static void spin(String color) {
-      switch(color){
+
+  public static void spin(String color) {
+      // BELOW CODE NEEDS TO BE FINISHED
+    /* switch(color){
         case "red":
-          m_Shooter.WoFspin();
+          shooter.WoFspin();
           while(){}
-          m_Shooter.stopFW();
+          shooter.stopFW();
         case "yellow":
-          m_Shooter.WoFspin();
+          shooter.WoFspin();
           while(){}
-          m_Shooter.stopFW();
+          shooter.stopFW();
         case "green":
-          m_Shooter.WoFspin();
+          shooter.WoFspin();
           while(){}
-          m_Shooter.stopFW();
+          shooter.stopFW();
         case "blue":
-          m_Shooter.WoFspin();
+          shooter.WoFspin();
           while(){}
-          m_Shooter.stopFW();
-      }
+          shooter.stopFW();
+      } */
     /*while (1 == 1) {
       // run motors at 0.1 speed
       DriveTrain m_driveTrain;
@@ -86,4 +89,5 @@ public class WoFSpinner extends CommandBase {
   // Called once the command ends or is interrupted.
 
   // Returns true when the command should end.
+}
 }

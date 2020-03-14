@@ -111,7 +111,7 @@ public class RobotContainer {
     Button1.whileHeld(lineUp);
     Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
     Button3.whenPressed(toggleLED);
-    // Button5.whenPressed(new LocateBall(m_driveTrain, m_pixy, m_shooter));
+    Button5.whenPressed(new LocateBall(m_driveTrain, m_pixy, m_shooter));
     Button4.whenPressed(new InstantCommand(m_conveyor::in, m_conveyor));
     Button6.whenPressed(new InstantCommand(m_conveyor::out, m_conveyor));
     Button7.whenPressed(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
