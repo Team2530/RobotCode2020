@@ -9,6 +9,7 @@ package frc.robot.subsystems;
 
 import java.util.Arrays;
 
+import com.ctre.phoenix.ParamEnum;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
@@ -18,6 +19,7 @@ import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.SensorTerm;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRXPIDSetConfiguration;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -117,14 +119,15 @@ public class Elevator extends SubsystemBase {
 														Constants.kTimeoutMs);
     // Inverting Motors and Encoders
     motor_Left.setInverted(false);
-    motor_Left.setSensorPhase(false);
+    motor_Left.setSensorPhase(true);
     motor_Right.setInverted(false);
-    motor_Right.setSensorPhase(false);
+    motor_Right.setSensorPhase(true);
 
     /* Set status frame periods */
     motor_Right.setStatusFramePeriod(StatusFrame.Status_12_Feedback1, 20, Constants.kTimeoutMs);
     motor_Right.setStatusFramePeriod(StatusFrame.Status_13_Base_PIDF0, 20, Constants.kTimeoutMs);
     motor_Right.setStatusFramePeriod(StatusFrame.Status_14_Turn_PIDF1, 20, Constants.kTimeoutMs);
+    motor_Right.setStatusFramePeriod(StatusFrame.Status_10_Targets, 20, Constants.kTimeoutMs);
     motor_Left.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, Constants.kTimeoutMs);
 
     /* Configure neutral deadband */
@@ -136,6 +139,8 @@ public class Elevator extends SubsystemBase {
     motor_Right.configPeakOutputForward(+1.0, Constants.kTimeoutMs);
     motor_Right.configPeakOutputReverse(-1.0, Constants.kTimeoutMs);
 
+    motor_Right.configMotionAcceleration(2000, Constants.kTimeoutMs);
+		motor_Right.configMotionCruiseVelocity(2000, Constants.kTimeoutMs);
     //distance servo
 
     motor_Right.config_kP(Constants.kSlot_Distanc, Constants.kElevator_Gains_Distanc.kP, Constants.kTimeoutMs);
@@ -144,11 +149,11 @@ public class Elevator extends SubsystemBase {
     motor_Right.config_kF(Constants.kSlot_Distanc, Constants.kElevator_Gains_Distanc.kF, Constants.kTimeoutMs);
     motor_Right.config_IntegralZone(Constants.kSlot_Distanc, Constants.kElevator_Gains_Distanc.kIzone,
         Constants.kTimeoutMs);
-    motor_Right.configClosedLoopPeakOutput(Constants.kSlot_Distanc, Constants.kShooter_Gains_Distanc.kPeakOutput,
+    motor_Right.configClosedLoopPeakOutput(Constants.kSlot_Distanc, Constants.kElevator_Gains_Distanc.kPeakOutput,
         Constants.kTimeoutMs);
     motor_Right.configAllowableClosedloopError(Constants.kSlot_Distanc, 0, Constants.kTimeoutMs);
 
-    /* FPID Gains for turn servo */
+    // /* FPID Gains for turn servo */
     motor_Right.config_kP(Constants.kSlot_Turning, Constants.kElevator_Gains_Turning.kP, Constants.kTimeoutMs);
     motor_Right.config_kI(Constants.kSlot_Turning, Constants.kElevator_Gains_Turning.kI, Constants.kTimeoutMs);
     motor_Right.config_kD(Constants.kSlot_Turning, Constants.kElevator_Gains_Turning.kD, Constants.kTimeoutMs);
@@ -185,14 +190,22 @@ public class Elevator extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Left Elevator Encoder", motor_Left.getSelectedSensorPosition(0));
-    SmartDashboard.putNumber("Left Elevator Encoder", motor_Left.getSelectedSensorPosition(1));
-    SmartDashboard.putNumber("Right Elevator Encoder", motor_Right.getSelectedSensorPosition(1));
-    SmartDashboard.putNumber("Right Elevator Encoder2", motor_Right.getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Left Elevator Encoder2", motor_Left.getSelectedSensorPosition(1));
+    SmartDashboard.putNumber("Right Elevator Encoder", motor_Right.getSelectedSensorPosition(0));
+    SmartDashboard.putNumber("Right Elevator Encoder2", motor_Right.getSelectedSensorPosition(1));
+    SmartDashboard.putNumber("Height",this.getFloorHeight());
+    
+    // SmartDashboard.putNumber("0P".);
+    // SmartDashboard.putNumber("0I", motor_Left.getSelectedSensorPosition(1));
+    // SmartDashboard.putNumber("0D", motor_Right.getSelectedSensorPosition(1));
 
-    /* Gamepad processing */
-		double forward = Deadband(-1 * _gamepad.getY());
+    // SmartDashboard.putNumber("Left Elevator Encoder", motor_Left.getSelectedSensorPosition(0));
+    // SmartDashboard.putNumber("Left Elevator Encoder2", motor_Left.getSelectedSensorPosition(1));
+    // SmartDashboard.putNumber("Right Elevator Encoder", motor_Right.getSelectedSensorPosition(1));
+    /* Gamepad processing 
+		/* double forward = Deadband(-1 * _gamepad.getY());
 		double turn = Deadband(_gamepad.getTwist());
-		/* Button processing for state toggle and sensor zeroing */
+		 Button processing for state toggle and sensor zeroing 
 		if(new JoystickButton(_gamepad, 2).get()  && !new JoystickButton(_gamepad, 2).get()){
 			_state = !_state; 		// Toggle state
 			_firstCall = true;		// State change, do first call operation
@@ -214,21 +227,21 @@ public class Elevator extends SubsystemBase {
 				System.out.println("This is Drive Straight Distance with the Auxiliary PID using the difference between two encoders.");
 				System.out.println("Servo [-6, 6] rotations while also maintaining a straight heading.\n");
 				
-				/* Determine which slot affects which PID */
+				Determine which slot affects which PID 
 				motor_Right.selectProfileSlot(Constants.kSlot_Distanc, Constants.PID_PRIMARY);
 				motor_Right.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
 			}
 			
-			/* Calculate targets from gamepad inputs */
+			Calculate targets from gamepad inputs 
       
       double target_sensorUnits = forward * Constants.ENCODER_TICKS_PER_REVOLUTION*Constants.leadscrewDistancePerRotation  + _lockedDistance;
 			double target_turn = _targetAngle;
 			SmartDashboard.putNumber("Target_sensorUnits", target_sensorUnits);
-			/* Configured for Position Closed loop on Quad Encoders' Sum and Auxiliary PID on Quad Encoders' Difference */
+			/* Configured for Position Closed loop on Quad Encoders' Sum and Auxiliary PID on Quad Encoders' Difference 
 			motor_Right.set(ControlMode.Position, target_sensorUnits, DemandType.AuxPID, target_turn);
 			motor_Left.follow(motor_Right, FollowerType.AuxOutput1);
 		}
-		_firstCall = false;
+		_firstCall = false; */
   }
 
   public void resetEncoders() {
@@ -241,7 +254,7 @@ public class Elevator extends SubsystemBase {
 
   private int getEncoder() {
     /* Update Quadrature position */
-    return ((motor_Left.getSelectedSensorPosition() + motor_Left.getSelectedSensorPosition()) / 2);
+    return (motor_Right.getSelectedSensorPosition(0)/Constants.DROP_IN_DISTANCE_PER_REVOLUTION);
   }
 
   // @Deprecated
@@ -345,11 +358,23 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setPowerUp() {
-    //setHeight(0.5, 50);
+    if(_firstCall){
+      motor_Right.selectProfileSlot(Constants.kSlot_Distanc, Constants.PID_PRIMARY);
+			motor_Right.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
+      _firstCall = false;
+    }
+    motor_Right.set(ControlMode.Position, 1086308);
+    motor_Left.follow(motor_Left, FollowerType.AuxOutput1);
   }
 
   public void setPowerDown() {
-    //setHeight(-0.5, 50);
+    if(_firstCall){
+      motor_Right.selectProfileSlot(Constants.kSlot_Distanc, Constants.PID_PRIMARY);
+				motor_Right.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
+      _firstCall = false;
+    }
+    motor_Right.set(ControlMode.Position, 0);
+    motor_Left.follow(motor_Left, FollowerType.AuxOutput1);
   }
 
   public double getAngle() {
@@ -410,7 +435,7 @@ public class Elevator extends SubsystemBase {
     
     if(_firstCall){
       motor_Left.selectProfileSlot(Constants.kSlot_Distanc, Constants.PID_PRIMARY);
-      _firstCall = false;
+      _firstCall = true;
     } // ! I think this should work I not sure how the f term works though
     double target_sensorUnits = power * Constants.ENCODER_TICKS_PER_REVOLUTION*Constants.leadscrewDistancePerRotation*height;
     motor_Left.set(ControlMode.Position, target_sensorUnits, DemandType.AuxPID,0);
@@ -420,6 +445,10 @@ public class Elevator extends SubsystemBase {
   public void Stop() {
     for (final ElevatorMotors motor : ElevatorMotors.values()) {
       setMotorPower(motor, 0);
+    }
+    if(_firstCall){
+      motor_Left.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
+      _firstCall = true;
     }
   }
 

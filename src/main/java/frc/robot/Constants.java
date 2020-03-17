@@ -181,7 +181,7 @@ public final class Constants {
     public static final double minAngle = -32; // degrees
     public static final double minHeight = -29.68168 * 2.54; // cm
     public static final double gravity = -9.8;// meters per second
-    public static final double leadscrewDistancePerRotation = 10;//!
+    public static final double leadscrewDistancePerRotation = 20;//!
     public static final int turnsPerInch = 10; //?idk check with hardware assuming 1 start
      /**
 	 * PID Gains may have to be adjusted based on the responsiveness of control loop.
@@ -191,7 +191,7 @@ public final class Constants {
      * 
 	 * 	                                    			           kP   kI   kD   kF               Iz    PeakOut */
 	public final static Gains kElevator_Gains_Distanc = new Gains( 1.0, 0.0,  0.0, 0.0,            100,  1.00 );//! NEED TO BE SET
-	public final static Gains kElevator_Gains_Turning = new Gains( 1.0, 0.0,  0.0, 0.0,            100,  1.00 );//!
+	public final static Gains kElevator_Gains_Turning = new Gains( 4.0, 0.0,  0.0, 0.0,            100,  1.00 );//!
 	public final static Gains kElevator_Gains_Velocit = new Gains( 1.0, 0.0, 20.0, 1023.0/6800.0,  300,  0.50 );//!
 	public final static Gains kElevator_Gains_MotProf = new Gains( 1.0, 0.0,  0.0, 1023.0/6800.0,  400,  1.00 );//!
 	//public final static double magicNumberOfDeath = 0.970873786408;
