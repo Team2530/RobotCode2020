@@ -39,7 +39,7 @@ public class CustomElevator extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    double forward = -1 * _gamepad.getY();
+    double forward = _gamepad.getY();
 		double turn = _gamepad.getTwist();
 		forward = elevator.Deadband(forward);
 		turn = elevator.Deadband(turn);

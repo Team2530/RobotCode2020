@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.*;
 import frc.robot.commands.autonomousCommands.*;
 import frc.robot.commands.defaultCommands.CustomElevator;
+import frc.robot.commands.defaultCommands.ElevatorHeight;
 import frc.robot.subsystems.*;
 import frc.robot.commands.teleopDriveCommands.*;
 // import frc.robot.commands.XboxJoystickElevator;
@@ -140,7 +141,8 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    // Button1.whileHeld(lineUp);
+    Button1.whileHeld(new ElevatorHeight(stick1, elevatorSub));
+    Button1.whenReleased(new InstantCommand(elevatorSub::Stop, elevatorSub));
     // Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
     //Button2.whenPressed(toggleCamera);
     // Button3.whenPressed(toggleLED);
@@ -239,8 +241,8 @@ public class RobotContainer {
   }
 
   public Command getTelopCommand() {
-    //return null;
-    return new CustomElevator(stick1, elevatorSub);
+    return null;
+    //return new ElevatorHeight(stick1, elevatorSub);
   }
 
 }

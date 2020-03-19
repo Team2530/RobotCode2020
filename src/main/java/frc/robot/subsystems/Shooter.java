@@ -77,7 +77,7 @@ public class Shooter extends SubsystemBase {
     // Inverting Motors and Encoders
     motor_Left.setInverted(true);
     motor_Left.setSensorPhase(true);
-    motor_Right.setInverted(true);
+    motor_Right.setInverted(false);
     motor_Right.setSensorPhase(true);
 
     /* Set status frame periods */
@@ -129,7 +129,7 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     //SmartDashboard.putNumber("Left voltage", motor_Left.getBusVoltage());
     //SmartDashboard.putNumber("Right voltage", motor_Right.getBusVoltage());
-    startFW(currentSpeed);
+    //startFW(currentSpeed);
     // } else if (xbox.getRawAxis(3) < 0) {
     // startFW(-0.3);
     // } else {
@@ -218,6 +218,9 @@ public class Shooter extends SubsystemBase {
 
   }
 
+  public double getMaxTemperature(){
+    return Math.max(motor_Left.getTemperature(), motor_Right.getTemperature());
+  }
   public void increaseSpeed() {
     currentSpeed = currentSpeed + 0.1;
 

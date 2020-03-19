@@ -36,6 +36,8 @@ public class Elevator extends SubsystemBase {
   public static TalonSRX motor_Left = new TalonSRX(Constants.motor_Elevator_Left_Port);
   public static TalonSRX motor_Right = new TalonSRX(Constants.motor_Elevator_Right_Port);
 
+  // public static TalonSRX motor_Left = new TalonSRX(Constants.motor_Left_FlyWheel_Port);
+  // public static TalonSRX motor_Right = new TalonSRX(Constants.motor_Right_Flywheel_Port);
   // private static Encoder encoder_Left_Leadscrew = new
   // Encoder(Constants.encoder_Left_Leadscrew_Ports[0],Constants.encoder_Left_Leadscrew_Ports[1]);
   // private static Encoder encoder_Right_Leadscrew = new
@@ -194,6 +196,7 @@ public class Elevator extends SubsystemBase {
     SmartDashboard.putNumber("Distance", getEncoder());
     SmartDashboard.putNumber("Difference", getDifference());
     SmartDashboard.putNumber("Height",this.getFloorHeight());
+    SmartDashboard.putNumber("MaxElevatorTemp", getMaxTemperature());
     
     // SmartDashboard.putNumber("0P".);
     // SmartDashboard.putNumber("0I", motor_Left.getSelectedSensorPosition(1));
@@ -487,7 +490,9 @@ public class Elevator extends SubsystemBase {
   public void activateEndGame() {
     endGame = true;
   }
-
+  public double getMaxTemperature(){
+    return Math.max(motor_Left.getTemperature(), motor_Right.getTemperature());
+  }
   public boolean getEndgame() {
     return endGame;
   }
