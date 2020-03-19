@@ -21,8 +21,9 @@ import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
 import frc.robot.commands.*;
 import frc.robot.commands.autonomousCommands.*;
+import frc.robot.commands.defaultCommands.CustomElevator;
 import frc.robot.subsystems.*;
-// import frc.robot.commands.SmallJoystickElevator;
+import frc.robot.commands.teleopDriveCommands.*;
 // import frc.robot.commands.XboxJoystickElevator;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.Elevator;
@@ -48,14 +49,15 @@ public class RobotContainer {
 
   // -------------------- Subsystems -------------------- \\
   //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  // private final DriveTrain m_driveTrain = new DriveTrain();
+  private final DriveTrain m_driveTrain = new DriveTrain();
   
   private final LimeLight limeLightSub = new LimeLight();
   //private final Pixy m_pixy = new Pixy();
   private final Shooter m_shooter = new Shooter();
   private final Conveyor m_conveyor = new Conveyor();
   private final Shooter shooter = new Shooter();
-
+  private final Elevator elevatorSub = new Elevator();
+  
   // -------------------- Joysticks and Buttons -------------------- \\
   // Joysticks
   final Joystick stick1 = new Joystick(1); // Creates a joystick on port 1
@@ -83,7 +85,7 @@ public class RobotContainer {
   private final JoystickButton XboxButton2 = new JoystickButton(xbox, 2); // X BUTTON
   private final JoystickButton XboxButton3 = new JoystickButton(xbox, 3); // Y BUTTON
   private final JoystickButton XboxButton4 = new JoystickButton(xbox, 4); // B BUTTON
-  private final Elevator elevatorSub = new Elevator(stick1);
+  //private final TmpElevator tmp = new TmpElevator(stick1);
   // -------------------- Autonomous Commands -------------------- \\
   // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
   
@@ -112,7 +114,7 @@ public class RobotContainer {
   // private final EncoderTest m_telopCommand = new EncoderTest(m_driveTrain);
   // private final LineUpRobot lineUp = new LineUpRobot(m_driveTrain, limeLightSub);
   // private final TestPixy pixy = new TestPixy(m_pixy);
-  // private final LargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1);
+  private final LargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1);
   // private final LargeJoystickCurvatureDrive telopDriveCommand = new LargeJoystickCurvatureDrive(m_driveTrain, stick1);
   //private final DualLargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1, stick2);
   //private final ConveyorControl telopConveyorCommand = new ConveyorControl(m_conveyor, xbox);
@@ -149,8 +151,8 @@ public class RobotContainer {
     // Button9.whenPressed(new InstantCommand(m_shooter::stopFW, m_shooter));
     // Button10.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
 
-    //Button2.whenPressed(new InstantCommand(limeLightSub::toggleLights, limeLightSub));
-    //Button3.whenPressed(new InstantCommand(limeLightSub::switchCamera, limeLightSub));
+    Button2.whenPressed(new InstantCommand(limeLightSub::toggleLights, limeLightSub));
+    Button3.whenPressed(new InstantCommand(limeLightSub::switchCamera, limeLightSub));
     Button4.whenPressed(new InstantCommand(elevatorSub::resetEncoders));
     Button5.whenPressed(new InstantCommand(m_conveyor::in,m_conveyor));
     Button6.whenPressed(new InstantCommand(m_conveyor::out,m_conveyor));
@@ -158,8 +160,8 @@ public class RobotContainer {
     Button8.whenPressed(new InstantCommand(elevatorSub::setLeftPowerDown));
     Button9.whenPressed(new InstantCommand(elevatorSub::setRightPowerUp));
     Button10.whenPressed(new InstantCommand(elevatorSub::setRightPowerDown));
-    Button11.whenPressed(new InstantCommand(elevatorSub::setPowerUp));
-    Button12.whenPressed(new InstantCommand(elevatorSub::setPowerDown));
+    Button11.whileActiveContinuous(new InstantCommand(elevatorSub::setPowerUp));
+    Button12.whileActiveContinuous(new InstantCommand(elevatorSub::setPowerDown));
 
     Button5.whenReleased(new InstantCommand(m_conveyor::stopIntake,m_conveyor));
     Button6.whenReleased(new InstantCommand(m_conveyor::stopIntake,m_conveyor));
@@ -173,9 +175,9 @@ public class RobotContainer {
 
 
     //These may need to be flipped around... I wasn't sure which way increase speed was
-    XboxButton1.whenPressed(new InstantCommand(m_shooter::decreaseSpeed, m_shooter));
-    XboxButton3.whenPressed(new InstantCommand(m_shooter::increaseSpeed, m_shooter));
-    XboxButton2.whenPressed(new InstantCommand(m_shooter::resetSpeed, m_shooter));
+    // XboxButton1.whenPressed(new InstantCommand(m_shooter::decreaseSpeed, m_shooter));
+    // XboxButton3.whenPressed(new InstantCommand(m_shooter::increaseSpeed, m_shooter));
+    // XboxButton2.whenPressed(new InstantCommand(m_shooter::resetSpeed, m_shooter));
 
     // XboxButton1.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
     // XboxButton1.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
@@ -237,8 +239,8 @@ public class RobotContainer {
   }
 
   public Command getTelopCommand() {
-    return null;
-    // return telopDriveCommand;
+    //return null;
+    return new CustomElevator(stick1, elevatorSub);
   }
 
 }

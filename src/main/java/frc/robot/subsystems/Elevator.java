@@ -33,8 +33,8 @@ import frc.robot.Constants.ElevatorMotors;
 
 public class Elevator extends SubsystemBase {
 
-  private static TalonSRX motor_Left = new TalonSRX(Constants.motor_Elevator_Left_Port);
-  private static TalonSRX motor_Right = new TalonSRX(Constants.motor_Elevator_Right_Port);
+  public static TalonSRX motor_Left = new TalonSRX(Constants.motor_Elevator_Left_Port);
+  public static TalonSRX motor_Right = new TalonSRX(Constants.motor_Elevator_Right_Port);
 
   // private static Encoder encoder_Left_Leadscrew = new
   // Encoder(Constants.encoder_Left_Leadscrew_Ports[0],Constants.encoder_Left_Leadscrew_Ports[1]);
@@ -50,19 +50,17 @@ public class Elevator extends SubsystemBase {
   private static DigitalInput limit_Switch_Left_Middle = new DigitalInput(Constants.limit_Switch_Left_Middle_Port);
   private static DigitalInput limit_Switch_Right_Middle = new DigitalInput(Constants.limit_Switch_Right_Middle_Port);
 
-  boolean _firstCall = false;
+  public boolean _firstCall = false;
   private boolean endGame = false; // dont go above 45 inches if this is false
-  private static Joystick _gamepad;
   /** Tracking variables */
-	boolean _state = false;
-	double _lockedDistance = 0;
-	double _targetAngle = 0;
+	public boolean _state = false;
+	public double _lockedDistance = 0;
+	public double _targetAngle = 0;
 
   /**
    * Creates a new Elevator.
    */
-  public Elevator(Joystick _gamepad) {
-    this._gamepad = _gamepad;
+  public Elevator() {
     /* Disable all motors */
     motor_Left.set(ControlMode.PercentOutput, 0);
     motor_Right.set(ControlMode.PercentOutput, 0);
@@ -193,6 +191,8 @@ public class Elevator extends SubsystemBase {
     SmartDashboard.putNumber("Left Elevator Encoder2", motor_Left.getSelectedSensorPosition(1));
     SmartDashboard.putNumber("Right Elevator Encoder", motor_Right.getSelectedSensorPosition(0));
     SmartDashboard.putNumber("Right Elevator Encoder2", motor_Right.getSelectedSensorPosition(1));
+    SmartDashboard.putNumber("Distance", getEncoder());
+    SmartDashboard.putNumber("Difference", getDifference());
     SmartDashboard.putNumber("Height",this.getFloorHeight());
     
     // SmartDashboard.putNumber("0P".);
@@ -252,9 +252,13 @@ public class Elevator extends SubsystemBase {
     motor_Right.getSensorCollection().setQuadraturePosition(1, Constants.kTimeoutMs);
   }
 
-  private int getEncoder() {
+  private double getEncoder() {
     /* Update Quadrature position */
-    return (motor_Right.getSelectedSensorPosition(0)/Constants.DROP_IN_DISTANCE_PER_REVOLUTION);
+    return (motor_Right.getSelectedSensorPosition(0)/((double)Constants.DROP_IN_DISTANCE_PER_REVOLUTION));
+  }
+  private double getDifference() {
+    /* Update Quadrature position */
+    return (motor_Right.getSelectedSensorPosition(1)/((double)Constants.DROP_IN_DISTANCE_PER_REVOLUTION));
   }
 
   // @Deprecated
@@ -358,23 +362,23 @@ public class Elevator extends SubsystemBase {
   }
 
   public void setPowerUp() {
-    if(_firstCall){
-      motor_Right.selectProfileSlot(Constants.kSlot_Distanc, Constants.PID_PRIMARY);
-			motor_Right.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
-      _firstCall = false;
+    if(this.getDifference()<0){
+      motor_Right.set(ControlMode.PercentOutput, 0.6);
+      motor_Left.set(ControlMode.PercentOutput, 0.5);
+    }else{
+      motor_Right.set(ControlMode.PercentOutput, 0.5);
+      motor_Left.set(ControlMode.PercentOutput, 0.6);
     }
-    motor_Right.set(ControlMode.Position, 1086308);
-    motor_Left.follow(motor_Left, FollowerType.AuxOutput1);
   }
 
   public void setPowerDown() {
-    if(_firstCall){
-      motor_Right.selectProfileSlot(Constants.kSlot_Distanc, Constants.PID_PRIMARY);
-				motor_Right.selectProfileSlot(Constants.kSlot_Turning, Constants.PID_TURN);
-      _firstCall = false;
+    if(this.getDifference()>0){
+      motor_Right.set(ControlMode.PercentOutput, -0.5);
+      motor_Left.set(ControlMode.PercentOutput, -0.6);
+    }else{
+      motor_Right.set(ControlMode.PercentOutput, -0.6);
+      motor_Left.set(ControlMode.PercentOutput, -0.5);
     }
-    motor_Right.set(ControlMode.Position, 0);
-    motor_Left.follow(motor_Left, FollowerType.AuxOutput1);
   }
 
   public double getAngle() {
@@ -487,7 +491,7 @@ public class Elevator extends SubsystemBase {
   public boolean getEndgame() {
     return endGame;
   }
-  double Deadband(double value) {
+  public double Deadband(double value) {
 		/* Upper deadband */
 		if (value >= +Constants.deadzone) 
 			return value;
@@ -500,4 +504,10 @@ public class Elevator extends SubsystemBase {
 		return 0;
 	}
 
+  public void two(){
+    _state = !_state; 		// Toggle state
+			_firstCall = true;		// State change, do first call operation
+			_targetAngle = motor_Right.getSelectedSensorPosition(1);
+			_lockedDistance = motor_Right.getSelectedSensorPosition(0);
+  }
 }

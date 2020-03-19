@@ -129,8 +129,7 @@ public class Shooter extends SubsystemBase {
   public void periodic() {
     //SmartDashboard.putNumber("Left voltage", motor_Left.getBusVoltage());
     //SmartDashboard.putNumber("Right voltage", motor_Right.getBusVoltage());
-    // if (xbox.getRawAxis(3) > 0) {
-    // startFW(currentSpeed);
+    startFW(currentSpeed);
     // } else if (xbox.getRawAxis(3) < 0) {
     // startFW(-0.3);
     // } else {
@@ -169,8 +168,9 @@ public class Shooter extends SubsystemBase {
        * Configured for percentOutput with Auxiliary PID on Quadrature Encoders'
        * Difference
        */
-      motor_Right.set(ControlMode.Velocity, speed, DemandType.AuxPID, curl);
       motor_Left.follow(motor_Right, FollowerType.AuxOutput1);
+      motor_Right.set(ControlMode.Velocity, speed, DemandType.AuxPID, curl);
+      motor_Left.set(ControlMode.Velocity, speed, DemandType.AuxPID, curl);
     }
     _firstCall = false;
   }
