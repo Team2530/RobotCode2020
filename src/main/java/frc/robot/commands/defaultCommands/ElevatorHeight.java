@@ -35,6 +35,7 @@ public class ElevatorHeight extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    //SmartDashboard.putNumber("_lockeddistance", 0);
     System.out
         .println("This is Drive Straight Distance with the Auxiliary PID using the difference between two encoders.");
     System.out.println("Servo [-6, 6] rotations while also maintaining a straight heading.\n");
@@ -51,11 +52,12 @@ public class ElevatorHeight extends CommandBase {
   @Override
   public void execute() {
     double forward = _gamepad.getY();
+    elevator._lockedDistance = SmartDashboard.getNumber("_lockeddistance", 0);
     double target_sensorUnits = forward * Constants.DROP_IN_DISTANCE_PER_REVOLUTION
         * Constants.leadscrewDistancePerRotation + elevator._lockedDistance;
-    double target_turn = elevator._targetAngle;
+    double target_turn = 0;
     SmartDashboard.putNumber("target", target_sensorUnits);
-    SmartDashboard.putNumber("targetangle", elevator._targetAngle);
+    SmartDashboard.putNumber("targetangle", target_turn);
     /*
      * Configured for Position Closed loop on Quad Encoders' Sum and Auxiliary PID
      * on Quad Encoders' Difference

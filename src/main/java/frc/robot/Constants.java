@@ -142,7 +142,7 @@ public final class Constants {
      * 
 	 * 	                                    			  kP   kI   kD   kF               Iz    PeakOut */
     public final static Gains kShooter_Gains_Distanc = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.50 );//! NEED TO BE SET
-	public final static Gains kShooter_Gains_Turning = new Gains( 2.0, 0.0,  4.0, 0.0,            200,  1.00 );//!
+	public final static Gains kShooter_Gains_Turning = new Gains( 2.0, 1000000.0,  4.0, 0.0,            200,  1.00 );//!
 	public final static Gains kShooter_Gains_Velocit = new Gains( 0.1, 0.0, 20.0, 1023.0/6800.0,  300,  0.50 );//!
 	public final static Gains kShooter_Gains_MotProf = new Gains( 1.0, 0.0,  0.0, 1023.0/6800.0,  400,  1.00 );//!
 

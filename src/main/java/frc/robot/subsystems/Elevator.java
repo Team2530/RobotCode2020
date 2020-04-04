@@ -76,7 +76,7 @@ public class Elevator extends SubsystemBase {
     motor_Right.setNeutralMode(NeutralMode.Brake);
 
     /* Configure the drivetrain's left side Feedback Sensor as a Magnet Encoder */
-    motor_Left.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, // Local Feedback Source
+    motor_Left.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative, // Local Feedback Source
         Constants.PID_PRIMARY, // PID Slot for Source [0, 1]
         Constants.kTimeoutMs);
     motor_Right.configRemoteFeedbackFilter(motor_Left.getDeviceID(), // Device ID of Source
@@ -119,7 +119,7 @@ public class Elevator extends SubsystemBase {
 														Constants.kTimeoutMs);
     // Inverting Motors and Encoders
     motor_Left.setInverted(false);
-    motor_Left.setSensorPhase(true);
+    motor_Left.setSensorPhase(false);
     motor_Right.setInverted(false);
     motor_Right.setSensorPhase(true);
 
@@ -139,8 +139,8 @@ public class Elevator extends SubsystemBase {
     motor_Right.configPeakOutputForward(+1.0, Constants.kTimeoutMs);
     motor_Right.configPeakOutputReverse(-1.0, Constants.kTimeoutMs);
 
-    motor_Right.configMotionAcceleration(2000, Constants.kTimeoutMs);
-		motor_Right.configMotionCruiseVelocity(2000, Constants.kTimeoutMs);
+    //motor_Right.configMotionAcceleration(2000, Constants.kTimeoutMs);
+		//motor_Right.configMotionCruiseVelocity(2000, Constants.kTimeoutMs);
     //distance servo
 
     motor_Right.config_kP(Constants.kSlot_Distanc, Constants.kElevator_Gains_Distanc.kP, Constants.kTimeoutMs);
@@ -368,9 +368,12 @@ public class Elevator extends SubsystemBase {
     if(this.getDifference()<0){
       motor_Right.set(ControlMode.PercentOutput, 0.6);
       motor_Left.set(ControlMode.PercentOutput, 0.5);
-    }else{
+    }else if(this.getDifference()>0){
       motor_Right.set(ControlMode.PercentOutput, 0.5);
       motor_Left.set(ControlMode.PercentOutput, 0.6);
+    }else{
+      motor_Right.set(ControlMode.PercentOutput, -0.5);
+      motor_Left.set(ControlMode.PercentOutput, -0.5);
     }
   }
 
@@ -378,8 +381,11 @@ public class Elevator extends SubsystemBase {
     if(this.getDifference()>0){
       motor_Right.set(ControlMode.PercentOutput, -0.5);
       motor_Left.set(ControlMode.PercentOutput, -0.6);
-    }else{
+    }else if(this.getDifference()<0){
       motor_Right.set(ControlMode.PercentOutput, -0.6);
+      motor_Left.set(ControlMode.PercentOutput, -0.5);
+    }else{
+      motor_Right.set(ControlMode.PercentOutput, -0.5);
       motor_Left.set(ControlMode.PercentOutput, -0.5);
     }
   }

@@ -69,7 +69,7 @@ public class CustomElevator extends CommandBase {
 			
 			/* Calculate targets from gamepad inputs */
 			double target_sensorUnits = forward * Constants.DROP_IN_DISTANCE_PER_REVOLUTION* Constants.leadscrewDistancePerRotation  + elevator._lockedDistance;
-      double target_turn = elevator._targetAngle;
+      double target_turn = 0;
       SmartDashboard.putNumber("target", target_sensorUnits);
 			SmartDashboard.putNumber("targetangle", elevator._targetAngle);
 			/* Configured for Position Closed loop on Quad Encoders' Sum and Auxiliary PID on Quad Encoders' Difference */

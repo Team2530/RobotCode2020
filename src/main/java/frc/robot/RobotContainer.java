@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.controller.RamseteController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryUtil;
@@ -38,6 +39,7 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.subsystems.Shooter;
 import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+
 /**
  * This class is where the bulk of the robot should be declared. Since
  * Command-based is a "declarative" paradigm, very little robot logic should
@@ -49,16 +51,16 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   // -------------------- Subsystems -------------------- \\
-  //private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
   private final DriveTrain m_driveTrain = new DriveTrain();
-  
+
   private final LimeLight limeLightSub = new LimeLight();
-  //private final Pixy m_pixy = new Pixy();
+  // private final Pixy m_pixy = new Pixy();
   private final Shooter m_shooter = new Shooter();
   private final Conveyor m_conveyor = new Conveyor();
-  private final Shooter shooter = new Shooter();
+  // private final Shooter shooter = new Shooter();
   private final Elevator elevatorSub = new Elevator();
-  
+
   // -------------------- Joysticks and Buttons -------------------- \\
   // Joysticks
   final Joystick stick1 = new Joystick(1); // Creates a joystick on port 1
@@ -81,21 +83,24 @@ public class RobotContainer {
   // Xbox Controller
   final XboxController xbox = new XboxController(0);
 
-  // Xbox buttons (Updated the number and wrote the letter according ot the internet)
+  // Xbox buttons (Updated the number and wrote the letter according ot the
+  // internet)
   private final JoystickButton XboxButton1 = new JoystickButton(xbox, 1); // A BUTTON
   private final JoystickButton XboxButton2 = new JoystickButton(xbox, 2); // X BUTTON
   private final JoystickButton XboxButton3 = new JoystickButton(xbox, 3); // Y BUTTON
   private final JoystickButton XboxButton4 = new JoystickButton(xbox, 4); // B BUTTON
-  //private final TmpElevator tmp = new TmpElevator(stick1);
+  // private final TmpElevator tmp = new TmpElevator(stick1);
   // -------------------- Autonomous Commands -------------------- \\
-  // private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
-  
-  //private final TrajectoryTest m_autoCommand = new TrajectoryTest(m_driveTrain, new Traj);
-  // private final DriveForSeconds m_autoCommand = new DriveForSeconds(m_driveTrain, 5);
-  
-  //private final StartMotors m_autoCommand = new StartMotors(m_driveTrain);
-  //private final DelayTest delayCommand = new DelayTest(1, m_autoCommand);
-  
+  // private final ExampleCommand m_autoCommand = new
+  // ExampleCommand(m_exampleSubsystem);
+
+  // private final TrajectoryTest m_autoCommand = new TrajectoryTest(m_driveTrain,
+  // new Traj);
+  // private final DriveForSeconds m_autoCommand = new
+  // DriveForSeconds(m_driveTrain, 5);
+
+  // private final StartMotors m_autoCommand = new StartMotors(m_driveTrain);
+  // private final DelayTest delayCommand = new DelayTest(1, m_autoCommand);
 
   // private final ExampleCommand m_autoCommand = new
   // ExampleCommand(m_exampleSubsystem);
@@ -105,27 +110,31 @@ public class RobotContainer {
 
   // private final DelayTest delayCommand = new DelayTest(1, m_autoCommand);
 
-
-
   // -------------------- Telop Commands -------------------- \\
   // private final XboxJoystickElevator elevatorCommand = new
   // XboxJoystickElevator(elevatorSub, xbox);
   // private final SmallJoystickElevator elevatorCommand = new
   // SmallJoystickElevator(elevatorSub, stick1);
   // private final EncoderTest m_telopCommand = new EncoderTest(m_driveTrain);
-  // private final LineUpRobot lineUp = new LineUpRobot(m_driveTrain, limeLightSub);
+  // private final LineUpRobot lineUp = new LineUpRobot(m_driveTrain,
+  // limeLightSub);
   // private final TestPixy pixy = new TestPixy(m_pixy);
-  private final LargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1);
-  // private final LargeJoystickCurvatureDrive telopDriveCommand = new LargeJoystickCurvatureDrive(m_driveTrain, stick1);
-  //private final DualLargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1, stick2);
-  //private final ConveyorControl telopConveyorCommand = new ConveyorControl(m_conveyor, xbox);
-  //private final StartShooter telopShooterCommand = new StartShooter(m_shooter, xbox);
+  //private final LargeJoystickDrive telopDriveCommand = new LargeJoystickDrive(m_driveTrain, stick1);
+  // private final LargeJoystickCurvatureDrive telopDriveCommand = new
+  // LargeJoystickCurvatureDrive(m_driveTrain, stick1);
+  // private final DualLargeJoystickDrive telopDriveCommand = new
+  // LargeJoystickDrive(m_driveTrain, stick1, stick2);
+  // private final ConveyorControl telopConveyorCommand = new
+  // ConveyorControl(m_conveyor, xbox);
+  // private final StartShooter telopShooterCommand = new StartShooter(m_shooter,
+  // xbox);
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
     // Configure the button bindings
+    SmartDashboard.putNumber("speed", 0);
     configureButtonBindings();
 
     // m_driveTrain.setDefaultCommand(telopDriveCommand);
@@ -144,7 +153,7 @@ public class RobotContainer {
     Button1.whileHeld(new ElevatorHeight(stick1, elevatorSub));
     Button1.whenReleased(new InstantCommand(elevatorSub::Stop, elevatorSub));
     // Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
-    //Button2.whenPressed(toggleCamera);
+    // Button2.whenPressed(toggleCamera);
     // Button3.whenPressed(toggleLED);
     // Button5.whenPressed(new LocateBall(m_driveTrain, m_pixy, m_shooter));
     /// Button4.whenPressed(new InstantCommand(m_conveyor::in, m_conveyor));
@@ -156,8 +165,8 @@ public class RobotContainer {
     Button2.whenPressed(new InstantCommand(limeLightSub::toggleLights, limeLightSub));
     Button3.whenPressed(new InstantCommand(limeLightSub::switchCamera, limeLightSub));
     Button4.whenPressed(new InstantCommand(elevatorSub::resetEncoders));
-    Button5.whenPressed(new InstantCommand(m_conveyor::in,m_conveyor));
-    Button6.whenPressed(new InstantCommand(m_conveyor::out,m_conveyor));
+    Button5.whenPressed(new InstantCommand(m_conveyor::in, m_conveyor));
+    Button6.whenPressed(new InstantCommand(m_conveyor::out, m_conveyor));
     Button7.whenPressed(new InstantCommand(elevatorSub::setLeftPowerUp));
     Button8.whenPressed(new InstantCommand(elevatorSub::setLeftPowerDown));
     Button9.whenPressed(new InstantCommand(elevatorSub::setRightPowerUp));
@@ -165,8 +174,8 @@ public class RobotContainer {
     Button11.whileActiveContinuous(new InstantCommand(elevatorSub::setPowerUp));
     Button12.whileActiveContinuous(new InstantCommand(elevatorSub::setPowerDown));
 
-    Button5.whenReleased(new InstantCommand(m_conveyor::stopIntake,m_conveyor));
-    Button6.whenReleased(new InstantCommand(m_conveyor::stopIntake,m_conveyor));
+    Button5.whenReleased(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
+    Button6.whenReleased(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
     Button7.whenReleased(new InstantCommand(elevatorSub::Stop));
     Button8.whenReleased(new InstantCommand(elevatorSub::Stop));
     Button9.whenReleased(new InstantCommand(elevatorSub::Stop));
@@ -174,20 +183,21 @@ public class RobotContainer {
     Button11.whenReleased(new InstantCommand(elevatorSub::Stop));
     Button12.whenReleased(new InstantCommand(elevatorSub::Stop));
 
-
-
-    //These may need to be flipped around... I wasn't sure which way increase speed was
-    // XboxButton1.whenPressed(new InstantCommand(m_shooter::decreaseSpeed, m_shooter));
-    // XboxButton3.whenPressed(new InstantCommand(m_shooter::increaseSpeed, m_shooter));
-    // XboxButton2.whenPressed(new InstantCommand(m_shooter::resetSpeed, m_shooter));
-
-    // XboxButton1.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
-    // XboxButton1.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
-    // XboxButton4.whenPressed(new InstantCommand(m_shooter::startIntake,
+    // These may need to be flipped around... I wasn't sure which way increase speed
+    // was
+    // XboxButton1.whenPressed(new InstantCommand(m_shooter::decreaseSpeed,
     // m_shooter));
-    // XboxButton4.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
+    // XboxButton3.whenPressed(new InstantCommand(m_shooter::increaseSpeed,
+    // m_shooter));
+    // XboxButton2.whenPressed(new InstantCommand(m_shooter::resetSpeed,
+    // m_shooter));
+    
+    XboxButton1.whileHeld(new InstantCommand(() -> m_shooter.startFW(), m_shooter));
+    XboxButton1.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
+    XboxButton4.whenPressed(new InstantCommand(() -> m_shooter.startFW(), m_shooter));
+    XboxButton4.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
 
-    //XboxButton1.whileHeld(new StartShooter(m_shooter, xbox));
+    // XboxButton1.whileHeld(new StartShooter(m_shooter, xbox));
     // XboxButton4.whileHeld(new StartIntake(m_shooter, xbox));
 
     // XboxButton1.whenPressed(new InstantCommand(m_shooter::decreaseSpeed,
@@ -198,8 +208,6 @@ public class RobotContainer {
     // XboxButton2.whenPressed(new InstantCommand(m_shooter::toggleEnabled,
     // m_shooter));
     // XboxButton3.whenPressed(new InstantCommand(m_shooter::setSpeed0, m_shooter));
-
-
 
   }
 
@@ -212,22 +220,26 @@ public class RobotContainer {
     // An ExampleCommand will run in autonomous
     Trajectory trajectory;
     String trajectoryJSON = "paths/DriveForwardFarBlue.wpilib.json";
-    
+
     try {
       Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryJSON);
       trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
       // RamseteCommand ramseteCommand= new RamseteCommand(
-      //   trajectory, // TrajectoryUtil.fromPathweaverJson(Filesystem.getDeployDirectory().toPath().resolve("PathWeaver/DriveForwardFarBlue.wpilib.json")), //The Trajectory 
-        // m_driveTrain::getPose, //Pose (Supplier)
-        // new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta), //Ramsete Controller
-        // m_driveTrain.getFeedForward(), //Feed Forward
-        // m_driveTrain.getKinematics(), //Kinematics
-        // m_driveTrain::getWheelSpeeds, //Wheel Speeds (Supplier)
-        // m_driveTrain.getLeftController(), //Left PID Controller
-        // m_driveTrain.getRightController(), //Right PID Controller
-        // // RamseteCommand passes volts to the callback
-        // m_driveTrain::tankDriveVolts, //Function that uses the Output Volts (BiConsumer)
-        // m_driveTrain //SubSystem Requirments
+      // trajectory, //
+      // TrajectoryUtil.fromPathweaverJson(Filesystem.getDeployDirectory().toPath().resolve("PathWeaver/DriveForwardFarBlue.wpilib.json")),
+      // //The Trajectory
+      // m_driveTrain::getPose, //Pose (Supplier)
+      // new RamseteController(Constants.kRamseteB, Constants.kRamseteZeta), //Ramsete
+      // Controller
+      // m_driveTrain.getFeedForward(), //Feed Forward
+      // m_driveTrain.getKinematics(), //Kinematics
+      // m_driveTrain::getWheelSpeeds, //Wheel Speeds (Supplier)
+      // m_driveTrain.getLeftController(), //Left PID Controller
+      // m_driveTrain.getRightController(), //Right PID Controller
+      // // RamseteCommand passes volts to the callback
+      // m_driveTrain::tankDriveVolts, //Function that uses the Output Volts
+      // (BiConsumer)
+      // m_driveTrain //SubSystem Requirments
       // );
       // return ramseteCommand.andThen(() -> m_driveTrain.tankDrive(0, 0));
     } catch (IOException ex) {
@@ -242,7 +254,7 @@ public class RobotContainer {
 
   public Command getTelopCommand() {
     return null;
-    //return new ElevatorHeight(stick1, elevatorSub);
+    // return new CustomElevator(stick1, elevatorSub);
   }
 
 }
