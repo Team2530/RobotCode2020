@@ -7,6 +7,9 @@
 
 package frc.robot.commands;
 
+import static frc.robot.Constants.target_Height;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants;
 import frc.robot.libraries.*;
@@ -36,18 +39,22 @@ public class AimShooter extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    SmartDashboard.putNumber("distance from wall", 0);
 
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    sposition = m_limelight.getCylindricalPosition(m_elevator.getAngle(), Constants.sensor_Limelight_Height);
+    double dist = SmartDashboard.getNumber("distance from wall", 0);
+    sposition =new double[]{dist,45,Constants.target_Height};//m_limelight.getCylindricalPosition(m_elevator.getAngle(), Constants.sensor_Limelight_Height);
     double shootingV = EulersMethod.bisection(0, 30,
         new double[] {
             0.5 * Constants.gravity * Math.pow(sposition[0], 2) * Math.pow((1 / Math.cos(m_elevator.getAngle())), 2), 0,
             -m_elevator.getFloorHeight(), 1 });
-    m_shooter.startFW(shootingV);
+    SmartDashboard.putNumber("Ball velocity", shootingV);
+    SmartDashboard.putNumber("Target shooting velocity", Shooter.getTargetWheelSpeed(shootingV));
+    SmartDashboard.putNumber("per100ms", Shooter.getTarget_unitsPer100ms(Shooter.getTargetWheelSpeed(shootingV)));
   }
 
   // Called once the command ends or is interrupted.

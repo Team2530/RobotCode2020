@@ -116,7 +116,7 @@ public final class Constants {
     public static final double maxAccelerationMetersPerSecondSq = 1; // !This needs to be set
 
     // ----------Field Constants----------\\
-    public static final double target_Height = 98.5;// inches //Units.inchesToMeters(105); // temp test value
+    public static final double target_Height = Units.inchesToMeters(98.5);// inches //Units.inchesToMeters(105); // temp test value
     public static final double ball_Weight = 0.3125;
 
     // ----------Control (Joystick) Constants----------\\
@@ -140,11 +140,11 @@ public final class Constants {
      * Not all set of Gains are used in this project and may be removed as desired. These are probably overkill but idk rn
      * 
      * 
-	 * 	                                    			  kP   kI   kD   kF               Iz    PeakOut */
-    public final static Gains kShooter_Gains_Distanc = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.50 );//! NEED TO BE SET
-	public final static Gains kShooter_Gains_Turning = new Gains( 2.0, 1000000.0,  4.0, 0.0,            200,  1.00 );//!
-	public final static Gains kShooter_Gains_Velocit = new Gains( 0.1, 0.0, 20.0, 1023.0/6800.0,  300,  0.50 );//!
-	public final static Gains kShooter_Gains_MotProf = new Gains( 1.0, 0.0,  0.0, 1023.0/6800.0,  400,  1.00 );//!
+	 * 	                                    			         kP   kI   kD   kF           Iz    PeakOut */
+    //public final static Gains kShooter_Gains_Distanc = new Gains( 0.1, 0.0,  0.0, 0.0,            100,  0.50 );//! NEED TO BE SET
+	public final static Gains kShooter_Gains_Turning = new Gains( 0 , 0,  0, 0.0,            200, 1.0 );//!
+	public final static Gains kShooter_Gains_Velocit = new Gains( 0, 0.0,  0, 31307*0.8,100,  0.8 );//!
+	//public final static Gains kShooter_Gains_MotProf = new Gains( 1.0, 0.0,  0.0, 1023.0/6800.0,  400,  1.00 );//!
 
     public final static int SLOT_0 = 0;
     public final static int SLOT_1 = 1;

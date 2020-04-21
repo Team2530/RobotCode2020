@@ -52,12 +52,12 @@ public class RobotContainer {
 
   // -------------------- Subsystems -------------------- \\
   // private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final DriveTrain m_driveTrain = new DriveTrain();
+  //private final DriveTrain m_driveTrain = new DriveTrain();
 
   private final LimeLight limeLightSub = new LimeLight();
   // private final Pixy m_pixy = new Pixy();
   private final Shooter m_shooter = new Shooter();
-  private final Conveyor m_conveyor = new Conveyor();
+  //private final Conveyor m_conveyor = new Conveyor();
   // private final Shooter shooter = new Shooter();
   private final Elevator elevatorSub = new Elevator();
 
@@ -150,8 +150,8 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    Button1.whileHeld(new ElevatorHeight(stick1, elevatorSub));
-    Button1.whenReleased(new InstantCommand(elevatorSub::Stop, elevatorSub));
+    // Button1.whileHeld(new ElevatorHeight(stick1, elevatorSub));
+    // Button1.whenReleased(new InstantCommand(elevatorSub::Stop, elevatorSub));
     // Button1.whenReleased(new LargeJoystickDrive(m_driveTrain, stick1));
     // Button2.whenPressed(toggleCamera);
     // Button3.whenPressed(toggleLED);
@@ -162,26 +162,26 @@ public class RobotContainer {
     // Button9.whenPressed(new InstantCommand(m_shooter::stopFW, m_shooter));
     // Button10.whenPressed(new InstantCommand(m_shooter::startFW, m_shooter));
 
-    Button2.whenPressed(new InstantCommand(limeLightSub::toggleLights, limeLightSub));
-    Button3.whenPressed(new InstantCommand(limeLightSub::switchCamera, limeLightSub));
-    Button4.whenPressed(new InstantCommand(elevatorSub::resetEncoders));
-    Button5.whenPressed(new InstantCommand(m_conveyor::in, m_conveyor));
-    Button6.whenPressed(new InstantCommand(m_conveyor::out, m_conveyor));
-    Button7.whenPressed(new InstantCommand(elevatorSub::setLeftPowerUp));
-    Button8.whenPressed(new InstantCommand(elevatorSub::setLeftPowerDown));
-    Button9.whenPressed(new InstantCommand(elevatorSub::setRightPowerUp));
-    Button10.whenPressed(new InstantCommand(elevatorSub::setRightPowerDown));
-    Button11.whileActiveContinuous(new InstantCommand(elevatorSub::setPowerUp));
-    Button12.whileActiveContinuous(new InstantCommand(elevatorSub::setPowerDown));
+    // Button2.whenPressed(new InstantCommand(limeLightSub::toggleLights, limeLightSub));
+    // Button3.whenPressed(new InstantCommand(limeLightSub::switchCamera, limeLightSub));
+    // Button4.whenPressed(new InstantCommand(elevatorSub::resetEncoders));
+    // Button5.whenPressed(new InstantCommand(m_conveyor::in, m_conveyor));
+    // Button6.whenPressed(new InstantCommand(m_conveyor::out, m_conveyor));
+    // Button7.whenPressed(new InstantCommand(elevatorSub::setLeftPowerUp));
+    // Button8.whenPressed(new InstantCommand(elevatorSub::setLeftPowerDown));
+    // Button9.whenPressed(new InstantCommand(elevatorSub::setRightPowerUp));
+    // Button10.whenPressed(new InstantCommand(elevatorSub::setRightPowerDown));
+    // Button11.whileActiveContinuous(new InstantCommand(elevatorSub::setPowerUp));
+    // Button12.whileActiveContinuous(new InstantCommand(elevatorSub::setPowerDown));
 
-    Button5.whenReleased(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
-    Button6.whenReleased(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
-    Button7.whenReleased(new InstantCommand(elevatorSub::Stop));
-    Button8.whenReleased(new InstantCommand(elevatorSub::Stop));
-    Button9.whenReleased(new InstantCommand(elevatorSub::Stop));
-    Button10.whenReleased(new InstantCommand(elevatorSub::Stop));
-    Button11.whenReleased(new InstantCommand(elevatorSub::Stop));
-    Button12.whenReleased(new InstantCommand(elevatorSub::Stop));
+    // Button5.whenReleased(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
+    // Button6.whenReleased(new InstantCommand(m_conveyor::stopIntake, m_conveyor));
+    // Button7.whenReleased(new InstantCommand(elevatorSub::Stop));
+    // Button8.whenReleased(new InstantCommand(elevatorSub::Stop));
+    // Button9.whenReleased(new InstantCommand(elevatorSub::Stop));
+    // Button10.whenReleased(new InstantCommand(elevatorSub::Stop));
+    // Button11.whenReleased(new InstantCommand(elevatorSub::Stop));
+    // Button12.whenReleased(new InstantCommand(elevatorSub::Stop));
 
     // These may need to be flipped around... I wasn't sure which way increase speed
     // was
@@ -192,10 +192,11 @@ public class RobotContainer {
     // XboxButton2.whenPressed(new InstantCommand(m_shooter::resetSpeed,
     // m_shooter));
     
-    XboxButton1.whileHeld(new InstantCommand(() -> m_shooter.startFW(), m_shooter));
+    XboxButton1.whileHeld(new ShooterTest(m_shooter));
     XboxButton1.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
-    XboxButton4.whenPressed(new InstantCommand(() -> m_shooter.startFW(), m_shooter));
+    XboxButton4.whileHeld(new InstantCommand(() -> m_shooter.FWControl(xbox.getRawAxis(0)), m_shooter));
     XboxButton4.whenReleased(new InstantCommand(m_shooter::stopFW, m_shooter));
+    XboxButton3.whenPressed(new InstantCommand(m_shooter::resetEncoders));
 
     // XboxButton1.whileHeld(new StartShooter(m_shooter, xbox));
     // XboxButton4.whileHeld(new StartIntake(m_shooter, xbox));
@@ -253,7 +254,7 @@ public class RobotContainer {
   }
 
   public Command getTelopCommand() {
-    return null;
+    return new AimShooter(m_shooter, elevatorSub, limeLightSub);
     // return new CustomElevator(stick1, elevatorSub);
   }
 

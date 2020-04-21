@@ -17,6 +17,7 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
@@ -103,7 +104,7 @@ public class Shooter extends SubsystemBase {
     motor_Right.configSelectedFeedbackCoefficient(1, Constants.PID_TURN, Constants.kTimeoutMs);
 
     // Inverting Motors and Encoders
-    motor_Left.setInverted(true);
+    motor_Left.setInverted(false);
     motor_Left.setSensorPhase(true);
     motor_Right.setInverted(false);
     motor_Right.setSensorPhase(true);
@@ -124,7 +125,6 @@ public class Shooter extends SubsystemBase {
     motor_Right.configPeakOutputForward(+1.0, Constants.kTimeoutMs);
     motor_Right.configPeakOutputReverse(-1.0, Constants.kTimeoutMs);
 
-    /* FPID Gains for turn servo */
     /* FPID Gains for velocity servo */
 
     motor_Right.config_kP(Constants.kSlot_Velocit, Constants.kShooter_Gains_Velocit.kP, Constants.kTimeoutMs);
@@ -164,12 +164,17 @@ public class Shooter extends SubsystemBase {
      */
     motor_Right.configAuxPIDPolarity(false, Constants.kTimeoutMs);
     _firstCall = true;
+    SmartDashboard.putNumber("speed", 0);
   }
 
   @Override
   public void periodic() {
     // SmartDashboard.putNumber("Left voltage", motor_Left.getBusVoltage());
     // SmartDashboard.putNumber("Right voltage", motor_Right.getBusVoltage());
+    SmartDashboard.putNumber("Primary PID RIGHT", motor_Right.getSelectedSensorVelocity(Constants.PID_PRIMARY));
+    SmartDashboard.putNumber("Auxilary PID RIGHT", motor_Right.getSelectedSensorVelocity(Constants.PID_TURN));
+    //SmartDashboard.putNumber("Primary PID LEFT", motor_Right.getSelectedSensorPosition(Constants.PID_PRIMARY));
+    //SmartDashboard.putNumber("Auxilary PID LEFT", motor_Left.getSelectedSensorPosition(Constants.PID_TURN));
     // startFW(currentSpeed);
     // } else if (xbox.getRawAxis(3) < 0) {
     // startFW(-0.3);
@@ -191,7 +196,7 @@ public class Shooter extends SubsystemBase {
     motor_Right.set(ControlMode.PercentOutput, power);
     motor_Left.follow(motor_Right,FollowerType.PercentOutput);
   }
-  public void startFW() {
+  public void FWControl(double multiplier) {
     double speed = SmartDashboard.getNumber("speed", 0);
     double curl = 0;
         if (_firstCall) {
@@ -208,7 +213,7 @@ public class Shooter extends SubsystemBase {
        * Difference
        */
       // double target_unitsPer100ms = getTarget_unitsPer100ms(getTargetWheelSpeed(speed));
-      double target_unitsPer100ms = speed;
+      double target_unitsPer100ms = speed*multiplier;
       SmartDashboard.putNumber("Target Speed", target_unitsPer100ms);
 			double target_turn = curl;
 			
@@ -264,40 +269,24 @@ public class Shooter extends SubsystemBase {
   public double getMaxTemperature() {
     return Math.max(motor_Left.getTemperature(), motor_Right.getTemperature());
   }
-
-  public void increaseSpeed() {
-    currentSpeed = currentSpeed + 0.1;
-
-    SmartDashboard.putNumber("Current Shooter Speed", currentSpeed);
-  }
-  public double getTargetWheelSpeed(double targetballspeed){
+  /** 
+  @param targetballspeed units are in revolutions per second
+  
+  @return units are in rev/s and need
+  */
+  public static double getTargetWheelSpeed(double targetballspeed){
     return targetballspeed * Math.sqrt(
         Constants.I / (0.5 * Constants.ball_Weight + Constants.I / (Math.pow(Constants.SHOOTER_WHEEL_RADIUS, 2))));
   }
   //v = r × RPM × 0.10472
-  public double getTarget_unitsPer100ms(double targetwheelspeed){
-    return targetwheelspeed/(Constants.SHOOTER_WHEEL_RADIUS*0.10472);
+  /** 
+  @param targetwheelspeed units are in revolutions per second
+  
+  @return units are in tics/100ms
+  */
+  public static double getTarget_unitsPer100ms(double targetwheelspeed){
+    return targetwheelspeed*Constants.DROP_IN_DISTANCE_PER_REVOLUTION/100;
   }
 
-  public void resetSpeed() {
-
-    currentSpeed = 0;
-    SmartDashboard.putNumber("Current Shooter Speed", currentSpeed);
-  }
-
-  public void decreaseSpeed() {
-
-    currentSpeed = currentSpeed - 0.1;
-    SmartDashboard.putNumber("Current Shooter Speed", currentSpeed);
-  }
-
-  public void setSpeed(double speed) {
-    currentSpeed = speed;
-    SmartDashboard.putNumber("Current Shooter Speed", currentSpeed);
-  }
-
-  public boolean getHasBallNear() {
-    return hasCurrentBall;
-  }
 
 }
